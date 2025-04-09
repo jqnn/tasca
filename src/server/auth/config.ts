@@ -39,6 +39,9 @@ export const authConfig = {
   ],
   pages: {
     signIn: "/",
+    error: "/",
+    newUser: "/dashboard",
+    signOut: "/logout",
   },
   secret: process.env.NEXTAUTH_SECRET,
   session: {
