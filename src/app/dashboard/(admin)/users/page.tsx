@@ -1,3 +1,9 @@
+import { SiteHeader } from "~/components/ui/site-header";
+
 export default function Users() {
-    return <p>Users</p>;
+  return (
+    <>
+      <SiteHeader title={"Users"} />
+    </>
+  );
 }

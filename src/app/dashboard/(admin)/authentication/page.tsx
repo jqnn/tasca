@@ -1,3 +1,9 @@
+import {SiteHeader} from "~/components/ui/site-header";
+
 export default function AuthenticationMethods() {
-    return <p>Auth Methods</p>;
+    return (
+        <>
+            <SiteHeader title={"Authentication Methods"} />
+        </>
+    );
 }
