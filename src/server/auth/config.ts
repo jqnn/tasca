@@ -17,23 +17,22 @@ export const authConfig = {
           return null;
         }
 
-        /*const user = await db.user.findFirst({
-                  where: { userName: credentials.username as string },
-                });
-        
-                if (!user) {
-                  return null;
-                }
-        
-                return {
-                  id: user.id.toString(),
-                  userName: user.userName,
-                };
-                 */
+        const user = await db.user.findFirst({
+          where: { userName: credentials.username as string },
+        });
+
+        if (!user) return null;
+        // TODO: check ldap and ad
+        if (!user.password) return null;
+
+        if (user.password != (credentials.password as string)) {
+          return null;
+        }
 
         return {
-          id: "1",
-          userName: "umrscherj1",
+          id: user.id.toString(),
+          userName: user.userName,
+          displayName: user.displayName,
         };
       },
     }),
@@ -54,6 +53,7 @@ export const authConfig = {
       if (user) {
         token.id = user.id;
         token.userName = user.userName;
+        token.displayName = user.displayName;
       }
       return token;
     },
@@ -62,6 +62,7 @@ export const authConfig = {
       if (token && session.user) {
         session.user.id = token.id as string;
         session.user.userName = token.userName as string;
+        session.user.displayName = token.displayName as string;
       }
       return session;
     },
