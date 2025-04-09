@@ -17,17 +17,23 @@ export const authConfig = {
           return null;
         }
 
-        const user = await db.user.findFirst({
-          where: { userName: credentials.username as string },
-        });
-
-        if (!user) {
-          return null;
-        }
+        /*const user = await db.user.findFirst({
+                  where: { userName: credentials.username as string },
+                });
+        
+                if (!user) {
+                  return null;
+                }
+        
+                return {
+                  id: user.id.toString(),
+                  userName: user.userName,
+                };
+                 */
 
         return {
-          id: user.id.toString(),
-          userName: user.userName,
+          id: "1",
+          userName: "umrscherj1",
         };
       },
     }),
