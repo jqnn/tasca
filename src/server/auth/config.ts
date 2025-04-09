@@ -1,6 +1,7 @@
 import { type NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "~/server/db";
+import { hashPassword } from "~/lib/utils";
 
 export const authConfig = {
   providers: [
@@ -25,7 +26,8 @@ export const authConfig = {
         // TODO: check ldap and ad
         if (!user.password) return null;
 
-        if (user.password != (credentials.password as string)) {
+        const hashedPassword = hashPassword(credentials.password as string);
+        if (user.password != hashedPassword) {
           return null;
         }
 

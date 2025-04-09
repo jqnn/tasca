@@ -1,4 +1,6 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { hashPassword } from "~/lib/utils";
+import { env } from "~/env";
 
 export const seedRouter = createTRPCRouter({
   createDefault: publicProcedure.query(async ({ ctx }) => {
@@ -14,11 +16,15 @@ export const seedRouter = createTRPCRouter({
       },
     });
 
+    const adminPassword = env.ADMIN_PASSWORD;
+    if (adminPassword == null) return false;
+    const hashedPassword = hashPassword(adminPassword);
+
     await ctx.db.user.create({
       data: {
         userName: "admin",
         displayName: "Administrator",
-        password: "test123",
+        password: hashedPassword,
         authMethodId: local.id,
         role: "ADMINISTRATOR",
       },
