@@ -37,7 +37,7 @@ export function LoginForm({ className, ...props }: ComponentProps<"div">) {
       return;
     }
 
-    await router.push("/dashboard");
+    router.push("/dashboard");
   };
 
   return (
