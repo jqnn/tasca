@@ -65,8 +65,6 @@ export function SidebarComponent({ ...props }: React.ComponentProps<typeof Sideb
     id: Number(session.user?.id),
   });
 
-  isAdmin = true;
-
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
