@@ -74,7 +74,7 @@ export function LoginForm({ className, ...props }: ComponentProps<"div">) {
               </div>
               <div className="flex flex-col gap-3">
                 <Button type="submit" className="w-full">
-                  Login
+                  Anmelden
                 </Button>
               </div>
             </div>
