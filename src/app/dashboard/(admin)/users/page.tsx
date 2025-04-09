@@ -1,6 +1,19 @@
 import { SiteHeader } from "~/components/ui/site-header";
+import { auth } from "~/server/auth";
+import { redirect } from "next/navigation";
+import { api } from "~/trpc/server";
 
-export default function Users() {
+export default async function Users() {
+  const session = await auth();
+  if (!session) {
+    redirect("/");
+  }
+
+  const isAdmin = await api.user.isAdmin({ id: Number(session.user.id) });
+  if (!isAdmin) {
+    redirect("/");
+  }
+
   return (
     <>
       <SiteHeader title={"Users"} />
