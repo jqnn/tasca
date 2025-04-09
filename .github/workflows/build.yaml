@@ -1,0 +1,27 @@
+name: 'Docker Build'
+on:
+  push:
+    branches:
+      - main
+      - development
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  docker-staging:
+    uses: ./.github/workflows/docker-build.yaml
+    if: "github.ref == 'refs/heads/development'"
+    with:
+      tag: "development"
+  docker-production:
+    uses: ./.github/workflows/docker-build.yaml
+    if: "github.ref == 'refs/heads/main'"
+    with:
+      tag: "latest"
