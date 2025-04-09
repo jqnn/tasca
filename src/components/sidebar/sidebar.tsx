@@ -61,7 +61,7 @@ export function SidebarComponent({ ...props }: React.ComponentProps<typeof Sideb
     redirect("/");
   }
 
-  let [isAdmin] = api.user.isAdmin.useSuspenseQuery({
+  const [isAdmin] = api.user.isAdmin.useSuspenseQuery({
     id: Number(session.user?.id),
   });
 
