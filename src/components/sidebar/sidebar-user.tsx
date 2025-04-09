@@ -50,7 +50,7 @@ export function SidebarUser({ session }: { session: Session | null }) {
               <Link href={"/logout"}>
                 <DropdownMenuItem>
                   <IconLogout />
-                  Log out
+                  Abmelden
                 </DropdownMenuItem>
               </Link>
             </DropdownMenuContent>
