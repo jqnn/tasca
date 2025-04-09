@@ -39,17 +39,17 @@ const data = {
   navAdmin: [
     {
       title: "Templates",
-      url: "#",
+      url: "/dashboard/templates",
       icon: IconCategory,
     },
     {
       title: "Benutzer",
-      url: "#",
+      url: "/dashboard/users",
       icon: IconUsers,
     },
     {
       title: "Authentifizierungsmethoden",
-      url: "#",
+      url: "/dashboard/authentication",
       icon: IconLock,
     }
   ],
