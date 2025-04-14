@@ -16,9 +16,12 @@ export default function RootLayout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="de">
-      <head>
-        <script src="https://unpkg.com/react-scan/dist/auto.global.js" />
-      </head>
+      {/*
+          <head>
+            <script src="https://unpkg.com/react-scan/dist/auto.global.js" />
+          </head>
+      */}
+
       <body className="dark">
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
