@@ -31,7 +31,7 @@ export function SidebarItems({
           {items.map((item) => (
             <Link key={item.title} href={item.url}>
               <SidebarMenuItem>
-                <SidebarMenuButton tooltip={item.title}>
+                <SidebarMenuButton>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                 </SidebarMenuButton>
