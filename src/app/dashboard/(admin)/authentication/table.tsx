@@ -20,13 +20,15 @@ import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 import type { AuthMethod } from "@prisma/client";
-import { Alert } from "~/components/ui/alert";
+import { CustomAlert } from "~/components/ui/custom-alert";
+import CreateAuthenticationMethodDialog from "~/app/dashboard/(admin)/authentication/create-auth-method";
 
 const showEditForm = (id: number) => {
   console.log("edit: " + id);
 };
 
 export function DataTableDemo() {
+  const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const [data] = api.authMethod.findAll.useSuspenseQuery();
   const tableData = data ?? [];
@@ -77,7 +79,7 @@ export function DataTableDemo() {
   return (
     <div className="w-full">
       <div className="flex items-center pb-4">
-        <Button variant="outline" className="mr-auto">
+        <Button variant="outline" className="mr-auto" onClick={() => setCreateOpen(true)}>
           Hinzufügen
         </Button>
       </div>
@@ -130,7 +132,7 @@ export function DataTableDemo() {
         </Table>
       </div>
 
-      <Alert
+      <CustomAlert
         open={deleteId !== null}
         setOpen={() => {
           setDeleteId(deleteId);
@@ -140,6 +142,8 @@ export function DataTableDemo() {
         }}
         onConfirm={() => console.log("test")}
       />
+
+      <CreateAuthenticationMethodDialog open={createOpen} setOpen={setCreateOpen} />
     </div>
   );
 }
