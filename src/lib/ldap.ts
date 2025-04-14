@@ -25,9 +25,9 @@ export async function authorizeLDAP(
   try {
     await client.bind(adminDN, adminPassword);
 
-    const { searchEntries } = await client.search(authMethod.baseDN, {
+    const { searchEntries } = await client.search(authMethod.usersDN ?? authMethod.baseDN, {
       scope: "sub",
-      filter: `(uid=${userName})`,
+      filter: `(${authMethod.uidAttribute}=${userName})`,
     });
 
     if (searchEntries == null) return false;
