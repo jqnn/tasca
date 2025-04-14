@@ -16,7 +16,7 @@ interface DialogTexts {
   confirmText?: string;
 }
 
-export function Alert({
+export function CustomAlert({
   open,
   setOpen,
   texts,
