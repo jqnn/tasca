@@ -4,7 +4,9 @@ import * as React from "react";
 import {
   IconCategory,
   IconClipboard,
-  IconDashboard, IconLock, IconPuzzle,
+  IconDashboard,
+  IconLock,
+  IconPuzzle,
   IconUsers,
 } from "@tabler/icons-react";
 
@@ -51,11 +53,13 @@ const data = {
       title: "Authentifizierungsmethoden",
       url: "/dashboard/authentication",
       icon: IconLock,
-    }
+    },
   ],
 };
 
-export function SidebarComponent({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function SidebarComponent({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
   const { data: session } = useSession();
   if (!session) {
     redirect("/");
@@ -84,7 +88,9 @@ export function SidebarComponent({ ...props }: React.ComponentProps<typeof Sideb
       </SidebarHeader>
       <SidebarContent>
         <SidebarItems items={data.navMain} />
-        {isAdmin && <SidebarItems title={"Administration"} items={data.navAdmin} />}
+        {isAdmin && (
+          <SidebarItems title={"Administration"} items={data.navAdmin} />
+        )}
       </SidebarContent>
       <SidebarFooter>
         <SidebarUser session={session} />
