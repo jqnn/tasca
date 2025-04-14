@@ -2,9 +2,9 @@ import type { AuthMethod } from "@prisma/client";
 import { Client } from "ldapts";
 
 export async function authorizeAD(
-    authMethod: AuthMethod,
-    userName: string,
-    password: string,
+  authMethod: AuthMethod,
+  userName: string,
+  password: string,
 ) {
   if (authMethod.type != "AD") return false;
   if (!authMethod.baseDN) return false;
@@ -33,17 +33,19 @@ export async function authorizeAD(
     if (searchEntries == null || searchEntries.length === 0) return false;
 
     const entry = searchEntries[0];
-    if(!(entry)) return false;
+    if (!entry) return false;
 
     const userDN = entry.dn;
     try {
       await client.bind(userDN, password);
       return true;
     } catch (error) {
+      console.error("[AD] Failed to bind LDAP client to user");
       console.error(error);
       return false;
     }
   } catch (error) {
+    console.error("[AD] Failed to bind LDAP client to admin");
     console.error(error);
     return false;
   } finally {

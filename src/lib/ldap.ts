@@ -41,10 +41,12 @@ export async function authorizeLDAP(
       await client.bind(userDN, password);
       return true;
     } catch (error) {
+      console.error("[LDAP] Failed to bind LDAP client to user");
       console.error(error);
       return false;
     }
   } catch (error) {
+    console.error("[LDAP] Failed to bind LDAP client to admin");
     console.error(error);
     return false;
   } finally {
