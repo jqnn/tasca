@@ -7,6 +7,19 @@ export const authMethodRouter = createTRPCRouter({
   findAll: publicProcedure.query(async ({ ctx }) => {
     return ctx.db.authMethod.findMany();
   }),
+  hasUsers: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const authMethod = await ctx.db.authMethod.findFirst({
+        where: { id: input.id },
+      });
+      if (!authMethod) return false;
+      const users = await ctx.db.user.findMany({
+        where: { authMethodId: authMethod.id },
+      });
+      if (!users) return false;
+      return users.length > 0;
+    }),
   exists: publicProcedure
     .input(z.object({ description: z.string() }))
     .mutation(async ({ ctx, input }) => {
