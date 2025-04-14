@@ -2,7 +2,7 @@ import { SiteHeader } from "~/components/ui/site-header";
 import { auth } from "~/server/auth";
 import { redirect } from "next/navigation";
 import { api } from "~/trpc/server";
-import {DataTableDemo} from "~/app/dashboard/(admin)/authentication/table";
+import { DataTableDemo } from "~/app/dashboard/(admin)/authentication/table";
 
 export default async function AuthenticationMethods() {
   const session = await auth();
