@@ -10,7 +10,7 @@ import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import * as React from "react";
-import {$Enums, AuthMethodType, Role} from "@prisma/client";
+import {$Enums, AuthMethodType} from "@prisma/client";
 import {
   Select,
   SelectContent,
