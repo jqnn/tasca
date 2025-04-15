@@ -1,15 +1,18 @@
 "use client";
 
 import * as React from "react";
-import {
-  type ColumnDef,
-} from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 
 import { api } from "~/trpc/react";
 import type { User } from "@prisma/client";
-import {DataTable} from "~/components/ui/data-table";
+import { DataTable } from "~/components/ui/data-table";
+import CreateUserDialog from "~/app/dashboard/(admin)/users/(dialogs)/create-user";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
+import {DeleteUserDialog} from "~/app/dashboard/(admin)/users/(dialogs)/delete-user";
 
 export default function UsersTable() {
+  const [createOpen, setCreateOpen] = React.useState<boolean>(false);
+  const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const [data] = api.user.findAll.useSuspenseQuery();
   const tableData = data ?? [];
   const columns: ColumnDef<User>[] = [
@@ -31,13 +34,48 @@ export default function UsersTable() {
     },
     {
       header: "Aktionen",
-      cell: () => {
-        return <div>TODO</div>;
+      cell: ({ row }) => {
+        const user = row.original;
+        const disabled = user.userName == "admin";
+        const text = disabled ? "text-muted" : "";
+
+        return (
+          <div className={"flex flex-row"}>
+            <IconEdit
+              className={"hover:cursor-pointer " + text}
+              onClick={() => {
+                if (disabled) return;
+              }}
+            />
+            <IconTrash
+              className={"hover:cursor-pointer " + text}
+              onClick={() => {
+                if (disabled) return;
+                setDeleteId(user.id);
+              }}
+            />
+          </div>
+        );
       },
     },
   ];
 
   return (
-      <DataTable data={tableData} columns={columns} onButtonClick={() => console.log("TODO")} />
+    <DataTable
+      data={tableData}
+      columns={columns}
+      onButtonClick={() => setCreateOpen(true)}
+    >
+      <CreateUserDialog open={createOpen} setOpen={setCreateOpen} />
+
+      <DeleteUserDialog
+        open={deleteId !== null}
+        setOpen={(value) => {
+          if (value) return;
+          setDeleteId(null);
+        }}
+        authMethodId={deleteId}
+      />
+    </DataTable>
   );
 }
