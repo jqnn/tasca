@@ -13,8 +13,16 @@ import { DeleteUserDialog } from "~/app/dashboard/(admin)/users/(dialogs)/delete
 export default function UsersTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
-  const [data] = api.user.findAll.useSuspenseQuery();
-  const [tableData, setTableData] = React.useState<User[]>(data ?? []);
+
+  const { data, isLoading } = api.user.findAll.useQuery();
+  const [tableData, setTableData] = React.useState<User[]>([]);
+
+  React.useEffect(() => {
+    if (!isLoading) {
+      setTableData(data ?? []);
+    }
+  }, [data, isLoading]);
+
   const columns: ColumnDef<User>[] = [
     {
       header: "Benutzername",
@@ -40,7 +48,7 @@ export default function UsersTable() {
         const text = disabled ? "text-muted" : "";
 
         return (
-          <div className={"flex flex-row"}>
+          <div className={"flex flex-row gap-2"}>
             <IconEdit
               className={"hover:cursor-pointer " + text}
               onClick={() => {
@@ -64,25 +72,25 @@ export default function UsersTable() {
     <DataTable
       data={tableData}
       columns={columns}
+      loading={isLoading}
       onButtonClick={() => setCreateOpen(true)}
     >
       <CreateUserDialog
         open={createOpen}
         setOpen={setCreateOpen}
         onCreate={(data) => {
-          setTableData([...tableData, data]);
+          setTableData((prev) => [...prev, data]);
         }}
       />
 
       <DeleteUserDialog
         open={deleteId !== null}
         setOpen={(value) => {
-          if (value) return;
-          setDeleteId(null);
+          if (!value) setDeleteId(null);
         }}
         authMethodId={deleteId}
         onDelete={() => {
-          setTableData(tableData.filter((item) => item.id !== deleteId));
+          setTableData((prev) => prev.filter((item) => item.id !== deleteId));
         }}
       />
     </DataTable>

@@ -5,7 +5,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { api } from "~/trpc/react";
-import type { AuthMethod } from "@prisma/client";
+import type { AuthMethod, User } from "@prisma/client";
 import CreateAuthenticationMethodDialog from "~/app/dashboard/(admin)/authentication/(dialogs)/create-auth-method";
 import { DeleteAuthenticationMethodDialog } from "~/app/dashboard/(admin)/authentication/(dialogs)/delete-authentication-method";
 import { DataTable } from "~/components/ui/data-table";
@@ -17,8 +17,14 @@ const showEditForm = (id: number) => {
 export default function AuthenticationMethodsTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
-  const [data] = api.authMethod.findAll.useSuspenseQuery();
-  const [tableData, setTableData] = React.useState<AuthMethod[]>(data ?? []);
+  const { data, isLoading } = api.authMethod.findAll.useQuery();
+  const [tableData, setTableData] = React.useState<AuthMethod[]>([]);
+
+  React.useEffect(() => {
+    if (!isLoading) {
+      setTableData(data ?? []);
+    }
+  }, [data, isLoading]);
   const columns: ColumnDef<AuthMethod>[] = [
     {
       header: "Beschreibung",
@@ -61,6 +67,7 @@ export default function AuthenticationMethodsTable() {
     <DataTable
       data={tableData}
       columns={columns}
+      loading={isLoading}
       onButtonClick={() => setCreateOpen(true)}
     >
       <CreateAuthenticationMethodDialog
