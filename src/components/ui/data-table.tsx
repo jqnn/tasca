@@ -17,12 +17,14 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { Button } from "~/components/ui/button";
+import type { ReactNode } from "react";
 
 interface DataTableProps<TData> {
   data: TData[];
   columns: ColumnDef<TData>[];
   onButtonClick?: () => void | null;
   buttonText?: string | null;
+  children: ReactNode;
 }
 
 export function DataTable<TData>({
@@ -30,6 +32,7 @@ export function DataTable<TData>({
   columns,
   onButtonClick,
   buttonText,
+  children,
 }: DataTableProps<TData>) {
   const table = useReactTable({
     data,
@@ -92,6 +95,8 @@ export function DataTable<TData>({
           </TableBody>
         </Table>
       </div>
+
+      {children}
     </div>
   );
 }
