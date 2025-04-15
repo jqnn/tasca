@@ -30,17 +30,21 @@ export async function authorizeLDAP(
     await client.bind(adminUserName, adminPassword);
 
     const safeUser = escapeLDAPSearchFilter(userName);
-    const upn = safeUser + authMethod.accountSuffix;
     const { searchEntries } = await client.search(authMethod.baseDN, {
       scope: "sub",
-      filter: `(${authMethod.uidAttribute}=${upn})`,
+      filter: `(${authMethod.uidAttribute}=${safeUser})`,
     });
 
-    if (searchEntries == null) return false;
-    if (searchEntries.length == 0) return false;
+    if (searchEntries == null || searchEntries.length === 0) {
+      console.warn(`[LDAP] No search entries found for ${safeUser}.`);
+      return false;
+    }
 
     const entry = searchEntries[0];
-    if (entry == null) return false;
+    if (!entry) {
+      console.warn(`[LDAP] No search entry found for ${safeUser}.`);
+      return false;
+    }
 
     const userDN = entry.dn;
     try {

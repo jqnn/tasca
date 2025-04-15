@@ -1,5 +1,5 @@
 import type { AuthMethod } from "@prisma/client";
-import { Client } from "ldapts"
+import { Client } from "ldapts";
 import { escapeLDAPSearchFilter } from "./utils";
 
 export async function authorizeAD(
@@ -32,16 +32,21 @@ export async function authorizeAD(
     await client.bind(adminUserName, adminPassword);
 
     const safeUser = escapeLDAPSearchFilter(userName);
-    const upn = safeUser + authMethod.accountSuffix;
     const { searchEntries } = await client.search(authMethod.baseDN, {
       scope: "sub",
-      filter: `(sAMAccountName=${upn})`,
+      filter: `(sAMAccountName=${safeUser})`,
     });
 
-    if (searchEntries == null || searchEntries.length === 0) return false;
+    if (searchEntries == null || searchEntries.length === 0) {
+      console.warn(`[AD] No search entries found for ${safeUser}.`);
+      return false;
+    }
 
     const entry = searchEntries[0];
-    if (!entry) return false;
+    if (!entry) {
+      console.warn(`[AD] No search entry found for ${safeUser}.`);
+      return false;
+    }
 
     const userDN = entry.dn;
     try {
@@ -53,7 +58,9 @@ export async function authorizeAD(
       return false;
     }
   } catch (error) {
-    console.error(`[AD] Error while binding Admin-User ${adminUserName} to ${url}`);
+    console.error(
+      `[AD] Error while binding Admin-User ${adminUserName} to ${url}`,
+    );
     console.error(error);
     return false;
   } finally {
