@@ -27,7 +27,7 @@ const showEditForm = (id: number) => {
   console.log("edit: " + id);
 };
 
-export function DataTableDemo() {
+export default function AuthenticationMethodsTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const [data] = api.authMethod.findAll.useSuspenseQuery();
