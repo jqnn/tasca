@@ -17,6 +17,7 @@ model User {
   role           Role             @default(USER)
   createdAt      DateTime         @default(now())
   ProjectMembers ProjectMembers[]
+  Project        Project[]
 }
 
 model AuthMethod {
@@ -39,6 +40,8 @@ model Project {
   id             Int              @id @default(autoincrement())
   name           String
   description    String?
+  ownerId        Int
+  owner          User             @relation(fields: [ownerId], references: [id])
   createdAt      DateTime         @default(now())
   ProjectMembers ProjectMembers[]
 }
