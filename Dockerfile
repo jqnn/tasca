@@ -5,4 +5,4 @@ COPY . .
 RUN npm install
 RUN SKIP_ENV_VALIDATION=1 npm run build;
 EXPOSE 3000
-CMD ["node .next/standalone/server.js start"]
+CMD ["npx prisma migrate deploy", "&&", "node .next/standalone/server.js start"]
