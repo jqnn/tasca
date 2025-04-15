@@ -1,0 +1,64 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
+import { api } from "~/trpc/react";
+import {showToast} from "~/lib/utils";
+
+export function DeleteUserDialog({
+  open,
+  setOpen,
+  authMethodId,
+}: {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  authMethodId: number | null;
+}) {
+  const handleConfirm = () => {
+    if (authMethodId === null) {
+      setOpen(false);
+      return;
+    }
+
+    deleteUser.mutate(
+      { id: authMethodId },
+      {
+        onSuccess: () => {
+          window.location.reload();
+          setOpen(false);
+        },
+        onError: () => {
+          showToast(
+              "Unerwarteter Fehler",
+              "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
+          );
+        },
+      },
+    );
+  };
+
+  const deleteUser = api.user.delete.useMutation();
+
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Bist du Dir sicher?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Diese Aktion kann nicht rückgängig gemacht werden.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+          <AlertDialogAction onClick={handleConfirm}>Löschen</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
