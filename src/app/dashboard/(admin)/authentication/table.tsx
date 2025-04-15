@@ -21,7 +21,8 @@ import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 import type { AuthMethod } from "@prisma/client";
 import { CustomAlert } from "~/components/ui/custom-alert";
-import CreateAuthenticationMethodDialog from "~/app/dashboard/(admin)/authentication/create-auth-method";
+import CreateAuthenticationMethodDialog from "~/app/dashboard/(admin)/authentication/(dialogs)/create-auth-method";
+import { DeleteAuthenticationMethodDialog } from "~/app/dashboard/(admin)/authentication/(dialogs)/delete-authentication-method";
 
 const showEditForm = (id: number) => {
   console.log("edit: " + id);
@@ -79,7 +80,11 @@ export function DataTableDemo() {
   return (
     <div className="w-full">
       <div className="flex items-center pb-4">
-        <Button variant="outline" className="mr-auto" onClick={() => setCreateOpen(true)}>
+        <Button
+          variant="outline"
+          className="mr-auto"
+          onClick={() => setCreateOpen(true)}
+        >
           Hinzufügen
         </Button>
       </div>
@@ -132,18 +137,19 @@ export function DataTableDemo() {
         </Table>
       </div>
 
-      <CustomAlert
+      <DeleteAuthenticationMethodDialog
         open={deleteId !== null}
-        setOpen={() => {
-          setDeleteId(deleteId);
+        setOpen={(value) => {
+          if (value) return;
+          setDeleteId(null);
         }}
-        texts={{
-          confirmText: "Löschen",
-        }}
-        onConfirm={() => console.log("test")}
+        authMethodId={deleteId}
       />
 
-      <CreateAuthenticationMethodDialog open={createOpen} setOpen={setCreateOpen} />
+      <CreateAuthenticationMethodDialog
+        open={createOpen}
+        setOpen={setCreateOpen}
+      />
     </div>
   );
 }
