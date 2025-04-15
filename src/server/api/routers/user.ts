@@ -1,6 +1,6 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
-import { AuthMethodType, Role } from "@prisma/client";
+import { Role } from "@prisma/client";
 import { hashPassword } from "~/lib/utils";
 
 export const userRouter = createTRPCRouter({
