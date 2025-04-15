@@ -4,7 +4,7 @@ import * as React from "react";
 import {
   IconCategory,
   IconClipboard,
-  IconDashboard,
+  IconFolders, IconLayoutDashboard,
   IconLock,
   IconPuzzle,
   IconUsers,
@@ -30,17 +30,22 @@ const data = {
     {
       title: "Dashboard",
       url: "/dashboard",
-      icon: IconDashboard,
+      icon: IconLayoutDashboard,
     },
     {
-      title: "Tasks",
+      title: "Projekte",
+      url: "/dashboard/projects",
+      icon: IconFolders,
+    },
+    {
+      title: "Aufgaben",
       url: "/dashboard/tasks",
       icon: IconClipboard,
     },
   ],
   navAdmin: [
     {
-      title: "Templates",
+      title: "Vorlagen",
       url: "/dashboard/templates",
       icon: IconCategory,
     },
