@@ -8,7 +8,7 @@ import type { User } from "@prisma/client";
 import { DataTable } from "~/components/ui/data-table";
 import CreateUserDialog from "~/app/dashboard/(admin)/users/(dialogs)/create-user";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
-import {DeleteUserDialog} from "~/app/dashboard/(admin)/users/(dialogs)/delete-user";
+import { DeleteUserDialog } from "~/app/dashboard/(admin)/users/(dialogs)/delete-user";
 
 export default function UsersTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
@@ -66,7 +66,13 @@ export default function UsersTable() {
       columns={columns}
       onButtonClick={() => setCreateOpen(true)}
     >
-      <CreateUserDialog open={createOpen} setOpen={setCreateOpen} />
+      <CreateUserDialog
+        open={createOpen}
+        setOpen={setCreateOpen}
+        onCreate={(data) => {
+          setTableData([...tableData, data]);
+        }}
+      />
 
       <DeleteUserDialog
         open={deleteId !== null}
