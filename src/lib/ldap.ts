@@ -1,21 +1,25 @@
 import type { AuthMethod } from "@prisma/client";
 import { Client } from "ldapts";
+import {escapeLDAPSearchFilter} from "~/lib/utils";
 
 export async function authorizeLDAP(
   authMethod: AuthMethod,
   userName: string,
   password: string,
 ) {
-  if (authMethod.type != "LDAP") return false;
-  if (!authMethod.baseDN) return false;
+  if (
+      authMethod.type !== "LDAP" ||
+      !authMethod.baseDN ||
+      !authMethod.userName ||
+      !authMethod.password
+  ) {
+    return false;
+  }
 
   const ldap = authMethod.securityType == "SSL" ? "ldaps" : "ldap";
-  const url = ldap + "://" + authMethod.controllers;
+  const url = `${ldap}://${authMethod.controllers}`;
 
-  if (!authMethod.userName) return false;
-  if (!authMethod.password) return false;
-
-  const adminDN = "CN=" + authMethod.userName + "," + authMethod.baseDN;
+  const adminUserName = authMethod.userName + authMethod.accountSuffix;
   const adminPassword = authMethod.password;
 
   const client = new Client({
@@ -23,11 +27,13 @@ export async function authorizeLDAP(
   });
 
   try {
-    await client.bind(adminDN, adminPassword);
+    await client.bind(adminUserName, adminPassword);
 
-    const { searchEntries } = await client.search(authMethod.usersDN ?? authMethod.baseDN, {
+    const safeUser = escapeLDAPSearchFilter(userName);
+    const upn = safeUser + authMethod.accountSuffix;
+    const { searchEntries } = await client.search(authMethod.baseDN, {
       scope: "sub",
-      filter: `(${authMethod.uidAttribute}=${userName})`,
+      filter: `(${authMethod.uidAttribute}=${upn})`,
     });
 
     if (searchEntries == null) return false;
@@ -41,12 +47,12 @@ export async function authorizeLDAP(
       await client.bind(userDN, password);
       return true;
     } catch (error) {
-      console.error("[LDAP] Failed to bind LDAP client to user");
+      console.error(`[LDAP] Error while binding User ${userName} to ${url}`);
       console.error(error);
       return false;
     }
   } catch (error) {
-    console.error("[LDAP] Failed to bind LDAP client to admin");
+    console.error(`[LDAP] Error while binding Admin-User ${adminUserName} to ${url}`);
     console.error(error);
     return false;
   } finally {
