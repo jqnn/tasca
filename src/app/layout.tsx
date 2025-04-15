@@ -4,6 +4,7 @@ import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import type { ReactNode } from "react";
+import {Toaster} from "~/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Tasca",
@@ -24,6 +25,7 @@ export default function RootLayout({
 
       <body className="dark">
         <TRPCReactProvider>{children}</TRPCReactProvider>
+        <Toaster />
       </body>
     </html>
   );
