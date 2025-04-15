@@ -9,7 +9,6 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import { api } from "~/trpc/react";
-import { useState } from "react";
 import {showToast} from "~/lib/utils";
 
 export function DeleteAuthenticationMethodDialog({
