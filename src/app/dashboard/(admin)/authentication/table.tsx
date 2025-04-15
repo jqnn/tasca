@@ -3,25 +3,14 @@
 import * as React from "react";
 import {
   type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
 } from "@tanstack/react-table";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components/ui/table";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
-import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 import type { AuthMethod } from "@prisma/client";
 import CreateAuthenticationMethodDialog from "~/app/dashboard/(admin)/authentication/(dialogs)/create-auth-method";
 import { DeleteAuthenticationMethodDialog } from "~/app/dashboard/(admin)/authentication/(dialogs)/delete-authentication-method";
+import { DataTable } from "~/components/ui/data-table";
 
 const showEditForm = (id: number) => {
   console.log("edit: " + id);
@@ -70,72 +59,12 @@ export default function AuthenticationMethodsTable() {
     },
   ];
 
-  const table = useReactTable({
-    data: tableData,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
   return (
-    <div className="w-full">
-      <div className="flex items-center pb-4">
-        <Button
-          variant="outline"
-          className="mr-auto"
-          onClick={() => setCreateOpen(true)}
-        >
-          Hinzufügen
-        </Button>
-      </div>
-
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-
+    <DataTable
+      data={tableData}
+      columns={columns}
+      onButtonClick={() => setCreateOpen(true)}
+    >
       <DeleteAuthenticationMethodDialog
         open={deleteId !== null}
         setOpen={(value) => {
@@ -149,6 +78,6 @@ export default function AuthenticationMethodsTable() {
         open={createOpen}
         setOpen={setCreateOpen}
       />
-    </div>
+    </DataTable>
   );
 }
