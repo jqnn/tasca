@@ -9,16 +9,18 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import { api } from "~/trpc/react";
-import {showToast} from "~/lib/utils";
+import { showToast } from "~/lib/utils";
 
 export function DeleteAuthenticationMethodDialog({
   open,
   setOpen,
   authMethodId,
+  onDelete,
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
   authMethodId: number | null;
+  onDelete?: () => void | null;
 }) {
   const handleConfirm = () => {
     if (authMethodId === null) {
@@ -30,11 +32,18 @@ export function DeleteAuthenticationMethodDialog({
       { id: authMethodId },
       {
         onSuccess: () => {
-          window.location.reload();
-          setOpen(false);
+          if (!onDelete) {
+            window.location.reload();
+            return;
+          }
+
+          onDelete();
         },
         onError: () => {
-          showToast("Unerwarteter Fehler", "Möglicherweise hat diese Authentifiezerungsmethode noch Benutzer.")
+          showToast(
+            "Unerwarteter Fehler",
+            "Möglicherweise hat diese Authentifiezerungsmethode noch Benutzer.",
+          );
         },
       },
     );

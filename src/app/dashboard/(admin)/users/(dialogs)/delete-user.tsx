@@ -9,16 +9,18 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import { api } from "~/trpc/react";
-import {showToast} from "~/lib/utils";
+import { showToast } from "~/lib/utils";
 
 export function DeleteUserDialog({
   open,
   setOpen,
   authMethodId,
+  onDelete,
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
   authMethodId: number | null;
+  onDelete?: () => void | null;
 }) {
   const handleConfirm = () => {
     if (authMethodId === null) {
@@ -30,13 +32,17 @@ export function DeleteUserDialog({
       { id: authMethodId },
       {
         onSuccess: () => {
-          window.location.reload();
-          setOpen(false);
+          if(!(onDelete)) {
+            window.location.reload();
+            return;
+          }
+
+          onDelete();
         },
         onError: () => {
           showToast(
-              "Unerwarteter Fehler",
-              "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
+            "Unerwarteter Fehler",
+            "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
           );
         },
       },
