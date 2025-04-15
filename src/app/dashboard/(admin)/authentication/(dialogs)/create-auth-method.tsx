@@ -51,10 +51,11 @@ export default function CreateAuthenticationMethodDialog({
             },
             {
               onSuccess: () => {
+                window.location.reload();
                 setOpen(false);
               },
-              onError: (err) => {
-                console.log(err);
+              onError: (error) => {
+                console.log(error);
               },
             },
           );
