@@ -14,7 +14,7 @@ export default function UsersTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const [data] = api.user.findAll.useSuspenseQuery();
-  const tableData = data ?? [];
+  const [tableData, setTableData] = React.useState<User[]>(data ?? []);
   const columns: ColumnDef<User>[] = [
     {
       header: "Benutzername",
@@ -75,6 +75,9 @@ export default function UsersTable() {
           setDeleteId(null);
         }}
         authMethodId={deleteId}
+        onDelete={() => {
+          setTableData(tableData.filter((item) => item.id !== deleteId));
+        }}
       />
     </DataTable>
   );

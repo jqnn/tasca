@@ -1,9 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  type ColumnDef,
-} from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { api } from "~/trpc/react";
@@ -20,7 +18,7 @@ export default function AuthenticationMethodsTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const [data] = api.authMethod.findAll.useSuspenseQuery();
-  const tableData = data ?? [];
+  const [tableData, setTableData] = React.useState<AuthMethod[]>(data ?? []);
   const columns: ColumnDef<AuthMethod>[] = [
     {
       header: "Beschreibung",
@@ -72,6 +70,9 @@ export default function AuthenticationMethodsTable() {
           setDeleteId(null);
         }}
         authMethodId={deleteId}
+        onDelete={() => {
+          setTableData(tableData.filter((item) => item.id !== deleteId));
+        }}
       />
 
       <CreateAuthenticationMethodDialog
