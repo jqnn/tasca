@@ -7,6 +7,7 @@ export const userRouter = createTRPCRouter({
   findAll: publicProcedure.query(async ({ ctx }) => {
     return ctx.db.user.findMany();
   }),
+
   exists: publicProcedure
     .input(z.object({ userName: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -16,6 +17,7 @@ export const userRouter = createTRPCRouter({
           return user != null;
         });
     }),
+
   create: publicProcedure
     .input(
       z.object({
@@ -37,11 +39,13 @@ export const userRouter = createTRPCRouter({
         },
       });
     }),
+
   delete: publicProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.user.deleteMany({ where: { id: input.id } });
     }),
+
   isAdmin: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
@@ -51,5 +55,14 @@ export const userRouter = createTRPCRouter({
           if (!user) return false;
           return user.role == "ADMINISTRATOR";
         });
+    }),
+
+  findProjects: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.projectMembers.findMany({
+        where: { userId: input.id },
+        include: { project: true },
+      });
     }),
 });
