@@ -5,4 +5,4 @@ COPY . .
 RUN npm install
 RUN SKIP_ENV_VALIDATION=1 npm run build;
 EXPOSE 3000
-CMD ["prisma db push --force", "&&", "npm run prisma-seed", "&&", "node .next/standalone/server.js start"]
+CMD ["sh", "-c", "npx prisma db push --force && npm run prisma-seed && node .next/standalone/server.js start"]
