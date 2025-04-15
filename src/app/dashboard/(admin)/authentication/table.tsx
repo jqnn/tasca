@@ -63,6 +63,14 @@ export default function AuthenticationMethodsTable() {
       columns={columns}
       onButtonClick={() => setCreateOpen(true)}
     >
+      <CreateAuthenticationMethodDialog
+        open={createOpen}
+        setOpen={setCreateOpen}
+        onCreate={(data) => {
+          setTableData([...tableData, data]);
+        }}
+      />
+
       <DeleteAuthenticationMethodDialog
         open={deleteId !== null}
         setOpen={(value) => {
@@ -73,11 +81,6 @@ export default function AuthenticationMethodsTable() {
         onDelete={() => {
           setTableData(tableData.filter((item) => item.id !== deleteId));
         }}
-      />
-
-      <CreateAuthenticationMethodDialog
-        open={createOpen}
-        setOpen={setCreateOpen}
       />
     </DataTable>
   );

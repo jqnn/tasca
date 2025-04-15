@@ -10,7 +10,7 @@ import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import * as React from "react";
-import {$Enums, AuthMethodType} from "@prisma/client";
+import { $Enums, type AuthMethod, AuthMethodType } from "@prisma/client";
 import {
   Select,
   SelectContent,
@@ -20,14 +20,16 @@ import {
 } from "~/components/ui/select";
 import SecurityType = $Enums.SecurityType;
 import { api } from "~/trpc/react";
-import {showToast} from "~/lib/utils";
+import { showToast } from "~/lib/utils";
 
 export default function CreateAuthenticationMethodDialog({
   open,
   setOpen,
+  onCreate,
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
+  onCreate?: (authMethod: AuthMethod) => void | null;
 }) {
   const handleConfirm = () => {
     existsMutation.mutate(
@@ -51,12 +53,20 @@ export default function CreateAuthenticationMethodDialog({
               password: password,
             },
             {
-              onSuccess: () => {
-                window.location.reload();
+              onSuccess: (data) => {
+                if (!onCreate) {
+                  window.location.reload();
+                  return;
+                }
+
+                onCreate(data);
                 setOpen(false);
               },
               onError: () => {
-                showToast("Unerwarteter Fehler", "Bitte versuche es später erneut oder kontaktiere einen Administrator.")
+                showToast(
+                  "Unerwarteter Fehler",
+                  "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
+                );
               },
             },
           );
@@ -105,9 +115,13 @@ export default function CreateAuthenticationMethodDialog({
                   <SelectValue placeholder="Wähle einen Typ" />
                 </SelectTrigger>
                 <SelectContent id={"type"}>
-                  {Object.values(AuthMethodType).filter((value) => value != "LOCAL").map((type) => (
-                      <SelectItem key={type} value={type}>{type}</SelectItem>
-                  ))}
+                  {Object.values(AuthMethodType)
+                    .filter((value) => value != "LOCAL")
+                    .map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type}
+                      </SelectItem>
+                    ))}
                 </SelectContent>
               </Select>
             </div>
@@ -219,7 +233,9 @@ export default function CreateAuthenticationMethodDialog({
                 </SelectTrigger>
                 <SelectContent id={"securityType"}>
                   {Object.values(SecurityType).map((type) => (
-                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                    <SelectItem key={type} value={type}>
+                      {type}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
