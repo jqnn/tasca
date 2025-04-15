@@ -9,8 +9,8 @@ export default async function Templates() {
     redirect("/");
   }
 
-  const isAdmin = await api.user.isAdmin({id: Number(session.user.id)})
-  if(!(isAdmin)) {
+  const role = await api.user.getRole({id: Number(session.user.id)});
+  if (role != "ADMINISTRATOR") {
     redirect("/");
   }
 

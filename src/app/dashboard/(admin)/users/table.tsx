@@ -3,58 +3,63 @@
 import * as React from "react";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { api } from "~/trpc/react";
-import type { AuthMethod, User } from "@prisma/client";
-import CreateAuthenticationMethodDialog from "~/app/dashboard/(admin)/authentication/(dialogs)/create-auth-method";
-import { DeleteAuthenticationMethodDialog } from "~/app/dashboard/(admin)/authentication/(dialogs)/delete-authentication-method";
+import type { User } from "@prisma/client";
 import { DataTable } from "~/components/ui/data-table";
+import CreateUserDialog from "~/app/dashboard/(admin)/users/(dialogs)/create-user";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
+import { DeleteUserDialog } from "~/app/dashboard/(admin)/users/(dialogs)/delete-user";
 
-const showEditForm = (id: number) => {
-  console.log("edit: " + id);
-};
-
-export default function AuthenticationMethodsTable() {
+export default function UsersTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
-  const { data, isLoading } = api.authMethod.findAll.useQuery();
-  const [tableData, setTableData] = React.useState<AuthMethod[]>([]);
+
+  const { data, isLoading } = api.user.findAll.useQuery();
+  const [tableData, setTableData] = React.useState<User[]>([]);
 
   React.useEffect(() => {
     if (!isLoading) {
       setTableData(data ?? []);
     }
   }, [data, isLoading]);
-  const columns: ColumnDef<AuthMethod>[] = [
+
+  const columns: ColumnDef<User>[] = [
     {
-      header: "Beschreibung",
-      cell: ({ row }) => <div>{row.original.description}</div>,
+      header: "Benutzername",
+      cell: ({ row }) => <div>{row.original.userName}</div>,
     },
     {
-      header: "Typ",
-      cell: ({ row }) => <div>{row.original.type}</div>,
+      header: "Anzeigename",
+      cell: ({ row }) => <div>{row.original.displayName}</div>,
+    },
+    {
+      header: "Rolle",
+      cell: ({ row }) => <div>{row.original.role}</div>,
+    },
+    {
+      header: "Erstellt am",
+      cell: ({ row }) => <div>{row.original.createdAt.toLocaleString()}</div>,
     },
     {
       header: "Aktionen",
       cell: ({ row }) => {
-        const authMethod = row.original;
-        const disabled = authMethod.description == "local";
+        const user = row.original;
+        const disabled = user.userName == "admin";
         const text = disabled ? "text-muted" : "";
 
         return (
-          <div className={"flex flex-row"}>
+          <div className={"flex flex-row gap-2"}>
             <IconEdit
               className={"hover:cursor-pointer " + text}
               onClick={() => {
                 if (disabled) return;
-                showEditForm(authMethod.id);
               }}
             />
             <IconTrash
               className={"hover:cursor-pointer " + text}
               onClick={() => {
                 if (disabled) return;
-                setDeleteId(authMethod.id);
+                setDeleteId(user.id);
               }}
             />
           </div>
@@ -70,23 +75,22 @@ export default function AuthenticationMethodsTable() {
       loading={isLoading}
       onButtonClick={() => setCreateOpen(true)}
     >
-      <CreateAuthenticationMethodDialog
+      <CreateUserDialog
         open={createOpen}
         setOpen={setCreateOpen}
         onCreate={(data) => {
-          setTableData([...tableData, data]);
+          setTableData((prev) => [...prev, data]);
         }}
       />
 
-      <DeleteAuthenticationMethodDialog
+      <DeleteUserDialog
         open={deleteId !== null}
         setOpen={(value) => {
-          if (value) return;
-          setDeleteId(null);
+          if (!value) setDeleteId(null);
         }}
         authMethodId={deleteId}
         onDelete={() => {
-          setTableData(tableData.filter((item) => item.id !== deleteId));
+          setTableData((prev) => prev.filter((item) => item.id !== deleteId));
         }}
       />
     </DataTable>

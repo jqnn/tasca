@@ -8,14 +8,16 @@ datasource db {
 }
 
 model User {
-  id           Int        @id @default(autoincrement())
-  userName     String     @unique
-  displayName  String?
-  password     String?
-  authMethodId Int
-  authMethod   AuthMethod @relation(fields: [authMethodId], references: [id])
-  role         Role       @default(USER)
-  createdAt    DateTime   @default(now())
+  id             Int              @id @default(autoincrement())
+  userName       String           @unique
+  displayName    String?
+  password       String?
+  authMethodId   Int
+  authMethod     AuthMethod       @relation(fields: [authMethodId], references: [id])
+  role           Role             @default(USER)
+  createdAt      DateTime         @default(now())
+  ProjectMembers ProjectMembers[]
+  Project        Project[]
 }
 
 model AuthMethod {
@@ -32,6 +34,27 @@ model AuthMethod {
   uidAttribute  String?
   accountSuffix String?
   User          User[]
+}
+
+model Project {
+  id             Int              @id @default(autoincrement())
+  name           String
+  description    String?
+  ownerId        Int
+  owner          User             @relation(fields: [ownerId], references: [id])
+  createdAt      DateTime         @default(now())
+  ProjectMembers ProjectMembers[]
+}
+
+model ProjectMembers {
+  userId    Int
+  projectId Int
+  joinedAt  DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  project Project @relation(fields: [projectId], references: [id])
+
+  @@id([userId, projectId])
 }
 
 enum Role {

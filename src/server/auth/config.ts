@@ -2,6 +2,8 @@ import { type NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "~/server/db";
 import { hashPassword } from "~/lib/utils";
+import { authorizeLDAP } from "~/lib/ldap";
+import { authorizeAD } from "~/lib/active-directory";
 
 export const authConfig = {
   providers: [
@@ -18,17 +20,36 @@ export const authConfig = {
           return null;
         }
 
+        const userName = credentials.username as string;
+        const password = credentials.password as string;
+
         const user = await db.user.findFirst({
           where: { userName: credentials.username as string },
         });
 
         if (!user) return null;
-        // TODO: check ldap and ad
-        if (!user.password) return null;
 
-        const hashedPassword = hashPassword(credentials.password as string);
-        if (user.password != hashedPassword) {
-          return null;
+        const authMethod = await db.authMethod.findFirst({
+          where: { id: user.authMethodId },
+        });
+
+        if (authMethod == null) return null;
+        switch (authMethod.type) {
+          case "LDAP":
+            const ldap = await authorizeLDAP(authMethod, userName, password);
+            if (!ldap) return null;
+            break;
+          case "AD":
+            const ad = await authorizeAD(authMethod, userName, password);
+            if (!ad) return null;
+            break;
+          case "LOCAL":
+            if (!user.password) return null;
+            const hashedPassword = hashPassword(password);
+            if (user.password != hashedPassword) {
+              return null;
+            }
+            break;
         }
 
         return {

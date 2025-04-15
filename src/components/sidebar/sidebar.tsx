@@ -4,7 +4,7 @@ import * as React from "react";
 import {
   IconCategory,
   IconClipboard,
-  IconDashboard,
+  IconFolders, IconLayoutDashboard,
   IconLock,
   IconPuzzle,
   IconUsers,
@@ -30,17 +30,22 @@ const data = {
     {
       title: "Dashboard",
       url: "/dashboard",
-      icon: IconDashboard,
+      icon: IconLayoutDashboard,
     },
     {
-      title: "Tasks",
+      title: "Projekte",
+      url: "/dashboard/projects",
+      icon: IconFolders,
+    },
+    {
+      title: "Aufgaben",
       url: "/dashboard/tasks",
       icon: IconClipboard,
     },
   ],
   navAdmin: [
     {
-      title: "Templates",
+      title: "Vorlagen",
       url: "/dashboard/templates",
       icon: IconCategory,
     },
@@ -65,9 +70,10 @@ export function SidebarComponent({
     redirect("/");
   }
 
-  const [isAdmin] = api.user.isAdmin.useSuspenseQuery({
+  const [role] = api.user.getRole.useSuspenseQuery({
     id: Number(session.user?.id),
   });
+  const isAdmin = role == "ADMINISTRATOR";
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
