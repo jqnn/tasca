@@ -46,14 +46,14 @@ export const userRouter = createTRPCRouter({
       return ctx.db.user.deleteMany({ where: { id: input.id } });
     }),
 
-  isAdmin: publicProcedure
+  getRole: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
       return ctx.db.user
         .findUnique({ where: { id: input.id } })
         .then((user) => {
-          if (!user) return false;
-          return user.role == "ADMINISTRATOR";
+          if (!user) return "USER";
+          return user.role;
         });
     }),
 

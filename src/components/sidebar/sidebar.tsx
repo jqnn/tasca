@@ -70,9 +70,10 @@ export function SidebarComponent({
     redirect("/");
   }
 
-  const [isAdmin] = api.user.isAdmin.useSuspenseQuery({
+  const [role] = api.user.getRole.useSuspenseQuery({
     id: Number(session.user?.id),
   });
+  const isAdmin = role == "ADMINISTRATOR";
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
