@@ -24,7 +24,7 @@ interface DataTableProps<TData> {
   columns: ColumnDef<TData>[];
   onButtonClick?: () => void | null;
   buttonText?: string | null;
-  children: ReactNode;
+  children?: ReactNode | null;
 }
 
 export function DataTable<TData>({
