@@ -20,7 +20,6 @@ import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 import type { AuthMethod } from "@prisma/client";
-import { CustomAlert } from "~/components/ui/custom-alert";
 import CreateAuthenticationMethodDialog from "~/app/dashboard/(admin)/authentication/(dialogs)/create-auth-method";
 import { DeleteAuthenticationMethodDialog } from "~/app/dashboard/(admin)/authentication/(dialogs)/delete-authentication-method";
 
