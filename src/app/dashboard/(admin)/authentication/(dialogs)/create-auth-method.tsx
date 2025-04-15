@@ -10,7 +10,7 @@ import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import * as React from "react";
-import { $Enums, AuthMethodType } from "@prisma/client";
+import {$Enums, AuthMethodType, Role} from "@prisma/client";
 import {
   Select,
   SelectContent,
@@ -105,8 +105,9 @@ export default function CreateAuthenticationMethodDialog({
                   <SelectValue placeholder="Wähle einen Typ" />
                 </SelectTrigger>
                 <SelectContent id={"type"}>
-                  <SelectItem value="AD">Active Directory (AD)</SelectItem>
-                  <SelectItem value="LDAP">LDAP</SelectItem>
+                  {Object.values(AuthMethodType).filter((value) => value != "LOCAL").map((type) => (
+                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -217,9 +218,9 @@ export default function CreateAuthenticationMethodDialog({
                   <SelectValue placeholder="Wähle einen Sicherheitstyp" />
                 </SelectTrigger>
                 <SelectContent id={"securityType"}>
-                  <SelectItem value={"NONE"}>Keiner</SelectItem>
-                  <SelectItem value={"TLS"}>TLS</SelectItem>
-                  <SelectItem value={"SSL"}>SSL</SelectItem>
+                  {Object.values(SecurityType).map((type) => (
+                      <SelectItem key={type} value={type}>{type}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
