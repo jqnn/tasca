@@ -11,7 +11,6 @@ import {
   SiteHeaderSkeleton,
 } from "~/components/ui/site-header";
 import TemplateTaskTable from "~/app/dashboard/(admin)/templates/[id]/table";
-import AuthenticationMethodsTable from "~/app/dashboard/(admin)/authentication/table";
 
 interface PageProps {
   params: Promise<{
