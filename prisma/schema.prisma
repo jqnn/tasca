@@ -59,12 +59,22 @@ model ProjectMembers {
 }
 
 model Template {
+  id           Int            @id @default(autoincrement())
+  name         String
+  description  String?
+  createdById  Int
+  createdBy    User           @relation(fields: [createdById], references: [id])
+  createdAt    DateTime       @default(now())
+  TemplateTask TemplateTask[]
+}
+
+model TemplateTask {
   id          Int      @id @default(autoincrement())
-  name        String
-  description String?
-  createdById Int
-  createdBy   User     @relation(fields: [createdById], references: [id])
-  createdAt   DateTime @default(now())
+  task        String
+  description String
+  order       Int
+  templateId  Int
+  template    Template @relation(fields: [templateId], references: [id])
 }
 
 enum Role {
