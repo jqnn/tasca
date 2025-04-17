@@ -1,6 +1,5 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { userRouter } from "~/server/api/routers/user";
-import { seedRouter } from "~/server/api/routers/seed";
 import { authMethodRouter } from "./routers/auth-method";
 import { projectRouter } from "./routers/projects";
 
@@ -10,7 +9,6 @@ import { projectRouter } from "./routers/projects";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  seed: seedRouter,
   user: userRouter,
   authMethod: authMethodRouter,
   project: projectRouter,
