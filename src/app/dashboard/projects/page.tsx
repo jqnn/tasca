@@ -1,4 +1,4 @@
-import { SiteHeader } from "~/components/ui/site-header";
+import {SiteHeader, SiteTitle} from "~/components/ui/site-header";
 import { redirect } from "next/navigation";
 import { auth } from "~/server/auth";
 import { Button } from "~/components/ui/button";
@@ -13,7 +13,9 @@ export default async function Projects() {
 
   return (
     <>
-      <SiteHeader title={"Projekte"} />
+      <SiteHeader>
+        <SiteTitle title={"Projekte"} />
+      </SiteHeader>
       <main className={"flex shrink-0 items-center gap-2 transition-[width,height] ease-linear"}>
         <div className={"flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6"}>
           <div className={"w-full"}>
