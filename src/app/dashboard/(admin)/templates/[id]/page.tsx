@@ -1,15 +1,15 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import {notFound, redirect} from "next/navigation";
 import React from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/trpc/react";
 import {
   SiteHeader,
   SiteTitle,
-  SiteDescription,
+  SiteDescription, SiteHeaderSkeleton,
 } from "~/components/ui/site-header";
-import Spinner from "~/components/ui/spinner";
+import TemplateTaskTable from "~/app/dashboard/(admin)/templates/[id]/table";
 
 interface PageProps {
   params: Promise<{
@@ -29,12 +29,16 @@ export default function TemplatePage({ params }: PageProps) {
   });
 
   if (status !== "success") {
-    return <Spinner />;
+    return (
+        <SiteHeaderSkeleton />
+    )
   }
 
   if (!project) {
-    return <p>Kein Projekt gefunden.</p>;
+    notFound();
   }
+
+  const tasks = project.TemplateTask ?? [];
 
   return (
     <>
@@ -44,6 +48,7 @@ export default function TemplatePage({ params }: PageProps) {
           <SiteDescription description={project.description} />
         )}
       </SiteHeader>
+      <TemplateTaskTable tasks={tasks} />
     </>
   );
 }

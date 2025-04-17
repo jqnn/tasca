@@ -1,11 +1,20 @@
 import * as React from "react";
 import type { ReactNode } from "react";
 import { cn } from "~/lib/utils";
+import { Skeleton } from "./skeleton";
+
+export function SiteHeaderSkeleton() {
+  return (
+    <SiteHeader>
+      <Skeleton className="h-2/3 w-1/5" />
+    </SiteHeader>
+  );
+}
 
 export function SiteHeader({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <header className="flex h-12 shrink-0 items-center gap-2 transition-[width,height] ease-linear">
-      <div className="flex w-full items-center gap-1 px-4 align-middle lg:gap-2 lg:px-6">
+      <div className="flex h-full w-full items-center gap-1 px-4 align-middle lg:gap-2 lg:px-6">
         {children}
       </div>
     </header>
