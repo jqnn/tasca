@@ -7,7 +7,7 @@ import { api } from "~/trpc/react";
 import {
   SiteHeader,
   SiteTitle,
-  SiteDescription,
+  SiteDescription, SiteHeaderSkeleton,
 } from "~/components/ui/site-header";
 import Spinner from "~/components/ui/spinner";
 
@@ -29,7 +29,9 @@ export default function TemplatePage({ params }: PageProps) {
   });
 
   if (status !== "success") {
-    return <Spinner />;
+    return (
+        <SiteHeaderSkeleton />
+    )
   }
 
   if (!project) {
