@@ -5,7 +5,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { api } from "~/trpc/react";
-import type { AuthMethod, User } from "@prisma/client";
+import type { AuthMethod } from "@prisma/client";
 import CreateAuthenticationMethodDialog from "~/app/dashboard/(admin)/authentication/(dialogs)/create-auth-method";
 import { DeleteAuthenticationMethodDialog } from "~/app/dashboard/(admin)/authentication/(dialogs)/delete-authentication-method";
 import { DataTable } from "~/components/ui/data-table";
