@@ -1,6 +1,6 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import {notFound, redirect} from "next/navigation";
 import React from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/trpc/react";
@@ -35,7 +35,7 @@ export default function TemplatePage({ params }: PageProps) {
   }
 
   if (!project) {
-    return <p>Kein Projekt gefunden.</p>;
+    notFound();
   }
 
   return (
