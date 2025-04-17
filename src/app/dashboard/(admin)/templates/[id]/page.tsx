@@ -4,7 +4,11 @@ import { redirect } from "next/navigation";
 import React from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/trpc/react";
-import { SiteHeader } from "~/components/ui/site-header";
+import {
+  SiteHeader,
+  SiteTitle,
+  SiteDescription,
+} from "~/components/ui/site-header";
 
 interface PageProps {
   params: Promise<{
@@ -41,7 +45,10 @@ export default function TemplatePage({ params }: PageProps) {
 
   return (
     <>
-      <SiteHeader title={"Projekt - " + project.name} />
+      <SiteHeader>
+        <SiteTitle title={"Vorlage - " + project.name} />
+        {project.description && <SiteDescription description={project.description} />}
+      </SiteHeader>
     </>
   );
 }
