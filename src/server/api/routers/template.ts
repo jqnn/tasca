@@ -6,6 +6,17 @@ export const templateRouter = createTRPCRouter({
     return ctx.db.template.findMany();
   }),
 
+  find: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.template.findUnique({
+        where: { id: input.id },
+        include: {
+          TemplateTask: true,
+        },
+      });
+    }),
+
   exists: publicProcedure
     .input(z.object({ name: z.string() }))
     .mutation(async ({ ctx, input }) => {
