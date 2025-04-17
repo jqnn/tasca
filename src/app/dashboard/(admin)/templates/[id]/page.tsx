@@ -9,6 +9,7 @@ import {
   SiteTitle,
   SiteDescription,
 } from "~/components/ui/site-header";
+import Spinner from "~/components/ui/spinner";
 
 interface PageProps {
   params: Promise<{
@@ -23,9 +24,13 @@ export default function TemplatePage({ params }: PageProps) {
     redirect("/");
   }
 
-  const [role] = api.user.getRole.useSuspenseQuery({
+  const { data: role, isLoading } = api.user.getRole.useQuery({
     id: Number(session.user?.id),
   });
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   if (role !== "ADMINISTRATOR") {
     redirect("/dashboard");
@@ -36,7 +41,7 @@ export default function TemplatePage({ params }: PageProps) {
   });
 
   if (status !== "success") {
-    return <p>Lädt...</p>;
+    return <Spinner />;
   }
 
   if (!project) {
@@ -47,7 +52,9 @@ export default function TemplatePage({ params }: PageProps) {
     <>
       <SiteHeader>
         <SiteTitle title={"Vorlage - " + project.name} />
-        {project.description && <SiteDescription description={project.description} />}
+        {project.description && (
+          <SiteDescription description={project.description} />
+        )}
       </SiteHeader>
     </>
   );
