@@ -24,18 +24,6 @@ export default function TemplatePage({ params }: PageProps) {
     redirect("/");
   }
 
-  const { data: role, isLoading } = api.user.getRole.useQuery({
-    id: Number(session.user?.id),
-  });
-
-  if (isLoading) {
-    return <Spinner />;
-  }
-
-  if (role !== "ADMINISTRATOR") {
-    redirect("/dashboard");
-  }
-
   const { data: project, status } = api.template.find.useQuery({
     id: Number(Number(actualParams.id)),
   });

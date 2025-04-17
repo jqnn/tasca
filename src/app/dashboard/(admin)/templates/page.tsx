@@ -1,4 +1,3 @@
-import { api } from "~/trpc/server";
 import { auth } from "~/server/auth";
 import { redirect } from "next/navigation";
 import TemplateTable from "~/app/dashboard/(admin)/templates/table";
@@ -8,11 +7,6 @@ import * as React from "react";
 export default async function Templates() {
   const session = await auth();
   if (!session) {
-    redirect("/");
-  }
-
-  const role = await api.user.getRole({ id: Number(session.user.id) });
-  if (role != "ADMINISTRATOR") {
     redirect("/");
   }
 
