@@ -1,9 +1,11 @@
-import {SiteHeader} from "~/components/ui/site-header";
+import {SiteHeader, SiteTitle} from "~/components/ui/site-header";
 
 export default function DashboardPage() {
   return (
       <>
-        <SiteHeader title={"Dashboard"} />
+          <SiteHeader>
+              <SiteTitle title={"Dashboard"} />
+          </SiteHeader>
       </>
   );
 }
