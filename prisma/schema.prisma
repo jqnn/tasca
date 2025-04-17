@@ -61,7 +61,7 @@ model ProjectMembers {
 model Template {
   id          Int      @id @default(autoincrement())
   name        String
-  description String
+  description String?
   createdById Int
   createdBy   User     @relation(fields: [createdById], references: [id])
   createdAt   DateTime @default(now())
