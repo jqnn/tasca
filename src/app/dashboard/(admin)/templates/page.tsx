@@ -16,7 +16,7 @@ export default async function Templates() {
 
   return (
       <>
-        <SiteHeader title={"Templates"}/>
+        <SiteHeader title={"Vorlagen"}/>
       </>
   );
 }
