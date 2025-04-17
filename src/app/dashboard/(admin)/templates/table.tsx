@@ -7,6 +7,7 @@ import { api } from "~/trpc/react";
 import type { Template } from "@prisma/client";
 import { DataTable } from "~/components/ui/data-table";
 import CreateTemplateDialog from "~/app/dashboard/(admin)/templates/(dialogs)/create-template";
+import Link from "next/link";
 
 export default function TemplateTable() {
   const { data, isLoading } = api.template.findAll.useQuery();
@@ -21,7 +22,7 @@ export default function TemplateTable() {
   const columns: ColumnDef<Template>[] = [
     {
       header: "Name",
-      cell: ({ row }) => <div>{row.original.name}</div>,
+      cell: ({ row }) => <Link className={"font-bold"} href={`/dashboard/templates/${row.original.id}`}>{row.original.name}</Link>,
     },
     {
       header: "Beschreibung",
