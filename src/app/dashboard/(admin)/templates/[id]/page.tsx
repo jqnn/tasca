@@ -1,15 +1,17 @@
 "use client";
 
-import {notFound, redirect} from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import React from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/trpc/react";
 import {
   SiteHeader,
   SiteTitle,
-  SiteDescription, SiteHeaderSkeleton,
+  SiteDescription,
+  SiteHeaderSkeleton,
 } from "~/components/ui/site-header";
 import TemplateTaskTable from "~/app/dashboard/(admin)/templates/[id]/table";
+import AuthenticationMethodsTable from "~/app/dashboard/(admin)/authentication/table";
 
 interface PageProps {
   params: Promise<{
@@ -29,9 +31,7 @@ export default function TemplatePage({ params }: PageProps) {
   });
 
   if (status !== "success") {
-    return (
-        <SiteHeaderSkeleton />
-    )
+    return <SiteHeaderSkeleton />;
   }
 
   if (!project) {
@@ -48,7 +48,12 @@ export default function TemplatePage({ params }: PageProps) {
           <SiteDescription description={project.description} />
         )}
       </SiteHeader>
-      <TemplateTaskTable tasks={tasks} />
+
+      <main className={"flex shrink-0 items-center gap-2 transition-[width,height] ease-linear"}>
+        <div className={"flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6"}>
+          <TemplateTaskTable tasks={tasks} />
+        </div>
+      </main>
     </>
   );
 }
