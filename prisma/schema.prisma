@@ -18,6 +18,7 @@ model User {
   createdAt      DateTime         @default(now())
   ProjectMembers ProjectMembers[]
   Project        Project[]
+  Template       Template[]
 }
 
 model AuthMethod {
@@ -55,6 +56,15 @@ model ProjectMembers {
   project Project @relation(fields: [projectId], references: [id])
 
   @@id([userId, projectId])
+}
+
+model Template {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  createdById Int
+  createdBy   User     @relation(fields: [createdById], references: [id])
+  createdAt   DateTime @default(now())
 }
 
 enum Role {
