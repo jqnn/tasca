@@ -12,6 +12,7 @@ export default function TemplateTaskTable({
 }: {
   tasks: TemplateTask[];
 }) {
+  const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [tableData, setTableData] = React.useState<TemplateTask[]>([]);
   useEffect(() => {
     setTableData(tasks);
@@ -40,6 +41,7 @@ export default function TemplateTaskTable({
       data={tableData}
       columns={columns}
       loading={false}
+      onButtonClick={() => setCreateOpen(true)}
       onRowOrderChange={(data) => {
         console.log(data);
       }}
