@@ -6,10 +6,12 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { api } from "~/trpc/react";
 import type { Template } from "@prisma/client";
 import { DataTable } from "~/components/ui/data-table";
+import CreateTemplateDialog from "~/app/dashboard/(admin)/templates/(dialogs)/create-template";
 
 export default function TemplateTable() {
   const { data, isLoading } = api.template.findAll.useQuery();
   const [tableData, setTableData] = React.useState<Template[]>([]);
+  const [createOpen, setCreateOpen] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (!isLoading) {
@@ -40,6 +42,17 @@ export default function TemplateTable() {
       data={tableData}
       columns={columns}
       loading={isLoading}
-    />
+      onButtonClick={() => setCreateOpen(true)}
+    >
+
+      <CreateTemplateDialog
+        open={createOpen}
+        setOpen={setCreateOpen}
+        onCreate={(data) => {
+          setTableData([...tableData, data]);
+        }}
+      />
+
+    </DataTable>
   );
 }
