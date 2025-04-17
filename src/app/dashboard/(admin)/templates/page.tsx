@@ -2,6 +2,7 @@ import { SiteHeader } from "~/components/ui/site-header";
 import { api } from "~/trpc/server";
 import {auth} from "~/server/auth";
 import {redirect} from "next/navigation";
+import TemplateTable from "~/app/dashboard/(admin)/templates/table";
 
 export default async function Templates() {
   const session = await auth();
@@ -16,7 +17,12 @@ export default async function Templates() {
 
   return (
       <>
-        <SiteHeader title={"Vorlagen"}/>
+          <SiteHeader title={"Vorlagen"}/>
+          <main className={"flex shrink-0 items-center gap-2 transition-[width,height] ease-linear"}>
+              <div className={"flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6"}>
+                  <TemplateTable/>
+              </div>
+          </main>
       </>
   );
 }
