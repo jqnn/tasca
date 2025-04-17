@@ -9,6 +9,7 @@ import {
   SiteTitle,
   SiteDescription, SiteHeaderSkeleton,
 } from "~/components/ui/site-header";
+import TemplateTaskTable from "~/app/dashboard/(admin)/templates/[id]/table";
 
 interface PageProps {
   params: Promise<{
@@ -37,6 +38,8 @@ export default function TemplatePage({ params }: PageProps) {
     notFound();
   }
 
+  const tasks = project.TemplateTask ?? [];
+
   return (
     <>
       <SiteHeader>
@@ -45,6 +48,7 @@ export default function TemplatePage({ params }: PageProps) {
           <SiteDescription description={project.description} />
         )}
       </SiteHeader>
+      <TemplateTaskTable tasks={tasks} />
     </>
   );
 }
