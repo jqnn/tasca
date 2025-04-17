@@ -29,7 +29,13 @@ export default function TemplateTable() {
     },
     {
       header: "Ersteller",
-      cell: ({ row }) => <div>{row.original.createdById}</div>,
+      cell: ({ row }) => {
+        const template = row.original;
+        const { data: user, isLoading } = api.user.find.useQuery({ id: template.createdById });
+
+        if(isLoading || !(user)) return <div>Unbekannt</div>;
+        return <div>{user.displayName ?? user.userName}</div>;
+      },
     },
     {
       header: "Erstellt am",
@@ -44,7 +50,6 @@ export default function TemplateTable() {
       loading={isLoading}
       onButtonClick={() => setCreateOpen(true)}
     >
-
       <CreateTemplateDialog
         open={createOpen}
         setOpen={setCreateOpen}
@@ -52,7 +57,6 @@ export default function TemplateTable() {
           setTableData([...tableData, data]);
         }}
       />
-
     </DataTable>
   );
 }
