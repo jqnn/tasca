@@ -8,6 +8,12 @@ export const userRouter = createTRPCRouter({
     return ctx.db.user.findMany();
   }),
 
+  find: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.user.findUnique({ where: { id: input.id } });
+    }),
+
   exists: publicProcedure
     .input(z.object({ userName: z.string() }))
     .mutation(async ({ ctx, input }) => {
