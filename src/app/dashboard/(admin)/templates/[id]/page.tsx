@@ -9,7 +9,6 @@ import {
   SiteTitle,
   SiteDescription, SiteHeaderSkeleton,
 } from "~/components/ui/site-header";
-import Spinner from "~/components/ui/spinner";
 
 interface PageProps {
   params: Promise<{
