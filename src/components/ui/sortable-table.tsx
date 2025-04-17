@@ -139,9 +139,9 @@ export function SortableDataTable<TData extends HasId>({
         {...attributes}
       >
         <TableCell className="w-8 px-2">
-          <div {...listeners}>
+          <span {...listeners}>
             <GripVertical className="text-muted-foreground" />
-          </div>
+          </span>
         </TableCell>
         {children}
       </TableRow>
@@ -160,34 +160,34 @@ export function SortableDataTable<TData extends HasId>({
       )}
 
       <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                <TableHead className="w-8 px-2" />
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={items.map((row, i) => getId(row, i))}
+            strategy={verticalListSortingStrategy}
           >
-            <SortableContext
-              items={items.map((row, i) => getId(row, i))}
-              strategy={verticalListSortingStrategy}
-            >
+            <Table className={"overflow-hidden"}>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    <TableHead className="w-8 px-2" />
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+
               <TableBody>
                 {loading ? (
                   Array.from({ length: 3 }).map((_, index) => (
@@ -223,18 +223,15 @@ export function SortableDataTable<TData extends HasId>({
                   })
                 ) : (
                   <TableRow>
-                    <TableCell
-                      colSpan={columns.length + 1}
-                      className="text-center"
-                    >
+                    <TableCell colSpan={columns.length + 1}>
                       Keine Ergebnisse.
                     </TableCell>
                   </TableRow>
                 )}
               </TableBody>
-            </SortableContext>
-          </DndContext>
-        </Table>
+            </Table>
+          </SortableContext>
+        </DndContext>
       </div>
 
       {children}
