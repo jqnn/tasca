@@ -42,7 +42,7 @@ export function DeleteTemplateTaskDialog({
         onError: () => {
           showToast(
             "Unerwarteter Fehler",
-            "Möglicherweise hat diese Authentifiezerungsmethode noch Benutzer.",
+            "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
           );
         },
       },
