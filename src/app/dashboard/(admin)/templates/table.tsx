@@ -24,10 +24,11 @@ export default function TemplateTable() {
   }, [data, isLoading]);
   const columns: ColumnDef<Template>[] = [
     {
-      header: "Name",
+      accessorKey: "name",
+      header: () => <div className="text-center">Name</div>,
       cell: ({ row }) => (
         <Link
-          className={"font-bold"}
+          className={"font-bold text-center"}
           href={`/dashboard/templates/${row.original.id}`}
         >
           {row.original.name}
@@ -35,31 +36,38 @@ export default function TemplateTable() {
       ),
     },
     {
-      header: "Beschreibung",
-      cell: ({ row }) => <div>{row.original.description}</div>,
+      accessorKey: "description",
+      header: () => <div className="text-center">Beschreibung</div>,
+      cell: ({ row }) => (
+        <div className={"text-center"}>{row.original.description}</div>
+      ),
     },
     {
-      header: "Ersteller",
+      accessorKey: "creator",
+      header: () => <div className="text-center">Ersteller</div>,
       cell: ({ row }) => {
         const template = row.original;
         const { data: user, isLoading } = api.user.find.useQuery({
           id: template.createdById,
         });
 
-        if (isLoading || !user) return <div>Unbekannt</div>;
-        return <div>{user.displayName ?? user.userName}</div>;
+        if (isLoading || !user) return <div className={"text-center"}>Unbekannt</div>;
+        return <div className={"text-center"}>{user.displayName ?? user.userName}</div>;
       },
     },
     {
-      header: "Erstellt am",
-      cell: ({ row }) => <div>{row.original.createdAt.toLocaleString()}</div>,
+      accessorKey: "createdAt",
+      header: () => <div className="text-center">Erstellt am</div>,
+      cell: ({ row }) => (
+        <div className={"text-center"}>{row.original.createdAt.toLocaleString()}</div>
+      ),
     },
     {
       accessorKey: "actions",
       header: () => <div className="text-center">Aktionen</div>,
       cell: ({ row }) => {
         return (
-          <div className={"flex flex-row justify-center text-center"}>
+          <div className={"flex flex-row justify-center"}>
             <IconTrash
               className={"text-center hover:cursor-pointer"}
               onClick={() => {

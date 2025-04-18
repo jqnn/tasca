@@ -27,22 +27,25 @@ export default function AuthenticationMethodsTable() {
   }, [data, isLoading]);
   const columns: ColumnDef<AuthMethod>[] = [
     {
-      header: "Beschreibung",
-      cell: ({ row }) => <div>{row.original.description}</div>,
+      accessorKey: "description",
+      header: () => <div className="text-center">Beschreibung</div>,
+      cell: ({ row }) => <div className={"text-center"}>{row.original.description}</div>,
     },
     {
-      header: "Typ",
-      cell: ({ row }) => <div>{row.original.type}</div>,
+      accessorKey: "type",
+      header: () => <div className="text-center">Typ</div>,
+      cell: ({ row }) => <div className={"text-center"}>{row.original.type}</div>,
     },
     {
-      header: "Aktionen",
+      accessorKey: "actions",
+      header: () => <div className="text-center">Aktionen</div>,
       cell: ({ row }) => {
         const authMethod = row.original;
         const disabled = authMethod.description == "local";
         const text = disabled ? "text-muted" : "";
 
         return (
-          <div className={"flex flex-row"}>
+          <div className={"flex flex-row justify-center"}>
             <IconEdit
               className={"hover:cursor-pointer " + text}
               onClick={() => {

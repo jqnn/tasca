@@ -25,30 +25,35 @@ export default function UsersTable() {
 
   const columns: ColumnDef<User>[] = [
     {
-      header: "Benutzername",
-      cell: ({ row }) => <div>{row.original.userName}</div>,
+      accessorKey: "userName",
+      header: () => <div className="text-center">Benutzername</div>,
+      cell: ({ row }) => <div className={"text-center"}>{row.original.userName}</div>,
     },
     {
-      header: "Anzeigename",
-      cell: ({ row }) => <div>{row.original.displayName}</div>,
+      accessorKey: "displayName",
+      header: () => <div className="text-center">Anzeigename</div>,
+      cell: ({ row }) => <div className={"text-center"}>{row.original.displayName}</div>,
     },
     {
-      header: "Rolle",
-      cell: ({ row }) => <div>{row.original.role}</div>,
+      accessorKey: "role",
+      header: () => <div className="text-center">Rolle</div>,
+      cell: ({ row }) => <div className={"text-center"}>{row.original.role}</div>,
     },
     {
-      header: "Erstellt am",
-      cell: ({ row }) => <div>{row.original.createdAt.toLocaleString()}</div>,
+      accessorKey: "createdAt",
+      header: () => <div className="text-center">Erstellt am</div>,
+      cell: ({ row }) => <div className={"text-center"}>{row.original.createdAt.toLocaleString()}</div>,
     },
     {
-      header: "Aktionen",
+      accessorKey: "actions",
+      header: () => <div className="text-center">Aktionen</div>,
       cell: ({ row }) => {
         const user = row.original;
         const disabled = user.userName == "admin";
         const text = disabled ? "text-muted" : "";
 
         return (
-          <div className={"flex flex-row gap-2"}>
+          <div className={"flex flex-row justify-center gap-2"}>
             <IconEdit
               className={"hover:cursor-pointer " + text}
               onClick={() => {
