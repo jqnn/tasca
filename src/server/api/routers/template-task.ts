@@ -19,7 +19,7 @@ export const templateTaskRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      let order = 1
+      let order = 1;
 
       for (const task of input.tasks) {
         await ctx.db.templateTask.update({
@@ -50,5 +50,11 @@ export const templateTaskRouter = createTRPCRouter({
           templateId: input.templateId,
         },
       });
+    }),
+
+  delete: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.templateTask.delete({ where: { id: input.id } });
     }),
 });
