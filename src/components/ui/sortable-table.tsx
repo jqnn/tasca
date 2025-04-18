@@ -235,13 +235,14 @@ export function SortableDataTable<TData extends HasId>({
         </DndContext>
       </div>
 
-      {updated && (
+      {(updated && onSaveButtonClick) && (
         <div className="flex items-center pt-4">
           <Button
             variant="default"
             className="mr-auto"
             onClick={() => {
-              if (onSaveButtonClick) onSaveButtonClick(items);
+              onSaveButtonClick(items);
+              setUpdate(false)
             }}
           >
             Reihenfolge speichern
