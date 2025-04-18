@@ -48,7 +48,7 @@ interface DataTableProps<TData extends HasId> {
   onButtonClick?: (() => void) | null;
   buttonText?: string | null;
   children?: ReactNode | null;
-  onRowOrderChange?: (newData: TData[]) => void;
+  onSaveButtonClick?: (newData: TData[]) => void;
   getRowId?: (row: TData, index: number) => string;
 }
 
@@ -59,10 +59,11 @@ export function SortableDataTable<TData extends HasId>({
   onButtonClick,
   buttonText,
   children,
-  onRowOrderChange,
+  onSaveButtonClick,
   getRowId,
 }: DataTableProps<TData>): React.JSX.Element {
   const [items, setItems] = useState<TData[]>(data);
+  const [updated, setUpdate] = useState<boolean>(false);
 
   useEffect(() => {
     setItems(data);
@@ -95,7 +96,7 @@ export function SortableDataTable<TData extends HasId>({
 
       const newItems = arrayMove(items, oldIndex, newIndex);
       setItems(newItems);
-      if (onRowOrderChange) onRowOrderChange(newItems);
+      setUpdate(true);
     }
   }
 
@@ -233,6 +234,20 @@ export function SortableDataTable<TData extends HasId>({
           </SortableContext>
         </DndContext>
       </div>
+
+      {updated && (
+        <div className="flex items-center pt-4">
+          <Button
+            variant="default"
+            className="mr-auto"
+            onClick={() => {
+              if (onSaveButtonClick) onSaveButtonClick(items);
+            }}
+          >
+            Reihenfolge speichern
+          </Button>
+        </div>
+      )}
 
       {children}
     </div>
