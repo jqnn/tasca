@@ -1,6 +1,7 @@
 FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
+COPY prisma ./prisma
 RUN npm ci
 COPY . .
 RUN SKIP_ENV_VALIDATION=1 npm run build
