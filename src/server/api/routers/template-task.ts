@@ -6,6 +6,32 @@ export const templateTaskRouter = createTRPCRouter({
     return ctx.db.templateTask.findMany();
   }),
 
+  updateOrder: publicProcedure
+    .input(
+      z.object({
+        templateId: z.number(),
+        tasks: z.array(
+          z.object({
+            id: z.number(),
+            order: z.number(),
+          }),
+        ),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      let order = 1
+
+      for (const task of input.tasks) {
+        await ctx.db.templateTask.update({
+          where: { id: task.id },
+          data: {
+            order: order,
+          },
+        });
+        order++;
+      }
+    }),
+
   create: publicProcedure
     .input(
       z.object({
