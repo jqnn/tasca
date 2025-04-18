@@ -62,10 +62,12 @@ export default function CreateTemplateDialog({
 
   const [name, setName] = React.useState<string>("");
   const [description, setDescription] = React.useState<string | null>(null);
+  const { data: session } = useSession();
+  if (session == null) return;
 
   const existsMutation = api.template.exists.useMutation();
   const createAuthMethod = api.template.create.useMutation();
-
+  
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
