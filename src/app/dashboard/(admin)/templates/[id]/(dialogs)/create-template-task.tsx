@@ -10,82 +10,73 @@ import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import * as React from "react";
-import { type Template } from "@prisma/client";
+import { type TemplateTask } from "@prisma/client";
 import { api } from "~/trpc/react";
 import { showToast } from "~/lib/utils";
-import { useSession } from "next-auth/react";
 
-export default function CreateTemplateDialog({
+export default function CreateTemplateTaskDialog({
+  templateId,
+  order,
   open,
   setOpen,
   onCreate,
 }: {
+  templateId: number;
+  order: number;
   open: boolean;
   setOpen: (open: boolean) => void;
-  onCreate?: (template: Template) => void | null;
+  onCreate?: (template: TemplateTask) => void | null;
 }) {
   const handleConfirm = () => {
-    existsMutation.mutate(
-      { name: name },
+    createTemplateTask.mutate(
+      {
+        task: task,
+        description: description,
+        templateId: templateId,
+        order: order,
+      },
       {
         onSuccess: (data) => {
-          if (data) return;
+          if (!onCreate) {
+            window.location.reload();
+            return;
+          }
 
-          createAuthMethod.mutate(
-            {
-              name: name,
-              description: description,
-              userId: session?.user?.id ?? "0",
-            },
-            {
-              onSuccess: (data) => {
-                if (!onCreate) {
-                  window.location.reload();
-                  return;
-                }
-
-                onCreate(data);
-                setOpen(false);
-              },
-              onError: () => {
-                showToast(
-                  "Unerwarteter Fehler",
-                  "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
-                );
-              },
-            },
+          onCreate(data);
+          setOpen(false);
+        },
+        onError: () => {
+          showToast(
+            "Unerwarteter Fehler",
+            "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
           );
         },
       },
     );
   };
 
-  const [name, setName] = React.useState<string>("");
-  const [description, setDescription] = React.useState<string | null>(null);
-  const { data: session } = useSession();
-  if (session == null) return;
+  const [task, setTask] = React.useState<string>("");
+  const [description, setDescription] = React.useState<string>("");
+  const createTemplateTask = api.templateTask.create.useMutation();
 
-  const existsMutation = api.template.exists.useMutation();
-  const createAuthMethod = api.template.create.useMutation();
-  
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Hinzufügen</DialogTitle>
-          <DialogDescription>Erstelle eine neue Vorlage.</DialogDescription>
+          <DialogDescription>Füge eine neue Aufgabe hinzu.</DialogDescription>
         </DialogHeader>
         <div className="grid w-full gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
-              Name
+              Aufgabe
             </Label>
             <Input
               id="name"
               className="col-span-3"
-              placeholder="Gib einen Namen ein"
+              placeholder="Aufgabe"
               required={true}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setTask(e.target.value)}
             />
           </div>
 
@@ -97,6 +88,7 @@ export default function CreateTemplateDialog({
               id="description"
               className="col-span-3"
               placeholder="Gib eine Beschreibung ein"
+              required={true}
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
@@ -104,7 +96,7 @@ export default function CreateTemplateDialog({
 
         <DialogFooter>
           <Button onClick={handleConfirm} type="submit">
-            Erstellen
+            Hinzufügen
           </Button>
         </DialogFooter>
       </DialogContent>

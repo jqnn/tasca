@@ -1,8 +1,9 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { userRouter } from "~/server/api/routers/user";
-import { authMethodRouter } from "./routers/auth-method";
-import { projectRouter } from "./routers/projects";
-import {templateRouter} from "~/server/api/routers/template";
+import { authMethodRouter } from "~/server/api/routers/auth-method";
+import { projectRouter } from "~/server/api/routers/projects";
+import { templateRouter } from "~/server/api/routers/template";
+import { templateTaskRouter } from "~/server/api/routers/template-task";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   authMethod: authMethodRouter,
   project: projectRouter,
   template: templateRouter,
+  templateTask: templateTaskRouter,
 });
 
 // export type definition of API

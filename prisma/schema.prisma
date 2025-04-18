@@ -74,7 +74,7 @@ model TemplateTask {
   description String
   order       Int
   templateId  Int
-  template    Template @relation(fields: [templateId], references: [id])
+  template    Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
