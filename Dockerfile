@@ -2,7 +2,7 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
 COPY prisma ./prisma
-RUN npm ci --production
+RUN npm ci --omit=dev
 COPY . .
 RUN SKIP_ENV_VALIDATION=1 npm run build
 RUN mkdir -p .next/standalone/.next && \
