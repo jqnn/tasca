@@ -9,6 +9,8 @@ import { useEffect } from "react";
 import CreateTemplateTaskDialog from "~/app/dashboard/(admin)/templates/[id]/(dialogs)/create-template-task";
 import { api } from "~/trpc/react";
 import { showToast } from "~/lib/utils";
+import { IconTrash } from "@tabler/icons-react";
+import { DeleteTemplateTaskDialog } from "~/app/dashboard/(admin)/templates/[id]/(dialogs)/delete-template-task";
 
 export default function TemplateTaskTable({
   templateId,
@@ -18,6 +20,7 @@ export default function TemplateTaskTable({
   tasks: TemplateTask[];
 }) {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
+  const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const [tableData, setTableData] = React.useState<TemplateTask[]>([]);
   useEffect(() => {
     setTableData(tasks.sort((a, b) => a.order - b.order));
@@ -25,17 +28,17 @@ export default function TemplateTaskTable({
 
   const updateTaskOrder = api.templateTask.updateOrder.useMutation({
     onMutate: () => {
-      showToast("Lädt", "Die Reihenfolge wird aktualisiert...")
+      showToast("Lädt", "Die Reihenfolge wird aktualisiert...");
     },
     onSuccess: () => {
-      showToast("Erledigt", "Die Reihenfolge wurde aktualisiert.")
+      showToast("Erledigt", "Die Reihenfolge wurde aktualisiert.");
     },
     onError: () => {
       showToast(
         "Unerwarteter Fehler",
         "Möglicherweise hat diese Authentifiezerungsmethode noch Benutzer.",
       );
-    }
+    },
   });
 
   const columns: ColumnDef<TemplateTask>[] = [
@@ -54,7 +57,18 @@ export default function TemplateTaskTable({
     {
       accessorKey: "actions",
       header: () => <div className="text-center">Aktionen</div>,
-      cell: ({ row }) => <div className={"text-center"}>TODO</div>,
+      cell: ({ row }) => {
+        return (
+          <div className={"flex flex-row justify-center text-center"}>
+            <IconTrash
+              className={"text-center hover:cursor-pointer"}
+              onClick={() => {
+                setDeleteId(row.original.id);
+              }}
+            />
+          </div>
+        );
+      },
     },
   ];
 
@@ -68,7 +82,7 @@ export default function TemplateTaskTable({
         updateTaskOrder.mutate({
           templateId: templateId,
           tasks: data,
-        })
+        });
       }}
     >
       <CreateTemplateTaskDialog
@@ -78,6 +92,18 @@ export default function TemplateTaskTable({
         setOpen={setCreateOpen}
         onCreate={(data) => {
           setTableData([...tableData, data]);
+        }}
+      />
+
+      <DeleteTemplateTaskDialog
+        open={deleteId !== null}
+        setOpen={(value) => {
+          if (value) return;
+          setDeleteId(null);
+        }}
+        templateTaskId={deleteId}
+        onDelete={() => {
+          setTableData(tableData.filter((item) => item.id !== deleteId));
         }}
       />
     </SortableDataTable>
