@@ -46,9 +46,10 @@ export default function AuthenticationMethodsTable() {
       header: () => <div className="text-center">Benutzer</div>,
       cell: ({ row }) => {
         const authMethod = row.original;
-        const { data: users, isLoading } = api.user.countAuthMethodUsers.useQuery({
-          id: authMethod.id,
-        });
+        const { data: users, isLoading } =
+          api.user.countAuthMethodUsers.useQuery({
+            id: authMethod.id,
+          });
         if (isLoading || !users) return <div className={"text-center"}>0</div>;
         return <div className={"text-center"}>{users}</div>;
       },
