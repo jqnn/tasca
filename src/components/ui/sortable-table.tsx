@@ -224,8 +224,8 @@ export function SortableDataTable<TData extends HasId>({
                   })
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={columns.length + 1}>
-                      Keine Ergebnisse.
+                    <TableCell className="text-center" colSpan={columns.length + 1}>
+                      Keine Ergebnisse
                     </TableCell>
                   </TableRow>
                 )}
