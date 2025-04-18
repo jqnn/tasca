@@ -96,12 +96,9 @@ export function DataTable<TData>({
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  Keine Ergebnisse.
+              <TableRow >
+                <TableCell className={"text-center"} colSpan={columns.length}>
+                  Keine Ergebnisse
                 </TableCell>
               </TableRow>
             )}
