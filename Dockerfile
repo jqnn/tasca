@@ -2,7 +2,7 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
 COPY prisma ./prisma
-RUN npm ci
+RUN npm ci --production
 COPY . .
 RUN SKIP_ENV_VALIDATION=1 npm run build
 RUN mkdir -p .next/standalone/.next && \
@@ -14,6 +14,6 @@ RUN mkdir -p .next/standalone/.next && \
 
 FROM node:18-alpine AS runner
 WORKDIR /app
-COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/standalone /app
 EXPOSE 3000
 CMD ["sh", "-c", "npx prisma db push --accept-data-loss --skip-generate && npm run prisma-seed && node server.js start"]
