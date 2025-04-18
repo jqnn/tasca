@@ -49,6 +49,9 @@ async function main() {
   await createAdminUser(local.id);
 }
 
+/**
+ * @param {number} localAuthMethodId
+ */
 async function createAdminUser(localAuthMethodId) {
   console.log("[SEED] Default admin account doesn't exist, creating now...");
   const adminPassword = env.ADMIN_PASSWORD;
