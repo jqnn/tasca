@@ -6,10 +6,13 @@ import { type ColumnDef } from "@tanstack/react-table";
 import type { TemplateTask } from "@prisma/client";
 import { SortableDataTable } from "~/components/ui/sortable-table";
 import { useEffect } from "react";
+import CreateTemplateTaskDialog from "~/app/dashboard/(admin)/templates/[id]/(dialogs)/create-template-task";
 
 export default function TemplateTaskTable({
+  templateId,
   tasks,
 }: {
+  templateId: number;
   tasks: TemplateTask[];
 }) {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
@@ -27,7 +30,9 @@ export default function TemplateTaskTable({
     {
       accessorKey: "description",
       header: () => <div className="text-center">Beschreibung</div>,
-      cell: ({ row }) => <div className={"text-center"}>{row.original.description}</div>,
+      cell: ({ row }) => (
+        <div className={"text-center"}>{row.original.description}</div>
+      ),
     },
     {
       accessorKey: "actions",
@@ -45,6 +50,16 @@ export default function TemplateTaskTable({
       onRowOrderChange={(data) => {
         console.log(data);
       }}
-    ></SortableDataTable>
+    >
+      <CreateTemplateTaskDialog
+        templateId={templateId}
+        order={tasks.length + 1}
+        open={createOpen}
+        setOpen={setCreateOpen}
+        onCreate={(data) => {
+          setTableData([...tableData, data]);
+        }}
+      />
+    </SortableDataTable>
   );
 }
