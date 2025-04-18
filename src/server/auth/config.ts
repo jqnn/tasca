@@ -4,8 +4,12 @@ import { db } from "~/server/db";
 import { hashPassword } from "~/lib/utils";
 import { authorizeLDAP } from "~/lib/ldap";
 import { authorizeAD } from "~/lib/active-directory";
+import { undefined } from "zod";
 
 export const authConfig = {
+  logger: {
+    error: () => () => {undefined()},
+  },
   providers: [
     CredentialsProvider({
       name: "Credentials",
