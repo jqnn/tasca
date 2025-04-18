@@ -8,12 +8,15 @@ export default function LogoutPage() {
   const router = useRouter();
 
   useEffect(() => {
-    signOut({ redirect: false })
-      .then(() => {
-        router.push("/");
-      })
-      .catch(() => {
-        router.push("/");
+    const logout = async () => {
+      await signOut({ redirect: false });
+      router.push("/login");
+    };
+
+    logout()
+      .then()
+      .catch((e) => {
+        console.error(e);
       });
   });
 }
