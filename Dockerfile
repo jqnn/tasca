@@ -1,4 +1,4 @@
-FROM node:alpine AS builder
+FROM node:alpine AS app
 WORKDIR /app
 COPY package.json package-lock.json ./
 COPY prisma ./prisma
@@ -11,10 +11,6 @@ RUN mkdir -p .next/standalone/.next && \
     cp -r prisma .next/standalone/prisma && \
     cp -r node_modules .next/standalone/node_modules && \
     cp package.json .next/standalone/
-
-FROM node:alpine AS runner
-WORKDIR /app
-COPY --from=builder /app/.next/standalone /app
-RUN npm install tsx
+WORKDIR /app/.next/standalone
 EXPOSE 3000
 CMD ["sh", "-c", "npx prisma db push --accept-data-loss --skip-generate && npm run prisma-seed && node server.js start"]
