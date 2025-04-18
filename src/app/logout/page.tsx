@@ -8,12 +8,12 @@ export default function LogoutPage() {
   const router = useRouter();
 
   useEffect(() => {
-    signOut()
+    signOut({ redirect: false })
       .then(() => {
         router.push("/");
       })
-      .catch((error) => {
-        console.error("Logout fehlgeschlagen:", error);
+      .catch(() => {
+        router.push("/");
       });
   });
 }
