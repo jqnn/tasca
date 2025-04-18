@@ -60,6 +60,8 @@ export const authConfig = {
       },
     }),
   ],
+  trustHost: true,
+  debug: false,
   pages: {
     signIn: "/",
     error: "/",
