@@ -12,9 +12,8 @@ RUN mkdir -p .next/standalone/.next && \
     cp -r node_modules .next/standalone/node_modules && \
     cp package.json .next/standalone/
 
-
 FROM node:18-alpine AS runner
 WORKDIR /app
-COPY --from=builder /app/.next/standalone .
+COPY --from=builder /app/.next/standalone ./
 EXPOSE 3000
 CMD ["sh", "-c", "npx prisma db push --accept-data-loss --skip-generate && npm run prisma-seed && node server.js start"]
