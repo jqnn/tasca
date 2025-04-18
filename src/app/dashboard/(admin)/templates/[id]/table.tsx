@@ -7,6 +7,8 @@ import type { TemplateTask } from "@prisma/client";
 import { SortableDataTable } from "~/components/ui/sortable-table";
 import { useEffect } from "react";
 import CreateTemplateTaskDialog from "~/app/dashboard/(admin)/templates/[id]/(dialogs)/create-template-task";
+import { api } from "~/trpc/react";
+import { showToast } from "~/lib/utils";
 
 export default function TemplateTaskTable({
   templateId,
@@ -18,8 +20,23 @@ export default function TemplateTaskTable({
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [tableData, setTableData] = React.useState<TemplateTask[]>([]);
   useEffect(() => {
-    setTableData(tasks);
+    setTableData(tasks.sort((a, b) => a.order - b.order));
   }, [tasks]);
+
+  const updateTaskOrder = api.templateTask.updateOrder.useMutation({
+    onMutate: () => {
+      showToast("Lädt", "Die Reihenfolge wird aktualisiert...")
+    },
+    onSuccess: () => {
+      showToast("Erledigt", "Die Reihenfolge wurde aktualisiert.")
+    },
+    onError: () => {
+      showToast(
+        "Unerwarteter Fehler",
+        "Möglicherweise hat diese Authentifiezerungsmethode noch Benutzer.",
+      );
+    }
+  });
 
   const columns: ColumnDef<TemplateTask>[] = [
     {
@@ -47,13 +64,16 @@ export default function TemplateTaskTable({
       columns={columns}
       loading={false}
       onButtonClick={() => setCreateOpen(true)}
-      onRowOrderChange={(data) => {
-        console.log(data);
+      onSaveButtonClick={(data) => {
+        updateTaskOrder.mutate({
+          templateId: templateId,
+          tasks: data,
+        })
       }}
     >
       <CreateTemplateTaskDialog
         templateId={templateId}
-        order={tasks.length + 1}
+        order={tableData.length + 1}
         open={createOpen}
         setOpen={setCreateOpen}
         onCreate={(data) => {
