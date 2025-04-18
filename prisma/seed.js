@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { env } from "~/env.js";
-import { hashPassword } from "~/lib/utils.js";
+import { env } from "../src/env.js";
+import { hashPassword } from "../src/lib/utils.js";
 
 const prisma = new PrismaClient();
 
@@ -56,7 +56,9 @@ async function createAdminUser(localAuthMethodId) {
   console.log("[SEED] Default admin account doesn't exist, creating now...");
   const adminPassword = env.ADMIN_PASSWORD;
   if (!adminPassword) {
-    console.error("[SEED] Can't create admin account, set env variable ADMIN_PASSWORD first.");
+    console.error(
+      "[SEED] Can't create admin account, set env variable ADMIN_PASSWORD first.",
+    );
     return;
   }
 
@@ -75,7 +77,9 @@ async function createAdminUser(localAuthMethodId) {
 
 main()
   .catch((e) => {
-    console.error("[SEED] There was an unexpected error while seeding the database.");
+    console.error(
+      "[SEED] There was an unexpected error while seeding the database.",
+    );
     console.error(e);
     process.exit(1);
   })
