@@ -21,7 +21,7 @@ export default function TableActions<TData extends RowData>(
         return null;
       }
       const isDisabled = disabled ? disabled(value) : false;
-      const disabledStyle = disabled ? "text-muted" : "";
+      const disabledStyle = isDisabled ? "text-muted" : "";
 
       return (
         <div className={"flex flex-row justify-center gap-2"}>
