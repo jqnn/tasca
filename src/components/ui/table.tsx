@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { cn } from "~/lib/utils";
 import type { ColumnDef, Row } from "@tanstack/react-table";
+import Link from "next/link";
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
@@ -105,21 +106,38 @@ function TableCaption({
   );
 }
 
-function centeredColumn<TData, TKey extends keyof TData>(
+interface RowData {
+  id: number;
+}
+
+function centeredColumn<TData extends RowData, TKey extends keyof TData>(
   accessorKey: TKey,
   headerText: string,
+  href?: string | null,
+  formatter?: (value: TData[TKey]) => string,
 ): ColumnDef<TData> {
   return {
     accessorKey: accessorKey as string,
     header: () => <div className="text-center">{headerText}</div>,
     cell: ({ row }: { row: Row<TData> }) => {
       const value = row.original[accessorKey];
-      if (value instanceof Date) {
-        return <div className="text-center">{value.toLocaleString()}</div>;
-      } else if (!value) {
+      if (value === undefined || value === null) {
         return null;
+      }
+
+      const formattedValue = formatter ? formatter(value) : String(value);
+
+      if (href) {
+        const id = row.original.id ?? 0;
+        return (
+          <div className="text-center">
+            <Link href={href.replaceAll(":id", String(id))} className={"font-bold"}>
+              {formattedValue}
+            </Link>
+          </div>
+        );
       } else {
-        return <div className="text-center">{String(value)}</div>;
+        return <div className="text-center">{formattedValue}</div>;
       }
     },
   };
