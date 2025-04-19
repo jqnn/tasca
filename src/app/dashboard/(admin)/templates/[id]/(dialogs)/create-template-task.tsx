@@ -97,7 +97,11 @@ export default function CreateTemplateTaskDialog({
         </div>
 
         <DialogFooter>
-          <Button onClick={handleConfirm} type="submit" disabled={createTemplateTask.isPending}>
+          <Button
+            onClick={handleConfirm}
+            type="submit"
+            disabled={createTemplateTask.isPending}
+          >
             Hinzufügen
           </Button>
         </DialogFooter>

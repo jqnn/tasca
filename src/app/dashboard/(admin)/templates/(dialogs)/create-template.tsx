@@ -67,7 +67,7 @@ export default function CreateTemplateDialog({
 
   const existsMutation = api.template.exists.useMutation();
   const createAuthMethod = api.template.create.useMutation();
-  
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">

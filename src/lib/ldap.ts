@@ -1,6 +1,6 @@
 import type { AuthMethod } from "@prisma/client";
 import { Client } from "ldapts";
-import {escapeLDAPSearchFilter} from "~/lib/utils";
+import { escapeLDAPSearchFilter } from "~/lib/utils";
 
 export async function authorizeLDAP(
   authMethod: AuthMethod,
@@ -8,10 +8,10 @@ export async function authorizeLDAP(
   password: string,
 ) {
   if (
-      authMethod.type !== "LDAP" ||
-      !authMethod.baseDN ||
-      !authMethod.userName ||
-      !authMethod.password
+    authMethod.type !== "LDAP" ||
+    !authMethod.baseDN ||
+    !authMethod.userName ||
+    !authMethod.password
   ) {
     return false;
   }
@@ -56,7 +56,9 @@ export async function authorizeLDAP(
       return false;
     }
   } catch (error) {
-    console.error(`[LDAP] Error while binding Admin-User ${adminUserName} to ${url}`);
+    console.error(
+      `[LDAP] Error while binding Admin-User ${adminUserName} to ${url}`,
+    );
     console.error(error);
     return false;
   } finally {

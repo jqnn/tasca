@@ -2,7 +2,7 @@ import "~/styles/globals.css";
 
 import { type Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
-import {type ReactNode} from "react";
+import { type ReactNode } from "react";
 import { auth } from "~/server/auth";
 import { redirect } from "next/navigation";
 import { SidebarInset, SidebarProvider } from "~/components/ui/sidebar";

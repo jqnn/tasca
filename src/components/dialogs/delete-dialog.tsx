@@ -13,7 +13,7 @@ import { showToast } from "~/lib/utils";
 
 type MutationInput = {
   id: number;
-}
+};
 type MutationOutput = unknown;
 type MutationError = unknown;
 type MutationContext = unknown;

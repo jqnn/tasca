@@ -18,9 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import SecurityType = $Enums.SecurityType;
 import { api } from "~/trpc/react";
 import { showToast } from "~/lib/utils";
+import SecurityType = $Enums.SecurityType;
 
 export default function CreateAuthenticationMethodDialog({
   open,

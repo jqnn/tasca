@@ -1,11 +1,11 @@
 "use client";
 
 import * as React from "react";
+import { useEffect } from "react";
 import { type ColumnDef } from "@tanstack/react-table";
 
 import type { TemplateTask } from "@prisma/client";
 import { SortableDataTable } from "~/components/table/sortable-table";
-import { useEffect } from "react";
 import CreateTemplateTaskDialog from "~/app/dashboard/(admin)/templates/[id]/(dialogs)/create-template-task";
 import { api } from "~/trpc/react";
 import { showToast } from "~/lib/utils";

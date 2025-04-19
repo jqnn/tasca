@@ -8,7 +8,9 @@ import { undefined } from "zod";
 
 export const authConfig = {
   logger: {
-    error: () => () => {undefined()},
+    error: () => () => {
+      undefined();
+    },
   },
   providers: [
     CredentialsProvider({

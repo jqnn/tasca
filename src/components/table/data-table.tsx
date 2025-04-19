@@ -1,11 +1,12 @@
 "use client";
 
+import type { ReactNode } from "react";
 import * as React from "react";
 import {
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
-  type ColumnDef,
 } from "@tanstack/react-table";
 
 import {
@@ -17,7 +18,6 @@ import {
   TableRow,
 } from "~/components/table/table";
 import { Button } from "~/components/ui/button";
-import type { ReactNode } from "react";
 import { Skeleton } from "~/components/ui/skeleton";
 
 interface DataTableProps<TData> {
@@ -96,7 +96,7 @@ export function DataTable<TData>({
                 </TableRow>
               ))
             ) : (
-              <TableRow >
+              <TableRow>
                 <TableCell className={"text-center"} colSpan={columns.length}>
                   Keine Ergebnisse
                 </TableCell>

@@ -37,8 +37,8 @@ export const userRouter = createTRPCRouter({
         displayName: z.string(),
         role: z.nativeEnum(Role),
         authMethod: z.number(),
-        password: z.string().nullable()
-      })
+        password: z.string().nullable(),
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       return ctx.db.user.create({
@@ -47,8 +47,8 @@ export const userRouter = createTRPCRouter({
           displayName: input.displayName,
           role: input.role,
           authMethodId: input.authMethod,
-          password: input.password && hashPassword(input.password)
-        }
+          password: input.password && hashPassword(input.password),
+        },
       });
     }),
 
@@ -80,13 +80,13 @@ export const userRouter = createTRPCRouter({
         const projects = await ctx.db.projectMembers.findMany({
           where: { userId: input.id },
           include: {
-            project: true
-          }
+            project: true,
+          },
         });
 
         return projects.map((project) => project.project);
       } else {
         return ctx.db.project.findMany();
       }
-    })
+    }),
 });

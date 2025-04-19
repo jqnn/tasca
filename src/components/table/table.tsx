@@ -188,5 +188,5 @@ export {
   TableCell,
   TableCaption,
   centeredColumn,
-  centeredDataColumn
+  centeredDataColumn,
 };

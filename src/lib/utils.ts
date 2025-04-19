@@ -1,7 +1,7 @@
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { sha256 } from "js-sha256";
-import {toast} from "sonner";
+import { toast } from "sonner";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -13,16 +13,16 @@ export function hashPassword(password: string) {
 
 export function escapeLDAPSearchFilter(value: string): string {
   return value
-      .replace(/\\/g, "\\5c")
-      .replace(/\*/g, "\\2a")
-      .replace(/\(/g, "\\28")
-      .replace(/\)/g, "\\29")
-      .replace(/\0/g, "\\00");
+    .replace(/\\/g, "\\5c")
+    .replace(/\*/g, "\\2a")
+    .replace(/\(/g, "\\28")
+    .replace(/\)/g, "\\29")
+    .replace(/\0/g, "\\00");
 }
 
 export function showToast(title: string, description: string | null = null) {
   toast(title, {
     description: description ?? null,
     duration: 2500,
-  })
+  });
 }

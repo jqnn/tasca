@@ -1,11 +1,12 @@
 "use client";
 
 import * as React from "react";
+import { forwardRef, type ReactNode, useEffect, useState } from "react";
 import {
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
-  type ColumnDef,
 } from "@tanstack/react-table";
 
 import {
@@ -18,21 +19,20 @@ import {
 } from "~/components/table/table";
 import { Button } from "~/components/ui/button";
 import { Skeleton } from "~/components/ui/skeleton";
-import { type ReactNode, useState, useEffect, forwardRef } from "react";
 
 import {
-  DndContext,
   closestCenter,
+  DndContext,
+  type DragEndEvent,
   PointerSensor,
   useSensor,
   useSensors,
-  type DragEndEvent,
 } from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
-  verticalListSortingStrategy,
   useSortable,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
@@ -224,7 +224,10 @@ export function SortableDataTable<TData extends HasId>({
                   })
                 ) : (
                   <TableRow>
-                    <TableCell className="text-center" colSpan={columns.length + 1}>
+                    <TableCell
+                      className="text-center"
+                      colSpan={columns.length + 1}
+                    >
                       Keine Ergebnisse
                     </TableCell>
                   </TableRow>
@@ -235,14 +238,14 @@ export function SortableDataTable<TData extends HasId>({
         </DndContext>
       </div>
 
-      {(updated && onSaveButtonClick) && (
+      {updated && onSaveButtonClick && (
         <div className="flex items-center pt-4">
           <Button
             variant="default"
             className="mr-auto"
             onClick={() => {
               onSaveButtonClick(items);
-              setUpdate(false)
+              setUpdate(false);
             }}
           >
             Reihenfolge speichern

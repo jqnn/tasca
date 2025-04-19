@@ -10,7 +10,7 @@ import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import * as React from "react";
-import {type AuthMethod, Role, type User} from "@prisma/client";
+import { type AuthMethod, Role, type User } from "@prisma/client";
 import {
   Select,
   SelectContent,
@@ -45,8 +45,8 @@ export default function CreateUserDialog({
         onSuccess: (exists) => {
           if (exists) {
             showToast(
-                "Fehler",
-                "Ein Benutzer mit diesem Benutzernamen existiert bereits.",
+              "Fehler",
+              "Ein Benutzer mit diesem Benutzernamen existiert bereits.",
             );
             return;
           }
@@ -67,7 +67,7 @@ export default function CreateUserDialog({
                 }
 
                 onCreate(data);
-                setOpen(false)
+                setOpen(false);
               },
               onError: () => {
                 showToast(

@@ -39,7 +39,6 @@ async function main() {
     return;
   }
 
-
   console.log("[SEED] Local auth method doesn't exist, creating now...");
   const local = await prisma.authMethod.create({
     data: {
@@ -56,7 +55,9 @@ async function createAdminUser(localAuthMethodId: number) {
   console.log("[SEED] Default admin account doesn't exist, creating now...");
   const adminPassword = env.ADMIN_PASSWORD;
   if (!adminPassword) {
-    console.error("[SEED] Can't create admin account, set env variable ADMIN_PASSWORD first.");
+    console.error(
+      "[SEED] Can't create admin account, set env variable ADMIN_PASSWORD first.",
+    );
     return;
   }
 
