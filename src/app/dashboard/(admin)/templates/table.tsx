@@ -7,7 +7,6 @@ import { api } from "~/trpc/react";
 import type { Template } from "@prisma/client";
 import { DataTable } from "~/components/ui/data-table";
 import CreateTemplateDialog from "~/app/dashboard/(admin)/templates/(dialogs)/create-template";
-import Link from "next/link";
 import { IconTrash } from "@tabler/icons-react";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { centeredColumn } from "~/components/ui/table";
@@ -25,7 +24,7 @@ export default function TemplateTable() {
     }
   }, [data, isLoading]);
   const columns: ColumnDef<Template>[] = [
-    centeredColumn("name", "Name"),
+    centeredColumn("name", "Name"), // TODO add link
     centeredColumn("description", "Beschreibung"),
     centeredColumn("createdById", "Ersteller"), // TODO
     centeredColumn("createdAt", "Erstellt am"),
