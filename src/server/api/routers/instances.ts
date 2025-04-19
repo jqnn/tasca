@@ -6,13 +6,13 @@ export const instanceRouter = createTRPCRouter({
     .input(z.object({ completed: z.boolean() }))
     .query(async ({ ctx, input }) => {
       if (input.completed) {
-        return ctx.db.templateInstance.findMany({
+        return ctx.db.instanceTemplate.findMany({
           include: {
             template: true,
           },
         });
       } else {
-        return ctx.db.templateInstance.findMany({
+        return ctx.db.instanceTemplate.findMany({
           where: { status: "OPEN" },
           include: {
             template: true,
@@ -24,12 +24,12 @@ export const instanceRouter = createTRPCRouter({
   find: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
-      return ctx.db.templateInstance.findUnique({
+      return ctx.db.instanceTemplate.findUnique({
         where: { id: input.id },
         include: {
           template: true,
-          FieldInstance: true,
-          TaskInstance: true,
+          InstanceField: true,
+          InstanceTask: true,
         },
       });
     }),
