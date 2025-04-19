@@ -19,8 +19,8 @@ model User {
   ProjectMembers   ProjectMembers[]
   Project          Project[]
   Template         Template[]
-  TaskInstance     TaskInstance[]
-  TemplateInstance TemplateInstance[]
+  TaskInstance     InstanceTask[]
+  TemplateInstance InstanceTemplate[]
 }
 
 model AuthMethod {
@@ -69,7 +69,7 @@ model Template {
   createdAt        DateTime           @default(now())
   TemplateTask     TemplateTask[]
   TemplateField    TemplateField[]
-  TemplateInstance TemplateInstance[]
+  TemplateInstance InstanceTemplate[]
 }
 
 model TemplateField {
@@ -80,7 +80,7 @@ model TemplateField {
   order         Int
   templateId    Int
   template      Template        @relation(fields: [templateId], references: [id], onDelete: Cascade)
-  FieldInstance FieldInstance[]
+  FieldInstance InstanceField[]
 }
 
 model TemplateTask {
@@ -90,10 +90,10 @@ model TemplateTask {
   order        Int
   templateId   Int
   template     Template       @relation(fields: [templateId], references: [id], onDelete: Cascade)
-  TaskInstance TaskInstance[]
+  TaskInstance InstanceTask[]
 }
 
-model TemplateInstance {
+model InstanceTemplate {
   id            Int             @id @default(autoincrement())
   templateId    Int
   template      Template        @relation(fields: [templateId], references: [id])
@@ -101,28 +101,28 @@ model TemplateInstance {
   createdById   Int
   createdBy     User            @relation(fields: [createdById], references: [id])
   status        InstanceStatus  @default(OPEN)
-  TaskInstance  TaskInstance[]
-  FieldInstance FieldInstance[]
+  TaskInstance  InstanceTask[]
+  FieldInstance InstanceField[]
 }
 
-model FieldInstance {
+model InstanceField {
   id         Int              @id @default(autoincrement())
   value      String
   updatedAt  DateTime         @default(now())
   fieldId    Int
   field      TemplateField    @relation(fields: [fieldId], references: [id])
   instanceId Int
-  instance   TemplateInstance @relation(fields: [instanceId], references: [id])
+  instance   InstanceTemplate @relation(fields: [instanceId], references: [id])
 }
 
-model TaskInstance {
+model InstanceTask {
   id         Int              @id @default(autoincrement())
   updatedAt  DateTime         @default(now())
   status     InstanceStatus   @default(OPEN)
   taskId     Int
   task       TemplateTask     @relation(fields: [taskId], references: [id])
   instanceId Int
-  instance   TemplateInstance @relation(fields: [instanceId], references: [id])
+  instance   InstanceTemplate @relation(fields: [instanceId], references: [id])
   userId     Int?
   User       User?            @relation(fields: [userId], references: [id])
 }
