@@ -16,8 +16,6 @@ model User {
   authMethod       AuthMethod         @relation(fields: [authMethodId], references: [id])
   role             Role               @default(USER)
   createdAt        DateTime           @default(now())
-  ProjectMembers   ProjectMembers[]
-  Project          Project[]
   Template         Template[]
   TaskInstance     InstanceTask[]
   TemplateInstance InstanceTemplate[]
@@ -37,27 +35,6 @@ model AuthMethod {
   uidAttribute  String?
   accountSuffix String?
   User          User[]
-}
-
-model Project {
-  id             Int              @id @default(autoincrement())
-  name           String
-  description    String?
-  ownerId        Int
-  owner          User             @relation(fields: [ownerId], references: [id])
-  createdAt      DateTime         @default(now())
-  ProjectMembers ProjectMembers[]
-}
-
-model ProjectMembers {
-  userId    Int
-  projectId Int
-  joinedAt  DateTime @default(now())
-
-  user    User    @relation(fields: [userId], references: [id])
-  project Project @relation(fields: [projectId], references: [id])
-
-  @@id([userId, projectId])
 }
 
 model Template {
@@ -90,7 +67,7 @@ model TemplateTask {
   order        Int
   templateId   Int
   template     Template       @relation(fields: [templateId], references: [id], onDelete: Cascade)
-  TaskInstance InstanceTask[]
+  InstanceTask InstanceTask[]
 }
 
 model InstanceTemplate {
@@ -101,8 +78,8 @@ model InstanceTemplate {
   createdById   Int
   createdBy     User            @relation(fields: [createdById], references: [id])
   status        InstanceStatus  @default(OPEN)
-  TaskInstance  InstanceTask[]
-  FieldInstance InstanceField[]
+  InstanceField InstanceField[]
+  InstanceTask  InstanceTask[]
 }
 
 model InstanceField {

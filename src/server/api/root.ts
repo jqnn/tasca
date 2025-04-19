@@ -1,7 +1,6 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { userRouter } from "~/server/api/routers/user";
 import { authMethodRouter } from "~/server/api/routers/auth-method";
-import { projectRouter } from "~/server/api/routers/projects";
 import { templateRouter } from "~/server/api/routers/template";
 import { templateTaskRouter } from "~/server/api/routers/template-task";
 import { templateFieldRouter } from "~/server/api/routers/template-field";
@@ -15,7 +14,6 @@ import { instanceRouter } from "~/server/api/routers/instances";
 export const appRouter = createTRPCRouter({
   user: userRouter,
   authMethod: authMethodRouter,
-  project: projectRouter,
   template: templateRouter,
   templateTask: templateTaskRouter,
   templateField: templateFieldRouter,

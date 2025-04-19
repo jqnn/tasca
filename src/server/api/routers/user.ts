@@ -68,25 +68,4 @@ export const userRouter = createTRPCRouter({
           return user.role;
         });
     }),
-
-  findProjects: publicProcedure
-    .input(z.object({ id: z.number() }))
-    .query(async ({ ctx, input }) => {
-      const user = await ctx.db.user.findUnique({ where: { id: input.id } });
-      if (!user) return null;
-      const role = user.role;
-
-      if (role == "USER") {
-        const projects = await ctx.db.projectMembers.findMany({
-          where: { userId: input.id },
-          include: {
-            project: true,
-          },
-        });
-
-        return projects.map((project) => project.project);
-      } else {
-        return ctx.db.project.findMany();
-      }
-    }),
 });
