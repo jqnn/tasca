@@ -11,6 +11,8 @@ import {
   SiteTitle,
 } from "~/components/ui/site-header";
 import TemplateTaskTable from "~/app/dashboard/(admin)/templates/[id]/table";
+import { Tabs, TabsTrigger, TabsList, TabsContent } from "~/components/ui/tabs";
+import TemplateFieldsTable from "~/app/dashboard/(admin)/templates/[id]/fields-table";
 
 interface PageProps {
   params: Promise<{
@@ -25,7 +27,7 @@ export default function TemplatePage({ params }: PageProps) {
     redirect("/");
   }
 
-  const { data: project, status } = api.template.find.useQuery({
+  const { data: template, status } = api.template.find.useQuery({
     id: Number(Number(actualParams.id)),
   });
 
@@ -33,28 +35,37 @@ export default function TemplatePage({ params }: PageProps) {
     return <SiteHeaderSkeleton />;
   }
 
-  if (!project) {
+  if (!template) {
     notFound();
   }
 
-  const tasks = project.TemplateTask ?? [];
+  const tasks = template.TemplateTask ?? [];
+  const fields = template.TemplateField ?? [];
 
   return (
     <>
       <SiteHeader>
-        <SiteTitle title={"Vorlage - " + project.name} />
-        {project.description && (
-          <SiteDescription description={project.description} />
+        <SiteTitle title={"Vorlage - " + template.name} />
+        {template.description && (
+          <SiteDescription description={template.description} />
         )}
       </SiteHeader>
 
-      <main
-        className={
-          "flex shrink-0 items-center gap-2 transition-[width,height] ease-linear"
-        }
-      >
+      <main className="flex shrink-0 items-center gap-2 transition-[width,height] ease-linear">
         <div className={"flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6"}>
-          <TemplateTaskTable templateId={project.id} tasks={tasks} />
+          <Tabs defaultValue="fields" className="w-full">
+            <TabsList className="w-full">
+              <TabsTrigger value="fields">Felder</TabsTrigger>
+              <TabsTrigger value="tasks">Aufgaben</TabsTrigger>
+            </TabsList>
+            <TabsContent value="fields">
+              <TemplateFieldsTable templateId={template.id} fields={fields} />
+            </TabsContent>
+            <TabsContent value="tasks">
+              <TemplateTaskTable templateId={template.id} tasks={tasks} />
+            </TabsContent>
+          </Tabs>
+
         </div>
       </main>
     </>
