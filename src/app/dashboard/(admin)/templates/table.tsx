@@ -9,13 +9,14 @@ import { DataTable } from "~/components/ui/data-table";
 import CreateTemplateDialog from "~/app/dashboard/(admin)/templates/(dialogs)/create-template";
 import Link from "next/link";
 import { IconTrash } from "@tabler/icons-react";
-import { DeleteTemplateDialog } from "~/app/dashboard/(admin)/templates/(dialogs)/delete-template";
+import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 
 export default function TemplateTable() {
   const { data, isLoading } = api.template.findAll.useQuery();
   const [tableData, setTableData] = React.useState<Template[]>([]);
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
+  const deleteTemplate = api.template.delete.useMutation();
 
   React.useEffect(() => {
     if (!isLoading) {
@@ -95,16 +96,17 @@ export default function TemplateTable() {
         }}
       />
 
-      <DeleteTemplateDialog
+      <DeleteDialog
         open={deleteId !== null}
         setOpen={(value) => {
           if (value) return;
           setDeleteId(null);
         }}
-        templateId={deleteId}
+        data={{ id: deleteId }}
         onDelete={() => {
           setTableData(tableData.filter((item) => item.id !== deleteId));
         }}
+        mutation={deleteTemplate}
       />
     </DataTable>
   );

@@ -73,39 +73,41 @@ export default function TemplateTaskTable({
   ];
 
   return (
-    <SortableDataTable
-      data={tableData}
-      columns={columns}
-      loading={false}
-      onButtonClick={() => setCreateOpen(true)}
-      onSaveButtonClick={(data) => {
-        updateTaskOrder.mutate({
-          templateId: templateId,
-          tasks: data,
-        });
-      }}
-    >
-      <CreateTemplateTaskDialog
-        templateId={templateId}
-        order={tableData.length + 1}
-        open={createOpen}
-        setOpen={setCreateOpen}
-        onCreate={(data) => {
-          setTableData([...tableData, data]);
+    <div className="w-full mt-8">
+      <SortableDataTable
+        data={tableData}
+        columns={columns}
+        loading={false}
+        onButtonClick={() => setCreateOpen(true)}
+        onSaveButtonClick={(data) => {
+          updateTaskOrder.mutate({
+            templateId: templateId,
+            tasks: data,
+          });
         }}
-      />
+      >
+        <CreateTemplateTaskDialog
+          templateId={templateId}
+          order={tableData.length + 1}
+          open={createOpen}
+          setOpen={setCreateOpen}
+          onCreate={(data) => {
+            setTableData([...tableData, data]);
+          }}
+        />
 
-      <DeleteTemplateTaskDialog
-        open={deleteId !== null}
-        setOpen={(value) => {
-          if (value) return;
-          setDeleteId(null);
-        }}
-        templateTaskId={deleteId}
-        onDelete={() => {
-          setTableData(tableData.filter((item) => item.id !== deleteId));
-        }}
-      />
-    </SortableDataTable>
+        <DeleteTemplateTaskDialog
+          open={deleteId !== null}
+          setOpen={(value) => {
+            if (value) return;
+            setDeleteId(null);
+          }}
+          templateTaskId={deleteId}
+          onDelete={() => {
+            setTableData(tableData.filter((item) => item.id !== deleteId));
+          }}
+        />
+      </SortableDataTable>
+    </div>
   );
 }

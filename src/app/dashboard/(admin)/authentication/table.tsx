@@ -6,9 +6,9 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { api } from "~/trpc/react";
 import CreateAuthenticationMethodDialog from "~/app/dashboard/(admin)/authentication/(dialogs)/create-auth-method";
-import { DeleteAuthenticationMethodDialog } from "~/app/dashboard/(admin)/authentication/(dialogs)/delete-authentication-method";
 import { DataTable } from "~/components/ui/data-table";
 import type { AuthMethod } from "@prisma/client";
+import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 
 const showEditForm = (id: number) => {
   console.log("edit: " + id);
@@ -19,6 +19,7 @@ export default function AuthenticationMethodsTable() {
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const { data, isLoading } = api.authMethod.findAll.useQuery();
   const [tableData, setTableData] = React.useState<AuthMethod[]>([]);
+  const deleteAuthMethod = api.authMethod.delete.useMutation();
 
   React.useEffect(() => {
     if (!isLoading && data) {
@@ -99,16 +100,17 @@ export default function AuthenticationMethodsTable() {
         }}
       />
 
-      <DeleteAuthenticationMethodDialog
+      <DeleteDialog
         open={deleteId !== null}
         setOpen={(value) => {
           if (value) return;
           setDeleteId(null);
         }}
-        authMethodId={deleteId}
+        data={{ id: deleteId }}
         onDelete={() => {
           setTableData(tableData.filter((item) => item.id !== deleteId));
         }}
+        mutation={deleteAuthMethod}
       />
     </DataTable>
   );

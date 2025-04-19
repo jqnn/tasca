@@ -9,6 +9,7 @@ import { DataTable } from "~/components/ui/data-table";
 import CreateUserDialog from "~/app/dashboard/(admin)/users/(dialogs)/create-user";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { DeleteUserDialog } from "~/app/dashboard/(admin)/users/(dialogs)/delete-user";
+import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 
 export default function UsersTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
@@ -16,6 +17,7 @@ export default function UsersTable() {
 
   const { data, isLoading } = api.user.findAll.useQuery();
   const [tableData, setTableData] = React.useState<User[]>([]);
+  const deleteUser = api.user.delete.useMutation();
 
   React.useEffect(() => {
     if (!isLoading) {
@@ -27,22 +29,32 @@ export default function UsersTable() {
     {
       accessorKey: "userName",
       header: () => <div className="text-center">Benutzername</div>,
-      cell: ({ row }) => <div className={"text-center"}>{row.original.userName}</div>,
+      cell: ({ row }) => (
+        <div className={"text-center"}>{row.original.userName}</div>
+      ),
     },
     {
       accessorKey: "displayName",
       header: () => <div className="text-center">Anzeigename</div>,
-      cell: ({ row }) => <div className={"text-center"}>{row.original.displayName}</div>,
+      cell: ({ row }) => (
+        <div className={"text-center"}>{row.original.displayName}</div>
+      ),
     },
     {
       accessorKey: "role",
       header: () => <div className="text-center">Rolle</div>,
-      cell: ({ row }) => <div className={"text-center"}>{row.original.role}</div>,
+      cell: ({ row }) => (
+        <div className={"text-center"}>{row.original.role}</div>
+      ),
     },
     {
       accessorKey: "createdAt",
       header: () => <div className="text-center">Erstellt am</div>,
-      cell: ({ row }) => <div className={"text-center"}>{row.original.createdAt.toLocaleString()}</div>,
+      cell: ({ row }) => (
+        <div className={"text-center"}>
+          {row.original.createdAt.toLocaleString()}
+        </div>
+      ),
     },
     {
       accessorKey: "actions",
@@ -88,12 +100,13 @@ export default function UsersTable() {
         }}
       />
 
-      <DeleteUserDialog
+      <DeleteDialog
         open={deleteId !== null}
         setOpen={(value) => {
           if (!value) setDeleteId(null);
         }}
-        authMethodId={deleteId}
+        mutation={deleteUser}
+        data={{ id: deleteId }}
         onDelete={() => {
           setTableData((prev) => prev.filter((item) => item.id !== deleteId));
         }}
