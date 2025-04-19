@@ -2,13 +2,24 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const instanceRouter = createTRPCRouter({
-  findAll: publicProcedure.query(async ({ ctx }) => {
-    return ctx.db.templateInstance.findMany({
-      include: {
-        template: true,
-      },
-    });
-  }),
+  findAll: publicProcedure
+    .input(z.object({ completed: z.boolean() }))
+    .query(async ({ ctx, input }) => {
+      if (input.completed) {
+        return ctx.db.templateInstance.findMany({
+          include: {
+            template: true,
+          },
+        });
+      } else {
+        return ctx.db.templateInstance.findMany({
+          where: { status: "OPEN" },
+          include: {
+            template: true,
+          },
+        });
+      }
+    }),
 
   find: publicProcedure
     .input(z.object({ id: z.number() }))
