@@ -44,6 +44,8 @@ export default function CreateTemplateTaskDialog({
 
           onCreate(data);
           setOpen(false);
+          setTask("");
+          setDescription("");
         },
         onError: () => {
           showToast(
@@ -95,7 +97,7 @@ export default function CreateTemplateTaskDialog({
         </div>
 
         <DialogFooter>
-          <Button onClick={handleConfirm} type="submit">
+          <Button onClick={handleConfirm} type="submit" disabled={createTemplateTask.isPending}>
             Hinzufügen
           </Button>
         </DialogFooter>
