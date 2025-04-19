@@ -114,9 +114,13 @@ function centeredColumn<TData, TKey extends keyof TData>(
     header: () => <div className="text-center">{headerText}</div>,
     cell: ({ row }: { row: Row<TData> }) => {
       const value = row.original[accessorKey];
-      if (value instanceof Date)
+      if (value instanceof Date) {
         return <div className="text-center">{value.toLocaleString()}</div>;
-      return <div className="text-center">{String(value)}</div>;
+      } else if (!value) {
+        return null;
+      } else {
+        return <div className="text-center">{String(value)}</div>;
+      }
     },
   };
 }
