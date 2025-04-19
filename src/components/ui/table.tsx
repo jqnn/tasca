@@ -113,8 +113,8 @@ interface RowData {
 function centeredColumn<TData extends RowData, TKey extends keyof TData>(
   accessorKey: TKey,
   headerText: string,
+  formatter?: ((value: TData[TKey]) => string) | null,
   href?: string | null,
-  formatter?: (value: TData[TKey]) => string,
 ): ColumnDef<TData> {
   return {
     accessorKey: accessorKey as string,
@@ -131,7 +131,42 @@ function centeredColumn<TData extends RowData, TKey extends keyof TData>(
         const id = row.original.id ?? 0;
         return (
           <div className="text-center">
-            <Link href={href.replaceAll(":id", String(id))} className={"font-bold"}>
+            <Link
+              href={href.replaceAll(":id", String(id))}
+              className={"font-bold"}
+            >
+              {formattedValue}
+            </Link>
+          </div>
+        );
+      } else {
+        return <div className="text-center">{formattedValue}</div>;
+      }
+    },
+  };
+}
+
+function centeredDataColumn<TData extends RowData>(
+  headerText: string,
+  formatter?: (value: number) => string,
+  href?: string | null,
+): ColumnDef<TData> {
+  return {
+    accessorKey: "custom",
+    header: () => <div className="text-center">{headerText}</div>,
+    cell: ({ row }: { row: Row<TData> }) => {
+      const formattedValue = formatter
+        ? formatter(row.original.id)
+        : String(row.original.id);
+
+      if (href) {
+        const id = row.original.id ?? 0;
+        return (
+          <div className="text-center">
+            <Link
+              href={href.replaceAll(":id", String(id))}
+              className={"font-bold"}
+            >
               {formattedValue}
             </Link>
           </div>
@@ -153,4 +188,5 @@ export {
   TableCell,
   TableCaption,
   centeredColumn,
+  centeredDataColumn
 };
