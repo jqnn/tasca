@@ -27,7 +27,7 @@ export default function TemplateTable() {
   const columns: ColumnDef<Template>[] = [
     centeredColumn("name", "Name"),
     centeredColumn("description", "Beschreibung"),
-    centeredColumn("createdById", "Ersteller"),
+    centeredColumn("createdById", "Ersteller"), // TODO
     centeredColumn("createdAt", "Erstellt am"),
     {
       accessorKey: "actions",
