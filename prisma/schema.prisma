@@ -59,13 +59,24 @@ model ProjectMembers {
 }
 
 model Template {
-  id           Int            @id @default(autoincrement())
-  name         String
-  description  String?
-  createdById  Int
-  createdBy    User           @relation(fields: [createdById], references: [id])
-  createdAt    DateTime       @default(now())
-  TemplateTask TemplateTask[]
+  id            Int             @id @default(autoincrement())
+  name          String
+  description   String?
+  createdById   Int
+  createdBy     User            @relation(fields: [createdById], references: [id])
+  createdAt     DateTime        @default(now())
+  TemplateTask  TemplateTask[]
+  TemplateField TemplateField[]
+}
+
+model TemplateField {
+  id          Int       @id @default(autoincrement())
+  label       String
+  placeHolder String?
+  fieldType   FieldType @default(TEXT)
+  order       Int
+  templateId  Int
+  template    Template  @relation(fields: [templateId], references: [id], onDelete: Cascade)
 }
 
 model TemplateTask {
@@ -93,4 +104,9 @@ enum SecurityType {
   NONE
   TLS
   SSL
+}
+
+enum FieldType {
+  TEXT
+  NUMBER
 }
