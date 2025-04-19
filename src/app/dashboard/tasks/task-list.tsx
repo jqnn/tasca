@@ -35,7 +35,11 @@ export function TaskList() {
         </Button>
 
         <div className="flex items-center space-x-2">
-          <Switch checked={showComplete} onCheckedChange={setShowComplete} id="completed" />
+          <Switch
+            checked={showComplete}
+            onCheckedChange={setShowComplete}
+            id="completed"
+          />
           <Label htmlFor="completed">Fertige anzeigen</Label>
         </div>
       </div>
@@ -54,18 +58,22 @@ export function TaskList() {
       )}
 
       {status === "success" && (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {tasks.map((task) => (
-            <Link key={task.id} href={`/dashboard/tasks/${task.id}`}>
-              <Card key={task.id}>
-                <CardHeader>
-                  <CardTitle>{task.template.name}</CardTitle>
-                  <CardDescription>{task.status}</CardDescription>
-                </CardHeader>
-              </Card>
-            </Link>
-          ))}
-        </div>
+        <>
+          {tasks && (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {tasks.map((task) => (
+                <Link key={task.id} href={`/dashboard/tasks/${task.id}`}>
+                  <Card key={task.id}>
+                    <CardHeader>
+                      <CardTitle>{task.template.name}</CardTitle>
+                      <CardDescription>{task.status}</CardDescription>
+                    </CardHeader>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );
