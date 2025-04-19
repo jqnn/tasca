@@ -3,17 +3,13 @@
 import * as React from "react";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { api } from "~/trpc/react";
 import CreateAuthenticationMethodDialog from "~/app/dashboard/(admin)/authentication/(dialogs)/create-auth-method";
 import { DataTable } from "~/components/table/data-table";
 import type { AuthMethod } from "@prisma/client";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { centeredColumn, centeredDataColumn } from "~/components/table/table";
-
-const showEditForm = (id: number) => {
-  console.log("edit: " + id);
-};
+import TableActions from "~/components/table/table-actions";
 
 export default function AuthenticationMethodsTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
@@ -38,34 +34,11 @@ export default function AuthenticationMethodsTable() {
       if (isLoading || !users) return "0";
       return `${users}`;
     }),
-    {
-      accessorKey: "actions",
-      header: () => <div className="text-center">Aktionen</div>,
-      cell: ({ row }) => {
-        const authMethod = row.original;
-        const disabled = authMethod.description == "local";
-        const text = disabled ? "text-muted" : "";
-
-        return (
-          <div className={"flex flex-row justify-center"}>
-            <IconEdit
-              className={"hover:cursor-pointer " + text}
-              onClick={() => {
-                if (disabled) return;
-                showEditForm(authMethod.id);
-              }}
-            />
-            <IconTrash
-              className={"hover:cursor-pointer " + text}
-              onClick={() => {
-                if (disabled) return;
-                setDeleteId(authMethod.id);
-              }}
-            />
-          </div>
-        );
-      },
-    },
+    TableActions(
+      null,
+      (id) => setDeleteId(id),
+      (value) => value.description == "local",
+    ),
   ];
 
   return (

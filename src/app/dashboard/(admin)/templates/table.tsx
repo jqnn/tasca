@@ -7,9 +7,9 @@ import { api } from "~/trpc/react";
 import type { Template } from "@prisma/client";
 import { DataTable } from "~/components/table/data-table";
 import CreateTemplateDialog from "~/app/dashboard/(admin)/templates/(dialogs)/create-template";
-import { IconTrash } from "@tabler/icons-react";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { centeredColumn } from "~/components/table/table";
+import TableActions from "~/components/table/table-actions";
 
 export default function TemplateTable() {
   const { data, isLoading } = api.template.findAll.useQuery();
@@ -24,9 +24,9 @@ export default function TemplateTable() {
     }
   }, [data, isLoading]);
   const columns: ColumnDef<Template>[] = [
-    centeredColumn("name", "Name", null,"/dashboard/templates/:id"),
+    centeredColumn("name", "Name", null, "/dashboard/templates/:id"),
     centeredColumn("description", "Beschreibung"),
-    centeredColumn("createdById", "Ersteller",  (value) => {
+    centeredColumn("createdById", "Ersteller", (value) => {
       const { data: user, isLoading } = api.user.find.useQuery({ id: value });
       if (isLoading || !user) return "Unbekannt";
       return user.displayName ?? user.userName;
@@ -34,22 +34,7 @@ export default function TemplateTable() {
     centeredColumn("createdAt", "Erstellt am", (value) =>
       value.toLocaleString(),
     ),
-    {
-      accessorKey: "actions",
-      header: () => <div className="text-center">Aktionen</div>,
-      cell: ({ row }) => {
-        return (
-          <div className={"flex flex-row justify-center"}>
-            <IconTrash
-              className={"text-center hover:cursor-pointer"}
-              onClick={() => {
-                setDeleteId(row.original.id);
-              }}
-            />
-          </div>
-        );
-      },
-    },
+    TableActions(null, (id) => setDeleteId(id)),
   ];
 
   return (

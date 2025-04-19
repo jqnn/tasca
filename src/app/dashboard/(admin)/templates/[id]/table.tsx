@@ -9,9 +9,9 @@ import { useEffect } from "react";
 import CreateTemplateTaskDialog from "~/app/dashboard/(admin)/templates/[id]/(dialogs)/create-template-task";
 import { api } from "~/trpc/react";
 import { showToast } from "~/lib/utils";
-import { IconTrash } from "@tabler/icons-react";
 import { centeredColumn } from "~/components/table/table";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
+import TableActions from "~/components/table/table-actions";
 
 export default function TemplateTaskTable({
   templateId,
@@ -47,26 +47,11 @@ export default function TemplateTaskTable({
   const columns: ColumnDef<TemplateTask>[] = [
     centeredColumn("task", "Aufgabe"),
     centeredColumn("description", "Beschreibung"),
-    {
-      accessorKey: "actions",
-      header: () => <div className="text-center">Aktionen</div>,
-      cell: ({ row }) => {
-        return (
-          <div className={"flex flex-row justify-center text-center"}>
-            <IconTrash
-              className={"text-center hover:cursor-pointer"}
-              onClick={() => {
-                setDeleteId(row.original.id);
-              }}
-            />
-          </div>
-        );
-      },
-    },
+    TableActions(null, (id) => setDeleteId(id)),
   ];
 
   return (
-    <div className="w-full mt-8">
+    <div className="mt-8 w-full">
       <SortableDataTable
         data={tableData}
         columns={columns}
@@ -96,7 +81,7 @@ export default function TemplateTaskTable({
             setDeleteId(null);
           }}
           mutation={deleteTemplateTask}
-          data={{id: deleteId ?? 0}}
+          data={{ id: deleteId ?? 0 }}
           onDelete={() => {
             setTableData(tableData.filter((item) => item.id !== deleteId));
           }}

@@ -7,9 +7,9 @@ import { api } from "~/trpc/react";
 import type { User } from "@prisma/client";
 import { DataTable } from "~/components/table/data-table";
 import CreateUserDialog from "~/app/dashboard/(admin)/users/(dialogs)/create-user";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { centeredColumn } from "~/components/table/table";
+import TableActions from "~/components/table/table-actions";
 
 export default function UsersTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
@@ -29,34 +29,14 @@ export default function UsersTable() {
     centeredColumn("userName", "Benutzername"),
     centeredColumn("displayName", "Anzeigename"),
     centeredColumn("role", "Anzeigename"),
-    centeredColumn("createdAt", "Erstellt am", (value) => value.toLocaleString()),
-    {
-      accessorKey: "actions",
-      header: () => <div className="text-center">Aktionen</div>,
-      cell: ({ row }) => {
-        const user = row.original;
-        const disabled = user.userName == "admin";
-        const text = disabled ? "text-muted" : "";
-
-        return (
-          <div className={"flex flex-row justify-center gap-2"}>
-            <IconEdit
-              className={"hover:cursor-pointer " + text}
-              onClick={() => {
-                if (disabled) return;
-              }}
-            />
-            <IconTrash
-              className={"hover:cursor-pointer " + text}
-              onClick={() => {
-                if (disabled) return;
-                setDeleteId(user.id);
-              }}
-            />
-          </div>
-        );
-      },
-    },
+    centeredColumn("createdAt", "Erstellt am", (value) =>
+      value.toLocaleString(),
+    ),
+    TableActions(
+      null,
+      (id) => setDeleteId(id),
+      (value) => value.userName == "admin",
+    ),
   ];
 
   return (
