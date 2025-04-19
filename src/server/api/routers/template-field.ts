@@ -1,5 +1,6 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
+import { FieldType } from "@prisma/client";
 
 export const templateFieldRouter = createTRPCRouter({
   findAll: publicProcedure.query(async ({ ctx }) => {
@@ -37,6 +38,7 @@ export const templateFieldRouter = createTRPCRouter({
       z.object({
         label: z.string(),
         placeHolder: z.string().nullable(),
+        fieldType: z.nativeEnum(FieldType),
         order: z.number(),
         templateId: z.number(),
       }),
