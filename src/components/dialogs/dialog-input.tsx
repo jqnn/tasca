@@ -11,16 +11,16 @@ export default function DialogInput({
   setValue,
   min,
   max,
-  type = "text"
+  type
 }: {
   id: string;
   label: string;
-  placeHolder: string;
+  placeHolder?: string | null;
   required: boolean;
   setValue: (open: string) => void;
-  min: number | string;
-  max: number | string;
-  type: HTMLInputTypeAttribute;
+  min?: number | string;
+  max?: number | string;
+  type?: HTMLInputTypeAttribute;
 }) {
   return (
     <div className="grid grid-cols-4 items-center gap-4">
@@ -35,7 +35,7 @@ export default function DialogInput({
         onChange={(e) => setValue(e.target.value)}
         min={min}
         max={max}
-        type={type}
+        type={type ?? "text"}
       />
     </div>
   );
