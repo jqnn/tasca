@@ -18,13 +18,15 @@ export function DeleteDialog<K extends string>({
   data,
   onDelete,
   loadingMessage,
+  successMessage,
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
   mutation: UseTRPCMutationResult<any, any, any, any>;
-  data: Record<K, number>;
+  data: Record<K, number | null>;
   onDelete?: () => void | null;
   loadingMessage?: string | null;
+  successMessage?: string | null;
 }) {
   const handleConfirm = () => {
     if (!data) {
@@ -36,26 +38,28 @@ export function DeleteDialog<K extends string>({
       return;
     }
 
-    showToast("Lädt", loadingMessage ?? "Das Element wird gelöscht...");
-    mutation.mutate(data,
-      {
-        onSuccess: () => {
-          if (!onDelete) {
-            window.location.reload();
-            return;
-          }
+    showToast("Lädt...", loadingMessage ?? "Das Element wird gelöscht...");
+    mutation.mutate(data, {
+      onSuccess: () => {
+        if (!onDelete) {
+          window.location.reload();
+          return;
+        }
 
-          onDelete();
-          setOpen(false);
-        },
-        onError: () => {
-          showToast(
-            "Unerwarteter Fehler",
-            "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
-          );
-        },
+        onDelete();
+        setOpen(false);
+        showToast(
+          "Erfolgreich",
+          successMessage ?? "Das Element wurde erfolgreich gelöscht.",
+        );
       },
-    );
+      onError: () => {
+        showToast(
+          "Unerwarteter Fehler",
+          "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
+        );
+      },
+    });
   };
 
   return (
