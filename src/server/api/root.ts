@@ -5,6 +5,7 @@ import { projectRouter } from "~/server/api/routers/projects";
 import { templateRouter } from "~/server/api/routers/template";
 import { templateTaskRouter } from "~/server/api/routers/template-task";
 import { templateFieldRouter } from "~/server/api/routers/template-field";
+import { instanceRouter } from "~/server/api/routers/instances";
 
 /**
  * This is the primary router for your server.
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   template: templateRouter,
   templateTask: templateTaskRouter,
   templateField: templateFieldRouter,
+  instance: instanceRouter,
 });
 
 // export type definition of API
