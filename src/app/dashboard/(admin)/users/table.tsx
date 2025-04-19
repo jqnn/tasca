@@ -8,8 +8,8 @@ import type { User } from "@prisma/client";
 import { DataTable } from "~/components/ui/data-table";
 import CreateUserDialog from "~/app/dashboard/(admin)/users/(dialogs)/create-user";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
-import { DeleteUserDialog } from "~/app/dashboard/(admin)/users/(dialogs)/delete-user";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
+import { centeredColumn } from "~/components/ui/table";
 
 export default function UsersTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
@@ -26,36 +26,10 @@ export default function UsersTable() {
   }, [data, isLoading]);
 
   const columns: ColumnDef<User>[] = [
-    {
-      accessorKey: "userName",
-      header: () => <div className="text-center">Benutzername</div>,
-      cell: ({ row }) => (
-        <div className={"text-center"}>{row.original.userName}</div>
-      ),
-    },
-    {
-      accessorKey: "displayName",
-      header: () => <div className="text-center">Anzeigename</div>,
-      cell: ({ row }) => (
-        <div className={"text-center"}>{row.original.displayName}</div>
-      ),
-    },
-    {
-      accessorKey: "role",
-      header: () => <div className="text-center">Rolle</div>,
-      cell: ({ row }) => (
-        <div className={"text-center"}>{row.original.role}</div>
-      ),
-    },
-    {
-      accessorKey: "createdAt",
-      header: () => <div className="text-center">Erstellt am</div>,
-      cell: ({ row }) => (
-        <div className={"text-center"}>
-          {row.original.createdAt.toLocaleString()}
-        </div>
-      ),
-    },
+    centeredColumn("userName", "Benutzername"),
+    centeredColumn("displayName", "Anzeigename"),
+    centeredColumn("role", "Anzeigename"),
+    centeredColumn("createdAt", "Erstellt am"),
     {
       accessorKey: "actions",
       header: () => <div className="text-center">Aktionen</div>,

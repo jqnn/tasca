@@ -11,6 +11,7 @@ import { api } from "~/trpc/react";
 import { showToast } from "~/lib/utils";
 import { IconTrash } from "@tabler/icons-react";
 import { DeleteTemplateTaskDialog } from "~/app/dashboard/(admin)/templates/[id]/(dialogs)/delete-template-task";
+import { centeredColumn } from "~/components/ui/table";
 
 export default function TemplateTaskTable({
   templateId,
@@ -42,18 +43,8 @@ export default function TemplateTaskTable({
   });
 
   const columns: ColumnDef<TemplateTask>[] = [
-    {
-      accessorKey: "task",
-      header: () => <div className="text-center">Aufgabe</div>,
-      cell: ({ row }) => <div className="text-center">{row.original.task}</div>,
-    },
-    {
-      accessorKey: "description",
-      header: () => <div className="text-center">Beschreibung</div>,
-      cell: ({ row }) => (
-        <div className={"text-center"}>{row.original.description}</div>
-      ),
-    },
+    centeredColumn("task", "Aufgabe"),
+    centeredColumn("description", "Beschreibung"),
     {
       accessorKey: "actions",
       header: () => <div className="text-center">Aktionen</div>,

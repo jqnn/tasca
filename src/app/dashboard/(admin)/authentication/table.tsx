@@ -9,6 +9,7 @@ import CreateAuthenticationMethodDialog from "~/app/dashboard/(admin)/authentica
 import { DataTable } from "~/components/ui/data-table";
 import type { AuthMethod } from "@prisma/client";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
+import { centeredColumn } from "~/components/ui/table";
 
 const showEditForm = (id: number) => {
   console.log("edit: " + id);
@@ -28,33 +29,9 @@ export default function AuthenticationMethodsTable() {
   }, [data, isLoading]);
 
   const columns: ColumnDef<AuthMethod>[] = [
-    {
-      accessorKey: "description",
-      header: () => <div className="text-center">Beschreibung</div>,
-      cell: ({ row }) => (
-        <div className={"text-center"}>{row.original.description}</div>
-      ),
-    },
-    {
-      accessorKey: "type",
-      header: () => <div className="text-center">Typ</div>,
-      cell: ({ row }) => (
-        <div className={"text-center"}>{row.original.type}</div>
-      ),
-    },
-    {
-      accessorKey: "users",
-      header: () => <div className="text-center">Benutzer</div>,
-      cell: ({ row }) => {
-        const authMethod = row.original;
-        const { data: users, isLoading } =
-          api.user.countAuthMethodUsers.useQuery({
-            id: authMethod.id,
-          });
-        if (isLoading || !users) return <div className={"text-center"}>0</div>;
-        return <div className={"text-center"}>{users}</div>;
-      },
-    },
+    centeredColumn("description", "Beschreibung"),
+    centeredColumn("type", "Typ"),
+    centeredColumn("port", "Benutzer"), // TODO
     {
       accessorKey: "actions",
       header: () => <div className="text-center">Aktionen</div>,

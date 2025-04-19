@@ -10,6 +10,7 @@ import CreateTemplateDialog from "~/app/dashboard/(admin)/templates/(dialogs)/cr
 import Link from "next/link";
 import { IconTrash } from "@tabler/icons-react";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
+import { centeredColumn } from "~/components/ui/table";
 
 export default function TemplateTable() {
   const { data, isLoading } = api.template.findAll.useQuery();
@@ -24,45 +25,10 @@ export default function TemplateTable() {
     }
   }, [data, isLoading]);
   const columns: ColumnDef<Template>[] = [
-    {
-      accessorKey: "name",
-      header: () => <div className="text-center">Name</div>,
-      cell: ({ row }) => (
-        <Link
-          className={"font-bold text-center"}
-          href={`/dashboard/templates/${row.original.id}`}
-        >
-          {row.original.name}
-        </Link>
-      ),
-    },
-    {
-      accessorKey: "description",
-      header: () => <div className="text-center">Beschreibung</div>,
-      cell: ({ row }) => (
-        <div className={"text-center"}>{row.original.description}</div>
-      ),
-    },
-    {
-      accessorKey: "creator",
-      header: () => <div className="text-center">Ersteller</div>,
-      cell: ({ row }) => {
-        const template = row.original;
-        const { data: user, isLoading } = api.user.find.useQuery({
-          id: template.createdById,
-        });
-
-        if (isLoading || !user) return <div className={"text-center"}>Unbekannt</div>;
-        return <div className={"text-center"}>{user.displayName ?? user.userName}</div>;
-      },
-    },
-    {
-      accessorKey: "createdAt",
-      header: () => <div className="text-center">Erstellt am</div>,
-      cell: ({ row }) => (
-        <div className={"text-center"}>{row.original.createdAt.toLocaleString()}</div>
-      ),
-    },
+    centeredColumn("name", "Name"),
+    centeredColumn("description", "Beschreibung"),
+    centeredColumn("createdById", "Ersteller"),
+    centeredColumn("createdAt", "Erstellt am"),
     {
       accessorKey: "actions",
       header: () => <div className="text-center">Aktionen</div>,
