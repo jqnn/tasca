@@ -11,7 +11,14 @@ import {
 } from "~/components/ui/alert-dialog";
 import { showToast } from "~/lib/utils";
 
-export function DeleteDialog<K extends string>({
+type MutationInput = {
+  id: number;
+}
+type MutationOutput = unknown;
+type MutationError = unknown;
+type MutationContext = unknown;
+
+export function DeleteDialog({
   open,
   setOpen,
   mutation,
@@ -22,8 +29,13 @@ export function DeleteDialog<K extends string>({
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
-  mutation: UseTRPCMutationResult<any, any, any, any>;
-  data: Record<K, number | null>;
+  mutation: UseTRPCMutationResult<
+    MutationOutput,
+    MutationError,
+    MutationInput,
+    MutationContext
+  >;
+  data: MutationInput;
   onDelete?: () => void | null;
   loadingMessage?: string | null;
   successMessage?: string | null;
