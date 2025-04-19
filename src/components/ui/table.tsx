@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import { cn } from "~/lib/utils";
+import type { ColumnDef, Row } from "@tanstack/react-table";
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
@@ -104,6 +105,22 @@ function TableCaption({
   );
 }
 
+function centeredColumn<TData, TKey extends keyof TData>(
+  accessorKey: TKey,
+  headerText: string,
+): ColumnDef<TData> {
+  return {
+    accessorKey: accessorKey as string,
+    header: () => <div className="text-center">{headerText}</div>,
+    cell: ({ row }: { row: Row<TData> }) => {
+      const value = row.original[accessorKey];
+      if (value instanceof Date)
+        return <div className="text-center">{value.toLocaleString()}</div>;
+      return <div className="text-center">{String(value)}</div>;
+    },
+  };
+}
+
 export {
   Table,
   TableHeader,
@@ -113,4 +130,5 @@ export {
   TableRow,
   TableCell,
   TableCaption,
+  centeredColumn,
 };
