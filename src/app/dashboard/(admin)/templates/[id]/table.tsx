@@ -10,8 +10,8 @@ import CreateTemplateTaskDialog from "~/app/dashboard/(admin)/templates/[id]/(di
 import { api } from "~/trpc/react";
 import { showToast } from "~/lib/utils";
 import { IconTrash } from "@tabler/icons-react";
-import { DeleteTemplateTaskDialog } from "~/app/dashboard/(admin)/templates/[id]/(dialogs)/delete-template-task";
 import { centeredColumn } from "~/components/ui/table";
+import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 
 export default function TemplateTaskTable({
   templateId,
@@ -23,6 +23,8 @@ export default function TemplateTaskTable({
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const [tableData, setTableData] = React.useState<TemplateTask[]>([]);
+  const deleteTemplateTask = api.templateTask.delete.useMutation();
+
   useEffect(() => {
     setTableData(tasks.sort((a, b) => a.order - b.order));
   }, [tasks]);
@@ -87,13 +89,14 @@ export default function TemplateTaskTable({
           }}
         />
 
-        <DeleteTemplateTaskDialog
+        <DeleteDialog
           open={deleteId !== null}
           setOpen={(value) => {
             if (value) return;
             setDeleteId(null);
           }}
-          templateTaskId={deleteId}
+          mutation={deleteTemplateTask}
+          data={{id: deleteId ?? 0}}
           onDelete={() => {
             setTableData(tableData.filter((item) => item.id !== deleteId));
           }}

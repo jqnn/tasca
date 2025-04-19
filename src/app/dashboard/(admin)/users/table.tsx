@@ -29,7 +29,7 @@ export default function UsersTable() {
     centeredColumn("userName", "Benutzername"),
     centeredColumn("displayName", "Anzeigename"),
     centeredColumn("role", "Anzeigename"),
-    centeredColumn("createdAt", "Erstellt am"),
+    centeredColumn("createdAt", "Erstellt am", (value) => value.toLocaleString()),
     {
       accessorKey: "actions",
       header: () => <div className="text-center">Aktionen</div>,
@@ -80,7 +80,7 @@ export default function UsersTable() {
           if (!value) setDeleteId(null);
         }}
         mutation={deleteUser}
-        data={{ id: deleteId }}
+        data={{ id: deleteId ?? 0 }}
         onDelete={() => {
           setTableData((prev) => prev.filter((item) => item.id !== deleteId));
         }}

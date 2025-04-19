@@ -24,10 +24,16 @@ export default function TemplateTable() {
     }
   }, [data, isLoading]);
   const columns: ColumnDef<Template>[] = [
-    centeredColumn("name", "Name"), // TODO add link
+    centeredColumn("name", "Name", null,"/dashboard/templates/:id"),
     centeredColumn("description", "Beschreibung"),
-    centeredColumn("createdById", "Ersteller"), // TODO
-    centeredColumn("createdAt", "Erstellt am"),
+    centeredColumn("createdById", "Ersteller",  (value) => {
+      const { data: user, isLoading } = api.user.find.useQuery({ id: value });
+      if (isLoading || !user) return "Unbekannt";
+      return user.displayName ?? user.userName;
+    }),
+    centeredColumn("createdAt", "Erstellt am", (value) =>
+      value.toLocaleString(),
+    ),
     {
       accessorKey: "actions",
       header: () => <div className="text-center">Aktionen</div>,
@@ -67,7 +73,7 @@ export default function TemplateTable() {
           if (value) return;
           setDeleteId(null);
         }}
-        data={{ id: deleteId }}
+        data={{ id: deleteId ?? 0 }}
         onDelete={() => {
           setTableData(tableData.filter((item) => item.id !== deleteId));
         }}

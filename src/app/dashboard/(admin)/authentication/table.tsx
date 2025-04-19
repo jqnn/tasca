@@ -9,7 +9,7 @@ import CreateAuthenticationMethodDialog from "~/app/dashboard/(admin)/authentica
 import { DataTable } from "~/components/ui/data-table";
 import type { AuthMethod } from "@prisma/client";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
-import { centeredColumn } from "~/components/ui/table";
+import { centeredColumn, centeredDataColumn } from "~/components/ui/table";
 
 const showEditForm = (id: number) => {
   console.log("edit: " + id);
@@ -31,7 +31,13 @@ export default function AuthenticationMethodsTable() {
   const columns: ColumnDef<AuthMethod>[] = [
     centeredColumn("description", "Beschreibung"),
     centeredColumn("type", "Typ"),
-    centeredColumn("port", "Benutzer"), // TODO
+    centeredDataColumn("Benutzer", (id) => {
+      const { data: users, isLoading } = api.user.countAuthMethodUsers.useQuery(
+        { id: id },
+      );
+      if (isLoading || !users) return "0";
+      return `${users}`;
+    }),
     {
       accessorKey: "actions",
       header: () => <div className="text-center">Aktionen</div>,
@@ -83,7 +89,7 @@ export default function AuthenticationMethodsTable() {
           if (value) return;
           setDeleteId(null);
         }}
-        data={{ id: deleteId }}
+        data={{ id: deleteId ?? 0 }}
         onDelete={() => {
           setTableData(tableData.filter((item) => item.id !== deleteId));
         }}
