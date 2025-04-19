@@ -8,17 +8,19 @@ datasource db {
 }
 
 model User {
-  id             Int              @id @default(autoincrement())
-  userName       String           @unique
-  displayName    String?
-  password       String?
-  authMethodId   Int
-  authMethod     AuthMethod       @relation(fields: [authMethodId], references: [id])
-  role           Role             @default(USER)
-  createdAt      DateTime         @default(now())
-  ProjectMembers ProjectMembers[]
-  Project        Project[]
-  Template       Template[]
+  id               Int                @id @default(autoincrement())
+  userName         String             @unique
+  displayName      String?
+  password         String?
+  authMethodId     Int
+  authMethod       AuthMethod         @relation(fields: [authMethodId], references: [id])
+  role             Role               @default(USER)
+  createdAt        DateTime           @default(now())
+  ProjectMembers   ProjectMembers[]
+  Project          Project[]
+  Template         Template[]
+  TaskInstance     TaskInstance[]
+  TemplateInstance TemplateInstance[]
 }
 
 model AuthMethod {
@@ -59,33 +61,70 @@ model ProjectMembers {
 }
 
 model Template {
-  id            Int             @id @default(autoincrement())
-  name          String
-  description   String?
-  createdById   Int
-  createdBy     User            @relation(fields: [createdById], references: [id])
-  createdAt     DateTime        @default(now())
-  TemplateTask  TemplateTask[]
-  TemplateField TemplateField[]
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String?
+  createdById      Int
+  createdBy        User               @relation(fields: [createdById], references: [id])
+  createdAt        DateTime           @default(now())
+  TemplateTask     TemplateTask[]
+  TemplateField    TemplateField[]
+  TemplateInstance TemplateInstance[]
 }
 
 model TemplateField {
-  id          Int       @id @default(autoincrement())
-  label       String
-  placeHolder String?
-  fieldType   FieldType @default(TEXT)
-  order       Int
-  templateId  Int
-  template    Template  @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  id            Int             @id @default(autoincrement())
+  label         String
+  placeHolder   String?
+  fieldType     FieldType       @default(TEXT)
+  order         Int
+  templateId    Int
+  template      Template        @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  FieldInstance FieldInstance[]
 }
 
 model TemplateTask {
-  id          Int      @id @default(autoincrement())
-  task        String
-  description String
-  order       Int
-  templateId  Int
-  template    Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  id           Int            @id @default(autoincrement())
+  task         String
+  description  String
+  order        Int
+  templateId   Int
+  template     Template       @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  TaskInstance TaskInstance[]
+}
+
+model TemplateInstance {
+  id            Int             @id @default(autoincrement())
+  templateId    Int
+  template      Template        @relation(fields: [templateId], references: [id])
+  createdAt     DateTime        @default(now())
+  createdById   Int
+  createdBy     User            @relation(fields: [createdById], references: [id])
+  status        InstanceStatus  @default(OPEN)
+  TaskInstance  TaskInstance[]
+  FieldInstance FieldInstance[]
+}
+
+model FieldInstance {
+  id         Int              @id @default(autoincrement())
+  value      String
+  updatedAt  DateTime         @default(now())
+  fieldId    Int
+  field      TemplateField    @relation(fields: [fieldId], references: [id])
+  instanceId Int
+  instance   TemplateInstance @relation(fields: [instanceId], references: [id])
+}
+
+model TaskInstance {
+  id         Int              @id @default(autoincrement())
+  updatedAt  DateTime         @default(now())
+  status     InstanceStatus   @default(OPEN)
+  taskId     Int
+  task       TemplateTask     @relation(fields: [taskId], references: [id])
+  instanceId Int
+  instance   TemplateInstance @relation(fields: [instanceId], references: [id])
+  userId     Int?
+  User       User?            @relation(fields: [userId], references: [id])
 }
 
 enum Role {
@@ -109,4 +148,9 @@ enum SecurityType {
 enum FieldType {
   TEXT
   NUMBER
+}
+
+enum InstanceStatus {
+  OPEN
+  COMPLETED
 }
