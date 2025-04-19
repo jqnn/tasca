@@ -6,10 +6,10 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { api } from "~/trpc/react";
 import CreateAuthenticationMethodDialog from "~/app/dashboard/(admin)/authentication/(dialogs)/create-auth-method";
-import { DataTable } from "~/components/ui/data-table";
+import { DataTable } from "~/components/table/data-table";
 import type { AuthMethod } from "@prisma/client";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
-import { centeredColumn, centeredDataColumn } from "~/components/ui/table";
+import { centeredColumn, centeredDataColumn } from "~/components/table/table";
 
 const showEditForm = (id: number) => {
   console.log("edit: " + id);

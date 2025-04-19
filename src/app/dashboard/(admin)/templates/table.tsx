@@ -5,11 +5,11 @@ import { type ColumnDef } from "@tanstack/react-table";
 
 import { api } from "~/trpc/react";
 import type { Template } from "@prisma/client";
-import { DataTable } from "~/components/ui/data-table";
+import { DataTable } from "~/components/table/data-table";
 import CreateTemplateDialog from "~/app/dashboard/(admin)/templates/(dialogs)/create-template";
 import { IconTrash } from "@tabler/icons-react";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
-import { centeredColumn } from "~/components/ui/table";
+import { centeredColumn } from "~/components/table/table";
 
 export default function TemplateTable() {
   const { data, isLoading } = api.template.findAll.useQuery();

@@ -15,7 +15,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/ui/table";
+} from "~/components/table/table";
 import { Button } from "~/components/ui/button";
 import type { ReactNode } from "react";
 import { Skeleton } from "~/components/ui/skeleton";

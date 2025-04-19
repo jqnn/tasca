@@ -5,11 +5,11 @@ import { type ColumnDef } from "@tanstack/react-table";
 
 import { api } from "~/trpc/react";
 import type { User } from "@prisma/client";
-import { DataTable } from "~/components/ui/data-table";
+import { DataTable } from "~/components/table/data-table";
 import CreateUserDialog from "~/app/dashboard/(admin)/users/(dialogs)/create-user";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
-import { centeredColumn } from "~/components/ui/table";
+import { centeredColumn } from "~/components/table/table";
 
 export default function UsersTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
