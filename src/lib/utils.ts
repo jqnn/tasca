@@ -26,3 +26,10 @@ export function showToast(title: string, description: string | null = null) {
     duration: 2500,
   });
 }
+
+export function showErrorToast() {
+  showToast(
+    "Unerwarteter Fehler",
+    "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
+  );
+}
