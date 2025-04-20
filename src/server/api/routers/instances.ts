@@ -9,7 +9,7 @@ export const instanceRouter = createTRPCRouter({
         return ctx.db.instanceTemplate.findMany({
           include: {
             template: true,
-            createdBy: true
+            createdBy: true,
           },
         });
       } else {
@@ -17,7 +17,7 @@ export const instanceRouter = createTRPCRouter({
           where: { status: "OPEN" },
           include: {
             template: true,
-            createdBy: true
+            createdBy: true,
           },
         });
       }
@@ -32,8 +32,8 @@ export const instanceRouter = createTRPCRouter({
           template: true,
           InstanceField: {
             include: {
-              field: true
-            }
+              field: true,
+            },
           },
           InstanceTask: true,
         },
@@ -79,5 +79,14 @@ export const instanceRouter = createTRPCRouter({
       }
 
       return instance;
+    }),
+
+  updateValue: publicProcedure
+    .input(z.object({ id: z.number(), value: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.instanceField.update({
+        where: { id: input.id },
+        data: { value: input.value },
+      });
     }),
 });
