@@ -79,7 +79,7 @@ export function DeleteDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Abbrechen</AlertDialogCancel>
-          <AlertDialogAction onClick={handleConfirm}>Löschen</AlertDialogAction>
+          <AlertDialogAction disabled={mutation.isPending} onClick={handleConfirm}>Löschen</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
