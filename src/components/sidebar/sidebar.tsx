@@ -4,7 +4,6 @@ import * as React from "react";
 import {
   IconCategory,
   IconClipboard,
-  IconFolders,
   IconLayoutDashboard,
   IconLock,
   IconPuzzle,
@@ -32,11 +31,6 @@ const data = {
       title: "Dashboard",
       url: "/dashboard",
       icon: IconLayoutDashboard,
-    },
-    {
-      title: "Projekte",
-      url: "/dashboard/projects",
-      icon: IconFolders,
     },
     {
       title: "Aufgaben",
