@@ -93,7 +93,7 @@ model InstanceField {
 
 model InstanceTask {
   id         Int              @id @default(autoincrement())
-  updatedAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
   status     InstanceStatus   @default(OPEN)
   taskId     Int
   task       TemplateTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
