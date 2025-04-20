@@ -9,7 +9,7 @@ import {
 import { Skeleton } from "~/components/ui/skeleton";
 import * as React from "react";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
@@ -18,6 +18,7 @@ import { Label } from "~/components/ui/label";
 import CreateTaskByTemplateDialog from "~/app/dashboard/tasks/(dialogs)/create-task";
 
 export function TaskList() {
+  const router = useRouter()
   const { data: session } = useSession();
   if (!session) {
     redirect("/");
@@ -82,7 +83,13 @@ export function TaskList() {
         </>
       )}
 
-      <CreateTaskByTemplateDialog open={showCreated} setOpen={setShowCreated} />
+      <CreateTaskByTemplateDialog
+        open={showCreated}
+        setOpen={setShowCreated}
+        onCreate={(instance) => {
+          router.push(`/dashboard/tasks/${instance.id}`);
+        }}
+      />
     </div>
   );
 }
