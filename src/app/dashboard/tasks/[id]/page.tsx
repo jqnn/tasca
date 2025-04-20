@@ -9,6 +9,7 @@ import {
   SiteTitle,
 } from "~/components/ui/site-header";
 import { api } from "~/trpc/react";
+import { TaskFields } from "~/app/dashboard/tasks/[id]/fields";
 
 interface PageProps {
   params: Promise<{
@@ -47,7 +48,7 @@ export default function TaskPage({ params }: PageProps) {
 
       <main className="flex shrink-0 items-center gap-2 transition-[width,height] ease-linear">
         <div className={"flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6"}>
-          <p>TODO</p>
+          <TaskFields instances={instance.InstanceField} />
         </div>
       </main>
     </>
