@@ -1,11 +1,11 @@
 "use client";
 
+import type { ReactNode } from "react";
 import * as React from "react";
 
 import { cn } from "~/lib/utils";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import Link from "next/link";
-import type { ReactNode } from "react";
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (

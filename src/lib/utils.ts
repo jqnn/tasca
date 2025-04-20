@@ -31,7 +31,8 @@ export function showToast(title: string, description: string | null = null) {
 export function showErrorToast(message?: string) {
   showToast(
     "Unerwarteter Fehler",
-    message ?? "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
+    message ??
+      "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
   );
 }
 

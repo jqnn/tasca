@@ -44,7 +44,7 @@ export default function CreateTaskByTemplateDialog({
       },
       {
         onSuccess: (data) => {
-          if (!(data)) {
+          if (!data) {
             showErrorToast();
             return;
           }

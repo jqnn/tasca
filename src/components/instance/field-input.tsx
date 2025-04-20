@@ -30,8 +30,10 @@ export default function FieldInput({
   const [value, setValue] = React.useState<string>("");
 
   return (
-    <div className="grid grid-cols-5 gap-4 w-full">
-      <Label className={"ml-auto mr-auto"} htmlFor={String(instance.id)}>{field.label}</Label>
+    <div className="grid w-full grid-cols-5 gap-4">
+      <Label className={"mr-auto ml-auto"} htmlFor={String(instance.id)}>
+        {field.label}
+      </Label>
       <Input
         id={String(instance.id)}
         value={instance.value}

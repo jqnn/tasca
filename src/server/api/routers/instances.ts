@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { now } from "d3-timer";
 
 export const instanceRouter = createTRPCRouter({
   findAll: publicProcedure
