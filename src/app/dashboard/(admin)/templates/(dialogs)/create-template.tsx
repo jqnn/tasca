@@ -14,6 +14,7 @@ import { type Template } from "@prisma/client";
 import { api } from "~/trpc/react";
 import { showErrorToast } from "~/lib/utils";
 import { useSession } from "next-auth/react";
+import DialogInput from "~/components/dialogs/dialog-input";
 
 export default function CreateTemplateDialog({
   open,
@@ -73,30 +74,19 @@ export default function CreateTemplateDialog({
           <DialogDescription>Erstelle eine neue Vorlage.</DialogDescription>
         </DialogHeader>
         <div className="grid w-full gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              className="col-span-3"
-              placeholder="Gib einen Namen ein"
-              required={true}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
+          <DialogInput
+            id={"name"}
+            label={"Name"}
+            required={true}
+            setValue={setName}
+          />
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right">
-              Beschreibung
-            </Label>
-            <Input
-              id="description"
-              className="col-span-3"
-              placeholder="Gib eine Beschreibung ein"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
+          <DialogInput
+            id={"description"}
+            label={"Beschreibung"}
+            required={true}
+            setValue={setDescription}
+          />
         </div>
 
         <DialogFooter>

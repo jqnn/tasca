@@ -7,7 +7,6 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import { Label } from "~/components/ui/label";
-import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import * as React from "react";
 import { $Enums, type AuthMethod, AuthMethodType } from "@prisma/client";
@@ -20,6 +19,7 @@ import {
 } from "~/components/ui/select";
 import { api } from "~/trpc/react";
 import { showErrorToast } from "~/lib/utils";
+import DialogInput from "~/components/dialogs/dialog-input";
 import SecurityType = $Enums.SecurityType;
 
 export default function CreateAuthenticationMethodDialog({
@@ -124,90 +124,55 @@ export default function CreateAuthenticationMethodDialog({
             </div>
           </div>
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right">
-              Beschreibung
-            </Label>
-            <Input
-              id="description"
-              className="col-span-3"
-              placeholder="Gib eine Beschreibung ein"
-              required={true}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
+          <DialogInput
+            id={"description"}
+            label={"Beschreibung"}
+            required={true}
+            setValue={setDescription}
+          />
 
           <div />
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="controllers" className="text-right">
-              Controller
-            </Label>
-            <Input
-              id="controllers"
-              placeholder={"domain.local"}
-              className="col-span-3"
-              required={true}
-              onChange={(e) => setController(e.target.value)}
-            />
-          </div>
+          <DialogInput
+            id={"controller"}
+            label={"Controller"}
+            required={true}
+            setValue={setController}
+          />
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="baseDN" className="text-right">
-              Basis-DN
-            </Label>
-            <Input
-              id="baseDN"
-              placeholder={"CN=Users,CN=Firma,DC=domain,DC=local"}
-              className="col-span-3"
-              required={true}
-              onChange={(e) => setBaseDN(e.target.value)}
-            />
-          </div>
+          <DialogInput
+            id={"baseDN"}
+            label={"Basis-DN"}
+            placeHolder={"CN=Users,CN=Firma,DC=domain,DC=local"}
+            required={true}
+            setValue={setBaseDN}
+          />
 
           {type == AuthMethodType.AD && (
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="suffix" className="text-right">
-                Suffix
-              </Label>
-              <Input
-                id="suffix"
-                placeholder="@domain.local"
-                className="col-span-3"
-                required={true}
-                onChange={(e) => setSuffix(e.target.value)}
-              />
-            </div>
+            <DialogInput
+              id={"suffix"}
+              label={"Suffix"}
+              placeHolder={"@domain.local"}
+              required={true}
+              setValue={setSuffix}
+            />
           )}
 
           {type == AuthMethodType.LDAP && (
             <>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="userDN" className="text-right text-[0.842rem]">
-                  Benutzer-DN
-                </Label>
-                <Input
-                  id="userDN"
-                  className="col-span-3"
-                  placeholder="Nur, wenn nicht schon oben"
-                  onChange={(e) => setUserDN(e.target.value)}
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label
-                  htmlFor="uidAttribute"
-                  className="text-right text-[0.842rem]"
-                >
-                  UID-Attribut
-                </Label>
-                <Input
-                  id="uidAttribute"
-                  className="col-span-3"
-                  placeholder={"uid"}
-                  required={true}
-                  onChange={(e) => setUID(e.target.value)}
-                />
-              </div>
+              <DialogInput
+                id={"userDN"}
+                label={"Benutzer-DN"}
+                required={true}
+                setValue={setUserDN}
+              />
+              <DialogInput
+                id={"uidAttribute"}
+                label={"UID-Attribut"}
+                placeHolder={"uid"}
+                required={true}
+                setValue={setUID}
+              />
             </>
           )}
 
@@ -239,48 +204,35 @@ export default function CreateAuthenticationMethodDialog({
             </div>
           </div>
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="port" className="text-right">
-              Port
-            </Label>
-            <Input
-              type={"number"}
-              min={1}
-              max={65535}
-              id="port"
-              className="col-span-3"
-              placeholder="389"
-              required={true}
-              onChange={(e) => setPort(Number(e.target.value))}
-            />
-          </div>
+          <DialogInput
+            id={"suffix"}
+            label={"Port"}
+            placeHolder={"389"}
+            required={true}
+            setValue={(value) => setPort(Number(value))}
+            type={"number"}
+            min={1}
+            max={65535}
+          />
 
           <div />
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="userName" className="text-right">
-              Benutzername
-            </Label>
-            <Input
-              id="userName"
-              className="col-span-3"
-              placeholder="Domänen-Benutzername"
-              onChange={(e) => setUserName(e.target.value)}
-            />
-          </div>
+          <DialogInput
+            id={"userName"}
+            label={"Benutzername"}
+            placeHolder={"Domänen-Benutzername"}
+            required={true}
+            setValue={setUserName}
+          />
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="password" className="text-right">
-              Passwort
-            </Label>
-            <Input
-              type={"password"}
-              id="password"
-              className="col-span-3"
-              placeholder="Domänen-Passwort"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
+          <DialogInput
+            id={"password"}
+            label={"Passwort"}
+            placeHolder={"Domänen-Passwort"}
+            required={true}
+            setValue={setPassword}
+            type={"password"}
+          />
         </div>
 
         <DialogFooter>
