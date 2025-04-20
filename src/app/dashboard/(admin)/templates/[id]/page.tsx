@@ -1,6 +1,6 @@
 "use client";
 
-import { notFound, redirect } from "next/navigation";
+import { notFound, redirect, useRouter } from "next/navigation";
 import React from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/trpc/react";
@@ -14,6 +14,7 @@ import TemplateTaskTable from "~/app/dashboard/(admin)/templates/[id]/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import TemplateFieldsTable from "~/app/dashboard/(admin)/templates/[id]/fields-table";
 import { Button } from "~/components/ui/button";
+import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 
 interface PageProps {
   params: Promise<{
@@ -22,6 +23,7 @@ interface PageProps {
 }
 
 export default function TemplatePage({ params }: PageProps) {
+  const router = useRouter();
   const actualParams = React.use(params);
   const { data: session } = useSession();
   if (!session) {
@@ -31,6 +33,8 @@ export default function TemplatePage({ params }: PageProps) {
   const { data: template, status } = api.template.find.useQuery({
     id: Number(Number(actualParams.id)),
   });
+  const [deleteId, setDeleteId] = React.useState<number | null>(null);
+  const deleteTemplate = api.template.delete.useMutation();
 
   if (status !== "success") {
     return <SiteHeaderSkeleton />;
@@ -57,7 +61,7 @@ export default function TemplatePage({ params }: PageProps) {
             </Button>
             <Button
               variant="destructive"
-              onClick={() => console.log("löschen")}
+              onClick={() => setDeleteId(template.id)}
             >
               Löschen
             </Button>
@@ -83,6 +87,17 @@ export default function TemplatePage({ params }: PageProps) {
           </Tabs>
         </div>
       </main>
+
+      <DeleteDialog
+        open={deleteId !== null}
+        setOpen={(value) => {
+          if (value) return;
+          setDeleteId(null);
+        }}
+        data={{ id: deleteId ?? 0 }}
+        onDelete={() => router.push("/dashboard/templates")}
+        mutation={deleteTemplate}
+      />
     </>
   );
 }
