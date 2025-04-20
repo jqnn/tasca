@@ -7,7 +7,7 @@ RUN npm ci
 COPY . .
 RUN SKIP_ENV_VALIDATION=1 npm run build
 RUN npx prisma generate
-RUN npm prune --production
+RUN npm prune --omit=dev
 RUN mkdir -p .next/standalone/.next && \
     cp -r .next/static .next/standalone/.next/ && \
     cp -r public .next/standalone/public && \
@@ -16,6 +16,8 @@ RUN mkdir -p .next/standalone/.next && \
     cp package.json .next/standalone/
 
 FROM node:18-slim AS runner
+RUN apt-get update && apt-get install -y openssl
+RUN npm install -g tsx
 WORKDIR /app
 COPY --from=builder /app/.next/standalone ./
 EXPOSE 3000
