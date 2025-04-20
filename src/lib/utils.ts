@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { sha256 } from "js-sha256";
 import { toast } from "sonner";
+import type { InstanceStatus } from "@prisma/client";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -32,4 +33,9 @@ export function showErrorToast() {
     "Unerwarteter Fehler",
     "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
   );
+}
+
+export function instanceStatus(status: InstanceStatus) {
+  if (status == "COMPLETED") return "Abgeschlossen";
+  return "Offen";
 }
