@@ -48,6 +48,7 @@ export const templateFieldRouter = createTRPCRouter({
         data: {
           label: input.label,
           placeHolder: input.placeHolder,
+          fieldType: input.fieldType,
           order: input.order,
           templateId: input.templateId,
         },
