@@ -16,9 +16,10 @@ import { Button } from "~/components/ui/button";
 import { Switch } from "~/components/ui/switch";
 import { Label } from "~/components/ui/label";
 import CreateTaskByTemplateDialog from "~/app/dashboard/tasks/(dialogs)/create-task";
+import { instanceStatus } from "~/lib/utils";
 
 export function TaskList() {
-  const router = useRouter()
+  const router = useRouter();
   const { data: session } = useSession();
   if (!session) {
     redirect("/");
@@ -73,7 +74,13 @@ export function TaskList() {
                   <Card key={task.id}>
                     <CardHeader>
                       <CardTitle>{task.template.name}</CardTitle>
-                      <CardDescription>{task.status}</CardDescription>
+                      <CardDescription>
+                        Ersteller -&nbsp;
+                        {task.createdBy.displayName ?? task.createdBy.userName}
+                      </CardDescription>
+                      <CardDescription>
+                        Status - {instanceStatus(task.status)}
+                      </CardDescription>
                     </CardHeader>
                   </Card>
                 </Link>
