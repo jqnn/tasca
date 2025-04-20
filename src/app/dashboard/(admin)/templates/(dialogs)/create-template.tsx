@@ -6,14 +6,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
-import { Label } from "~/components/ui/label";
-import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import * as React from "react";
 import { type Template } from "@prisma/client";
 import { api } from "~/trpc/react";
-import { showToast } from "~/lib/utils";
+import { showErrorToast } from "~/lib/utils";
 import { useSession } from "next-auth/react";
+import DialogInput from "~/components/dialogs/dialog-input";
 
 export default function CreateTemplateDialog({
   open,
@@ -48,10 +47,7 @@ export default function CreateTemplateDialog({
                 setOpen(false);
               },
               onError: () => {
-                showToast(
-                  "Unerwarteter Fehler",
-                  "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
-                );
+                showErrorToast();
               },
             },
           );
@@ -67,7 +63,7 @@ export default function CreateTemplateDialog({
 
   const existsMutation = api.template.exists.useMutation();
   const createAuthMethod = api.template.create.useMutation();
-  
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
@@ -76,30 +72,19 @@ export default function CreateTemplateDialog({
           <DialogDescription>Erstelle eine neue Vorlage.</DialogDescription>
         </DialogHeader>
         <div className="grid w-full gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              className="col-span-3"
-              placeholder="Gib einen Namen ein"
-              required={true}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
+          <DialogInput
+            id={"name"}
+            label={"Name"}
+            required={true}
+            setValue={setName}
+          />
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right">
-              Beschreibung
-            </Label>
-            <Input
-              id="description"
-              className="col-span-3"
-              placeholder="Gib eine Beschreibung ein"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
+          <DialogInput
+            id={"description"}
+            label={"Beschreibung"}
+            required={true}
+            setValue={setDescription}
+          />
         </div>
 
         <DialogFooter>

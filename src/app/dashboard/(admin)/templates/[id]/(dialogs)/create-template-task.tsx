@@ -6,13 +6,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
-import { Label } from "~/components/ui/label";
-import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import * as React from "react";
 import { type TemplateTask } from "@prisma/client";
 import { api } from "~/trpc/react";
-import { showToast } from "~/lib/utils";
+import { showErrorToast } from "~/lib/utils";
+import DialogInput from "~/components/dialogs/dialog-input";
 
 export default function CreateTemplateTaskDialog({
   templateId,
@@ -44,12 +43,11 @@ export default function CreateTemplateTaskDialog({
 
           onCreate(data);
           setOpen(false);
+          setTask("");
+          setDescription("");
         },
         onError: () => {
-          showToast(
-            "Unerwarteter Fehler",
-            "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
-          );
+          showErrorToast();
         },
       },
     );
@@ -67,35 +65,27 @@ export default function CreateTemplateTaskDialog({
           <DialogDescription>Füge eine neue Aufgabe hinzu.</DialogDescription>
         </DialogHeader>
         <div className="grid w-full gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Aufgabe
-            </Label>
-            <Input
-              id="name"
-              className="col-span-3"
-              placeholder="Aufgabe"
-              required={true}
-              onChange={(e) => setTask(e.target.value)}
-            />
-          </div>
+          <DialogInput
+            id={"task"}
+            label={"Aufgabe"}
+            required={true}
+            setValue={setTask}
+          />
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right">
-              Beschreibung
-            </Label>
-            <Input
-              id="description"
-              className="col-span-3"
-              placeholder="Gib eine Beschreibung ein"
-              required={true}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
+          <DialogInput
+            id={"description"}
+            label={"Beschreibung"}
+            required={true}
+            setValue={setDescription}
+          />
         </div>
 
         <DialogFooter>
-          <Button onClick={handleConfirm} type="submit">
+          <Button
+            onClick={handleConfirm}
+            type="submit"
+            disabled={createTemplateTask.isPending}
+          >
             Hinzufügen
           </Button>
         </DialogFooter>

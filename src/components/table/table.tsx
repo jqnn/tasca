@@ -1,8 +1,11 @@
 "use client";
 
+import type { ReactNode } from "react";
 import * as React from "react";
 
 import { cn } from "~/lib/utils";
+import type { ColumnDef, Row } from "@tanstack/react-table";
+import Link from "next/link";
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
@@ -104,6 +107,78 @@ function TableCaption({
   );
 }
 
+interface RowData {
+  id: number;
+}
+
+function centeredColumn<TData extends RowData, TKey extends keyof TData>(
+  accessorKey: TKey,
+  headerText: string,
+  formatter?: ((value: TData[TKey]) => string | ReactNode) | null,
+  href?: string | null,
+): ColumnDef<TData> {
+  return {
+    accessorKey: accessorKey as string,
+    header: () => <div className="text-center">{headerText}</div>,
+    cell: ({ row }: { row: Row<TData> }) => {
+      const value = row.original[accessorKey];
+      if (value === undefined || value === null) {
+        return null;
+      }
+
+      const formattedValue = formatter ? formatter(value) : String(value);
+
+      if (href) {
+        const id = row.original.id ?? 0;
+        return (
+          <div className="text-center">
+            <Link
+              href={href.replaceAll(":id", String(id))}
+              className={"font-bold"}
+            >
+              {formattedValue}
+            </Link>
+          </div>
+        );
+      } else {
+        return <div className="text-center">{formattedValue}</div>;
+      }
+    },
+  };
+}
+
+function centeredDataColumn<TData extends RowData>(
+  headerText: string,
+  formatter?: (value: number) => string,
+  href?: string | null,
+): ColumnDef<TData> {
+  return {
+    accessorKey: "custom",
+    header: () => <div className="text-center">{headerText}</div>,
+    cell: ({ row }: { row: Row<TData> }) => {
+      const formattedValue = formatter
+        ? formatter(row.original.id)
+        : String(row.original.id);
+
+      if (href) {
+        const id = row.original.id ?? 0;
+        return (
+          <div className="text-center">
+            <Link
+              href={href.replaceAll(":id", String(id))}
+              className={"font-bold"}
+            >
+              {formattedValue}
+            </Link>
+          </div>
+        );
+      } else {
+        return <div className="text-center">{formattedValue}</div>;
+      }
+    },
+  };
+}
+
 export {
   Table,
   TableHeader,
@@ -113,4 +188,6 @@ export {
   TableRow,
   TableCell,
   TableCaption,
+  centeredColumn,
+  centeredDataColumn,
 };

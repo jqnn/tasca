@@ -1,5 +1,7 @@
-FROM node:alpine AS app
+FROM node:18-slim AS job
 WORKDIR /app
+RUN apt-get update && apt-get install -y openssl
+RUN npm install -g tsx
 COPY package.json package-lock.json ./
 COPY prisma ./prisma
 RUN npm ci
@@ -15,4 +17,4 @@ WORKDIR /app/.next/standalone
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
-CMD ["sh", "-c", "npx prisma db push --accept-data-loss --skip-generate && npm run prisma-seed && node server.js start"]
+CMD ["sh", "-c", "npx prisma db push --accept-data-loss --skip-generate && npm run db:seed && node server.js start"]

@@ -13,6 +13,7 @@ export const templateRouter = createTRPCRouter({
         where: { id: input.id },
         include: {
           TemplateTask: true,
+          TemplateField: true,
         },
       });
     }),

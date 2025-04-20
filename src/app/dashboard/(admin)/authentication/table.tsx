@@ -3,92 +3,53 @@
 import * as React from "react";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { api } from "~/trpc/react";
 import CreateAuthenticationMethodDialog from "~/app/dashboard/(admin)/authentication/(dialogs)/create-auth-method";
-import { DeleteAuthenticationMethodDialog } from "~/app/dashboard/(admin)/authentication/(dialogs)/delete-authentication-method";
-import { DataTable } from "~/components/ui/data-table";
+import { DataTable } from "~/components/table/data-table";
 import type { AuthMethod } from "@prisma/client";
-
-const showEditForm = (id: number) => {
-  console.log("edit: " + id);
-};
+import { DeleteDialog } from "~/components/dialogs/delete-dialog";
+import { centeredColumn, centeredDataColumn } from "~/components/table/table";
+import TableActions from "~/components/table/table-actions";
+import Spinner from "~/components/ui/spinner";
 
 export default function AuthenticationMethodsTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
-  const { data, isLoading } = api.authMethod.findAll.useQuery();
+  const { data, status } = api.authMethod.findAll.useQuery();
   const [tableData, setTableData] = React.useState<AuthMethod[]>([]);
+  const deleteAuthMethod = api.authMethod.delete.useMutation();
 
   React.useEffect(() => {
-    if (!isLoading && data) {
+    if (data) {
       setTableData(data);
     }
-  }, [data, isLoading]);
+  }, [data]);
+
+  if (status !== "success") {
+    return <Spinner />;
+  }
 
   const columns: ColumnDef<AuthMethod>[] = [
-    {
-      accessorKey: "description",
-      header: () => <div className="text-center">Beschreibung</div>,
-      cell: ({ row }) => (
-        <div className={"text-center"}>{row.original.description}</div>
-      ),
-    },
-    {
-      accessorKey: "type",
-      header: () => <div className="text-center">Typ</div>,
-      cell: ({ row }) => (
-        <div className={"text-center"}>{row.original.type}</div>
-      ),
-    },
-    {
-      accessorKey: "users",
-      header: () => <div className="text-center">Benutzer</div>,
-      cell: ({ row }) => {
-        const authMethod = row.original;
-        const { data: users, isLoading } =
-          api.user.countAuthMethodUsers.useQuery({
-            id: authMethod.id,
-          });
-        if (isLoading || !users) return <div className={"text-center"}>0</div>;
-        return <div className={"text-center"}>{users}</div>;
-      },
-    },
-    {
-      accessorKey: "actions",
-      header: () => <div className="text-center">Aktionen</div>,
-      cell: ({ row }) => {
-        const authMethod = row.original;
-        const disabled = authMethod.description == "local";
-        const text = disabled ? "text-muted" : "";
-
-        return (
-          <div className={"flex flex-row justify-center"}>
-            <IconEdit
-              className={"hover:cursor-pointer " + text}
-              onClick={() => {
-                if (disabled) return;
-                showEditForm(authMethod.id);
-              }}
-            />
-            <IconTrash
-              className={"hover:cursor-pointer " + text}
-              onClick={() => {
-                if (disabled) return;
-                setDeleteId(authMethod.id);
-              }}
-            />
-          </div>
-        );
-      },
-    },
+    centeredColumn("description", "Beschreibung"),
+    centeredColumn("type", "Typ"),
+    centeredDataColumn("Benutzer", (id) => {
+      const { data: users, isLoading } = api.user.countAuthMethodUsers.useQuery(
+        { id: id },
+      );
+      if (isLoading || !users) return "0";
+      return `${users}`;
+    }),
+    TableActions(
+      null,
+      (id) => setDeleteId(id),
+      (value) => value.description == "local",
+    ),
   ];
 
   return (
     <DataTable
       data={tableData}
       columns={columns}
-      loading={isLoading}
       onButtonClick={() => setCreateOpen(true)}
     >
       <CreateAuthenticationMethodDialog
@@ -99,16 +60,17 @@ export default function AuthenticationMethodsTable() {
         }}
       />
 
-      <DeleteAuthenticationMethodDialog
+      <DeleteDialog
         open={deleteId !== null}
         setOpen={(value) => {
           if (value) return;
           setDeleteId(null);
         }}
-        authMethodId={deleteId}
+        data={{ id: deleteId ?? 0 }}
         onDelete={() => {
           setTableData(tableData.filter((item) => item.id !== deleteId));
         }}
+        mutation={deleteAuthMethod}
       />
     </DataTable>
   );

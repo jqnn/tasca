@@ -6,6 +6,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import type { ReactNode } from "react";
 import { Toaster } from "~/components/ui/sonner";
 import { HydrateClient } from "~/trpc/server";
+import { TooltipProvider } from "~/components/ui/tooltip";
 
 export const metadata: Metadata = {
   title: "Tasca",
@@ -26,7 +27,9 @@ export default function RootLayout({
 
       <body className="dark">
         <TRPCReactProvider>
-          <HydrateClient>{children}</HydrateClient>
+          <TooltipProvider>
+            <HydrateClient>{children}</HydrateClient>
+          </TooltipProvider>
         </TRPCReactProvider>
         <Toaster />
       </body>

@@ -8,17 +8,16 @@ datasource db {
 }
 
 model User {
-  id             Int              @id @default(autoincrement())
-  userName       String           @unique
-  displayName    String?
-  password       String?
-  authMethodId   Int
-  authMethod     AuthMethod       @relation(fields: [authMethodId], references: [id])
-  role           Role             @default(USER)
-  createdAt      DateTime         @default(now())
-  ProjectMembers ProjectMembers[]
-  Project        Project[]
-  Template       Template[]
+  id               Int                @id @default(autoincrement())
+  userName         String             @unique
+  displayName      String?
+  password         String?
+  authMethodId     Int
+  authMethod       AuthMethod         @relation(fields: [authMethodId], references: [id])
+  role             Role               @default(USER)
+  createdAt        DateTime           @default(now())
+  Template         Template[]
+  TemplateInstance InstanceTemplate[]
 }
 
 model AuthMethod {
@@ -37,44 +36,69 @@ model AuthMethod {
   User          User[]
 }
 
-model Project {
-  id             Int              @id @default(autoincrement())
-  name           String
-  description    String?
-  ownerId        Int
-  owner          User             @relation(fields: [ownerId], references: [id])
-  createdAt      DateTime         @default(now())
-  ProjectMembers ProjectMembers[]
-}
-
-model ProjectMembers {
-  userId    Int
-  projectId Int
-  joinedAt  DateTime @default(now())
-
-  user    User    @relation(fields: [userId], references: [id])
-  project Project @relation(fields: [projectId], references: [id])
-
-  @@id([userId, projectId])
-}
-
 model Template {
-  id           Int            @id @default(autoincrement())
-  name         String
-  description  String?
-  createdById  Int
-  createdBy    User           @relation(fields: [createdById], references: [id])
-  createdAt    DateTime       @default(now())
-  TemplateTask TemplateTask[]
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String?
+  createdById      Int
+  createdBy        User               @relation(fields: [createdById], references: [id])
+  createdAt        DateTime           @default(now())
+  TemplateTask     TemplateTask[]
+  TemplateField    TemplateField[]
+  TemplateInstance InstanceTemplate[]
+}
+
+model TemplateField {
+  id            Int             @id @default(autoincrement())
+  label         String
+  placeHolder   String?
+  fieldType     FieldType       @default(TEXT)
+  order         Int
+  templateId    Int
+  template      Template        @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  FieldInstance InstanceField[]
 }
 
 model TemplateTask {
-  id          Int      @id @default(autoincrement())
-  task        String
-  description String
-  order       Int
-  templateId  Int
-  template    Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  id           Int            @id @default(autoincrement())
+  task         String
+  description  String
+  order        Int
+  templateId   Int
+  template     Template       @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  InstanceTask InstanceTask[]
+}
+
+model InstanceTemplate {
+  id            Int             @id @default(autoincrement())
+  templateId    Int
+  template      Template        @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  createdAt     DateTime        @default(now())
+  createdById   Int
+  createdBy     User            @relation(fields: [createdById], references: [id])
+  status        InstanceStatus  @default(OPEN)
+  InstanceField InstanceField[]
+  InstanceTask  InstanceTask[]
+}
+
+model InstanceField {
+  id         Int              @id @default(autoincrement())
+  value      String           @default("")
+  updatedAt  DateTime         @default(now())
+  fieldId    Int
+  field      TemplateField    @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  instanceId Int
+  instance   InstanceTemplate @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+}
+
+model InstanceTask {
+  id         Int              @id @default(autoincrement())
+  updatedAt  DateTime         @updatedAt
+  status     InstanceStatus   @default(OPEN)
+  taskId     Int
+  task       TemplateTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  instanceId Int
+  instance   InstanceTemplate @relation(fields: [instanceId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
@@ -93,4 +117,14 @@ enum SecurityType {
   NONE
   TLS
   SSL
+}
+
+enum FieldType {
+  TEXT
+  NUMBER
+}
+
+enum InstanceStatus {
+  OPEN
+  COMPLETED
 }

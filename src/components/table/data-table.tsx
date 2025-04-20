@@ -1,11 +1,12 @@
 "use client";
 
+import type { ReactNode } from "react";
 import * as React from "react";
 import {
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
-  type ColumnDef,
 } from "@tanstack/react-table";
 
 import {
@@ -15,27 +16,26 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/ui/table";
+} from "~/components/table/table";
 import { Button } from "~/components/ui/button";
-import type { ReactNode } from "react";
-import { Skeleton } from "~/components/ui/skeleton";
+import { cn } from "~/lib/utils";
 
 interface DataTableProps<TData> {
   data: TData[];
   columns: ColumnDef<TData>[];
-  loading?: boolean;
   onButtonClick?: () => void | null;
   buttonText?: string | null;
   children?: ReactNode | null;
+  className?: string | undefined;
 }
 
 export function DataTable<TData>({
   data,
   columns,
-  loading = false,
   onButtonClick,
   buttonText,
   children,
+  className,
 }: DataTableProps<TData>) {
   const table = useReactTable({
     data,
@@ -44,7 +44,7 @@ export function DataTable<TData>({
   });
 
   return (
-    <div className="w-full">
+    <div className={cn("w-full", className)}>
       {onButtonClick && (
         <div className="flex items-center pb-4">
           <Button variant="outline" className="mr-auto" onClick={onButtonClick}>
@@ -72,17 +72,7 @@ export function DataTable<TData>({
             ))}
           </TableHeader>
           <TableBody>
-            {loading ? (
-              Array.from({ length: 3 }).map((_, index) => (
-                <TableRow key={index}>
-                  {columns.map((_, colIndex) => (
-                    <TableCell key={colIndex}>
-                      <Skeleton className="h-4 w-full" />
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
@@ -96,7 +86,7 @@ export function DataTable<TData>({
                 </TableRow>
               ))
             ) : (
-              <TableRow >
+              <TableRow>
                 <TableCell className={"text-center"} colSpan={columns.length}>
                   Keine Ergebnisse
                 </TableCell>

@@ -1,11 +1,12 @@
 "use client";
 
 import * as React from "react";
+import { forwardRef, type ReactNode, useEffect, useState } from "react";
 import {
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
-  type ColumnDef,
 } from "@tanstack/react-table";
 
 import {
@@ -15,24 +16,22 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/ui/table";
+} from "~/components/table/table";
 import { Button } from "~/components/ui/button";
-import { Skeleton } from "~/components/ui/skeleton";
-import { type ReactNode, useState, useEffect, forwardRef } from "react";
 
 import {
-  DndContext,
   closestCenter,
+  DndContext,
+  type DragEndEvent,
   PointerSensor,
   useSensor,
   useSensors,
-  type DragEndEvent,
 } from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
-  verticalListSortingStrategy,
   useSortable,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
@@ -44,7 +43,6 @@ interface HasId {
 interface DataTableProps<TData extends HasId> {
   data: TData[];
   columns: ColumnDef<TData>[];
-  loading?: boolean;
   onButtonClick?: (() => void) | null;
   buttonText?: string | null;
   children?: ReactNode | null;
@@ -55,7 +53,6 @@ interface DataTableProps<TData extends HasId> {
 export function SortableDataTable<TData extends HasId>({
   data,
   columns,
-  loading = false,
   onButtonClick,
   buttonText,
   children,
@@ -190,20 +187,7 @@ export function SortableDataTable<TData extends HasId>({
               </TableHeader>
 
               <TableBody>
-                {loading ? (
-                  Array.from({ length: 3 }).map((_, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="w-8 px-2">
-                        <Skeleton className="h-4 w-4" />
-                      </TableCell>
-                      {columns.map((_, colIndex) => (
-                        <TableCell key={colIndex}>
-                          <Skeleton className="h-4 w-full" />
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : items.length ? (
+                {items.length ? (
                   items.map((row, rowIndex) => {
                     const rowId = getId(row, rowIndex);
                     const tableRow = table.getRowModel().rows[rowIndex];
@@ -224,7 +208,10 @@ export function SortableDataTable<TData extends HasId>({
                   })
                 ) : (
                   <TableRow>
-                    <TableCell className="text-center" colSpan={columns.length + 1}>
+                    <TableCell
+                      className="text-center"
+                      colSpan={columns.length + 1}
+                    >
                       Keine Ergebnisse
                     </TableCell>
                   </TableRow>
@@ -235,14 +222,14 @@ export function SortableDataTable<TData extends HasId>({
         </DndContext>
       </div>
 
-      {(updated && onSaveButtonClick) && (
+      {updated && onSaveButtonClick && (
         <div className="flex items-center pt-4">
           <Button
             variant="default"
             className="mr-auto"
             onClick={() => {
               onSaveButtonClick(items);
-              setUpdate(false)
+              setUpdate(false);
             }}
           >
             Reihenfolge speichern

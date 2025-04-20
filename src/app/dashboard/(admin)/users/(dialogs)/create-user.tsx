@@ -7,10 +7,9 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import { Label } from "~/components/ui/label";
-import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import * as React from "react";
-import {type AuthMethod, Role, type User} from "@prisma/client";
+import { type AuthMethod, Role, type User } from "@prisma/client";
 import {
   Select,
   SelectContent,
@@ -19,7 +18,8 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { api } from "~/trpc/react";
-import { showToast } from "~/lib/utils";
+import { beautifyRole, showErrorToast, showToast } from "~/lib/utils";
+import DialogInput from "~/components/dialogs/dialog-input";
 
 export default function CreateUserDialog({
   open,
@@ -32,10 +32,7 @@ export default function CreateUserDialog({
 }) {
   const handleConfirm = () => {
     if (authMethod == null) {
-      showToast(
-        "Unerwarteter Fehler",
-        "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
-      );
+      showErrorToast();
       return;
     }
 
@@ -45,8 +42,8 @@ export default function CreateUserDialog({
         onSuccess: (exists) => {
           if (exists) {
             showToast(
-                "Fehler",
-                "Ein Benutzer mit diesem Benutzernamen existiert bereits.",
+              "Fehler",
+              "Ein Benutzer mit diesem Benutzernamen existiert bereits.",
             );
             return;
           }
@@ -67,13 +64,10 @@ export default function CreateUserDialog({
                 }
 
                 onCreate(data);
-                setOpen(false)
+                setOpen(false);
               },
               onError: () => {
-                showToast(
-                  "Unerwarteter Fehler",
-                  "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
-                );
+                showErrorToast();
               },
             },
           );
@@ -102,31 +96,19 @@ export default function CreateUserDialog({
           <DialogDescription>Erstelle einen neuen Benutzer.</DialogDescription>
         </DialogHeader>
         <div className="grid w-full gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="userName" className="text-right">
-              Benutzername
-            </Label>
-            <Input
-              id="userName"
-              className="col-span-3"
-              placeholder="Gib einen Benutzernamen ein"
-              required={true}
-              onChange={(e) => setUserName(e.target.value)}
-            />
-          </div>
+          <DialogInput
+            id={"userName"}
+            label={"Benutzername"}
+            required={true}
+            setValue={setUserName}
+          />
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="displayName" className="text-right">
-              Anzeigename
-            </Label>
-            <Input
-              id="displayName"
-              className="col-span-3"
-              placeholder="Gib einen Anzeigenamen ein"
-              required={true}
-              onChange={(e) => setDisplayName(e.target.value)}
-            />
-          </div>
+          <DialogInput
+            id={"displayName"}
+            label={"Anzeigename"}
+            required={true}
+            setValue={setDisplayName}
+          />
 
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="role" className="text-right">
@@ -143,7 +125,7 @@ export default function CreateUserDialog({
                 <SelectContent id={"role"}>
                   {Object.values(Role).map((role) => (
                     <SelectItem key={role} value={role}>
-                      {role}
+                      {beautifyRole(role)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -182,19 +164,13 @@ export default function CreateUserDialog({
           </div>
 
           {authMethod && authMethod.type == "LOCAL" && (
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="password" className="text-right">
-                Passwort
-              </Label>
-              <Input
-                id="password"
-                type={"password"}
-                className="col-span-3"
-                placeholder="Gib ein Passwort ein"
-                required={true}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+            <DialogInput
+              id={"password"}
+              label={"Passwort"}
+              required={true}
+              setValue={setPassword}
+              type={"password"}
+            />
           )}
         </div>
 

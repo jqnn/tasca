@@ -4,32 +4,28 @@ import * as React from "react";
 import { useEffect } from "react";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import type { TemplateTask } from "@prisma/client";
+import type { TemplateField } from "@prisma/client";
 import { SortableDataTable } from "~/components/table/sortable-table";
-import CreateTemplateTaskDialog from "~/app/dashboard/(admin)/templates/[id]/(dialogs)/create-template-task";
 import { api } from "~/trpc/react";
-import { showErrorToast, showToast } from "~/lib/utils";
 import { centeredColumn } from "~/components/table/table";
-import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import TableActions from "~/components/table/table-actions";
+import { DeleteDialog } from "~/components/dialogs/delete-dialog";
+import CreateTemplateFieldDialog from "~/app/dashboard/(admin)/templates/[id]/(dialogs)/create-template-field";
+import { showErrorToast, showToast } from "~/lib/utils";
 
-export default function TemplateTaskTable({
+export default function TemplateFieldsTable({
   templateId,
-  tasks,
+  fields,
 }: {
   templateId: number;
-  tasks: TemplateTask[];
+  fields: TemplateField[];
 }) {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
-  const [tableData, setTableData] = React.useState<TemplateTask[]>([]);
-  const deleteTemplateTask = api.templateTask.delete.useMutation();
+  const [tableData, setTableData] = React.useState<TemplateField[]>([]);
 
-  useEffect(() => {
-    setTableData(tasks.sort((a, b) => a.order - b.order));
-  }, [tasks]);
-
-  const updateTaskOrder = api.templateTask.updateOrder.useMutation({
+  const deleteMutation = api.templateField.delete.useMutation();
+  const updateOrderMutation = api.templateField.updateOrder.useMutation({
     onMutate: () => {
       showToast("Lädt", "Die Reihenfolge wird aktualisiert...");
     },
@@ -41,9 +37,14 @@ export default function TemplateTaskTable({
     },
   });
 
-  const columns: ColumnDef<TemplateTask>[] = [
-    centeredColumn("task", "Aufgabe"),
-    centeredColumn("description", "Beschreibung"),
+  useEffect(() => {
+    setTableData(fields.sort((a, b) => a.order - b.order));
+  }, [fields]);
+
+  const columns: ColumnDef<TemplateField>[] = [
+    centeredColumn("label", "Bezeichnung"),
+    centeredColumn("placeHolder", "Platzhalter"),
+    centeredColumn("fieldType", "Typ"),
     TableActions(null, (id) => setDeleteId(id)),
   ];
 
@@ -54,13 +55,13 @@ export default function TemplateTaskTable({
         columns={columns}
         onButtonClick={() => setCreateOpen(true)}
         onSaveButtonClick={(data) => {
-          updateTaskOrder.mutate({
+          updateOrderMutation.mutate({
             templateId: templateId,
-            tasks: data,
+            fields: data,
           });
         }}
       >
-        <CreateTemplateTaskDialog
+        <CreateTemplateFieldDialog
           templateId={templateId}
           order={tableData.length + 1}
           open={createOpen}
@@ -76,7 +77,7 @@ export default function TemplateTaskTable({
             if (value) return;
             setDeleteId(null);
           }}
-          mutation={deleteTemplateTask}
+          mutation={deleteMutation}
           data={{ id: deleteId ?? 0 }}
           onDelete={() => {
             setTableData(tableData.filter((item) => item.id !== deleteId));
