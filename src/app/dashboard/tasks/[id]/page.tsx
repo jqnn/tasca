@@ -3,10 +3,7 @@
 import { redirect } from "next/navigation";
 import React from "react";
 import { useSession } from "next-auth/react";
-import {
-  SiteHeader,
-  SiteTitle,
-} from "~/components/ui/site-header";
+import { SiteHeader, SiteTitle } from "~/components/ui/site-header";
 import { api } from "~/trpc/react";
 import { TaskFields } from "~/app/dashboard/tasks/[id]/fields";
 import TasksTable from "~/app/dashboard/tasks/[id]/tasks";

@@ -25,7 +25,7 @@ export default function AuthenticationMethodsTable() {
     }
   }, [data]);
 
-  if(status !== "success") {
+  if (status !== "success") {
     return <Spinner />;
   }
 

@@ -31,8 +31,8 @@ export function TaskList() {
     completed: showComplete,
   });
 
-  if(status !== "success") {
-    return <Spinner />
+  if (status !== "success") {
+    return <Spinner />;
   }
 
   return (
