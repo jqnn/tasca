@@ -15,6 +15,7 @@ import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { Switch } from "~/components/ui/switch";
 import { Label } from "~/components/ui/label";
+import CreateTaskByTemplateDialog from "~/app/dashboard/tasks/(dialogs)/create-task";
 
 export function TaskList() {
   const { data: session } = useSession();
@@ -22,6 +23,7 @@ export function TaskList() {
     redirect("/");
   }
 
+  const [showCreated, setShowCreated] = React.useState(false);
   const [showComplete, setShowComplete] = React.useState(false);
   const { data: tasks, status } = api.instance.findAll.useQuery({
     completed: showComplete,
@@ -30,7 +32,11 @@ export function TaskList() {
   return (
     <div>
       <div className="flex items-center pb-4">
-        <Button variant="outline" className="mr-auto">
+        <Button
+          variant="outline"
+          className="mr-auto"
+          onClick={() => setShowCreated(true)}
+        >
           Erstellen
         </Button>
 
@@ -75,6 +81,8 @@ export function TaskList() {
           )}
         </>
       )}
+
+      <CreateTaskByTemplateDialog open={showCreated} setOpen={setShowCreated} />
     </div>
   );
 }
