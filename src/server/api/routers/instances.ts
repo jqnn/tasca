@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { now } from "d3-timer";
 
 export const instanceRouter = createTRPCRouter({
   findAll: publicProcedure
@@ -35,7 +36,11 @@ export const instanceRouter = createTRPCRouter({
               field: true,
             },
           },
-          InstanceTask: true,
+          InstanceTask: {
+            include: {
+              task: true,
+            },
+          },
         },
       });
     }),
@@ -87,6 +92,15 @@ export const instanceRouter = createTRPCRouter({
       return ctx.db.instanceField.update({
         where: { id: input.id },
         data: { value: input.value },
+      });
+    }),
+
+  updateState: publicProcedure
+    .input(z.object({ id: z.number(), value: z.boolean() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.instanceTask.update({
+        where: { id: input.id },
+        data: { status: input.value ? "COMPLETED" : "OPEN" },
       });
     }),
 });
