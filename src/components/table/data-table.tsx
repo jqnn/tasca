@@ -19,6 +19,7 @@ import {
 } from "~/components/table/table";
 import { Button } from "~/components/ui/button";
 import { Skeleton } from "~/components/ui/skeleton";
+import { cn } from "~/lib/utils";
 
 interface DataTableProps<TData> {
   data: TData[];
@@ -27,6 +28,7 @@ interface DataTableProps<TData> {
   onButtonClick?: () => void | null;
   buttonText?: string | null;
   children?: ReactNode | null;
+  className?: string | undefined;
 }
 
 export function DataTable<TData>({
@@ -36,6 +38,7 @@ export function DataTable<TData>({
   onButtonClick,
   buttonText,
   children,
+  className,
 }: DataTableProps<TData>) {
   const table = useReactTable({
     data,
@@ -44,7 +47,7 @@ export function DataTable<TData>({
   });
 
   return (
-    <div className="w-full">
+    <div className={cn("w-full", className)}>
       {onButtonClick && (
         <div className="flex items-center pb-4">
           <Button variant="outline" className="mr-auto" onClick={onButtonClick}>
