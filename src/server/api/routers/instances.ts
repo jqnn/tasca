@@ -33,4 +33,45 @@ export const instanceRouter = createTRPCRouter({
         },
       });
     }),
+
+  create: publicProcedure
+    .input(z.object({ templateId: z.number(), userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const template = await ctx.db.template.findUnique({
+        where: { id: input.templateId },
+        include: {
+          TemplateField: true,
+          TemplateTask: true,
+        },
+      });
+
+      if (!template) return null;
+      const instance = await ctx.db.instanceTemplate.create({
+        data: {
+          templateId: input.templateId,
+          createdById: Number(input.userId),
+        },
+      });
+
+      if (!instance) return null;
+      for (const field of template.TemplateField) {
+        await ctx.db.instanceField.create({
+          data: {
+            fieldId: field.id,
+            instanceId: instance.id,
+          },
+        });
+      }
+
+      for (const task of template.TemplateTask) {
+        await ctx.db.instanceTask.create({
+          data: {
+            taskId: task.id,
+            instanceId: instance.id,
+          },
+        });
+      }
+
+      return instance;
+    }),
 });
