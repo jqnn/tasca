@@ -1,8 +1,7 @@
 import * as process from "node:process";
 
 import { PrismaClient } from "@prisma/client";
-import { env } from "~/env";
-import { hashPassword } from "~/lib/utils";
+import { sha256 } from "js-sha256";
 
 const prisma = new PrismaClient();
 
@@ -14,7 +13,7 @@ async function main() {
 
   if (exists) {
     console.log("[SEED] Default auth method already exists.");
-    const adminPassword = env.ADMIN_PASSWORD;
+    const adminPassword = process.env.ADMIN_PASSWORD;
 
     console.log("[SEED] Searching default admin account...");
     const user = await prisma.user.findFirst({
@@ -53,7 +52,7 @@ async function main() {
 
 async function createAdminUser(localAuthMethodId: number) {
   console.log("[SEED] Default admin account doesn't exist, creating now...");
-  const adminPassword = env.ADMIN_PASSWORD;
+  const adminPassword = process.env.ADMIN_PASSWORD;
   if (!adminPassword) {
     console.error(
       "[SEED] Can't create admin account, set env variable ADMIN_PASSWORD first.",
@@ -72,6 +71,10 @@ async function createAdminUser(localAuthMethodId: number) {
     },
   });
   console.log("[SEED] Created default admin account.");
+}
+
+function hashPassword(password: string) {
+  return sha256(password);
 }
 
 main()
