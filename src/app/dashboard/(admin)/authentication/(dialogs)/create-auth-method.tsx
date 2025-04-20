@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { api } from "~/trpc/react";
-import { showToast } from "~/lib/utils";
+import { showErrorToast, showToast } from "~/lib/utils";
 import SecurityType = $Enums.SecurityType;
 
 export default function CreateAuthenticationMethodDialog({
@@ -63,10 +63,7 @@ export default function CreateAuthenticationMethodDialog({
                 setOpen(false);
               },
               onError: () => {
-                showToast(
-                  "Unerwarteter Fehler",
-                  "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
-                );
+                showErrorToast()
               },
             },
           );

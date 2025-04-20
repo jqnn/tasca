@@ -8,7 +8,7 @@ import type { TemplateTask } from "@prisma/client";
 import { SortableDataTable } from "~/components/table/sortable-table";
 import CreateTemplateTaskDialog from "~/app/dashboard/(admin)/templates/[id]/(dialogs)/create-template-task";
 import { api } from "~/trpc/react";
-import { showToast } from "~/lib/utils";
+import { showErrorToast, showToast } from "~/lib/utils";
 import { centeredColumn } from "~/components/table/table";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import TableActions from "~/components/table/table-actions";
@@ -37,10 +37,7 @@ export default function TemplateTaskTable({
       showToast("Erledigt", "Die Reihenfolge wurde aktualisiert.");
     },
     onError: () => {
-      showToast(
-        "Unerwarteter Fehler",
-        "Möglicherweise hat diese Authentifiezerungsmethode noch Benutzer.",
-      );
+      showErrorToast()
     },
   });
 

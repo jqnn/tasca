@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { api } from "~/trpc/react";
-import { showToast } from "~/lib/utils";
+import { showErrorToast, showToast } from "~/lib/utils";
 
 export default function CreateUserDialog({
   open,
@@ -32,10 +32,7 @@ export default function CreateUserDialog({
 }) {
   const handleConfirm = () => {
     if (authMethod == null) {
-      showToast(
-        "Unerwarteter Fehler",
-        "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
-      );
+      showErrorToast();
       return;
     }
 
@@ -70,10 +67,7 @@ export default function CreateUserDialog({
                 setOpen(false);
               },
               onError: () => {
-                showToast(
-                  "Unerwarteter Fehler",
-                  "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
-                );
+                showErrorToast();
               },
             },
           );

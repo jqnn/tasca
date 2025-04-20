@@ -11,7 +11,7 @@ import { centeredColumn } from "~/components/table/table";
 import TableActions from "~/components/table/table-actions";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import CreateTemplateFieldDialog from "~/app/dashboard/(admin)/templates/[id]/(dialogs)/create-template-field";
-import { showToast } from "~/lib/utils";
+import { showErrorToast, showToast } from "~/lib/utils";
 
 export default function TemplateFieldsTable({
   templateId,
@@ -33,10 +33,7 @@ export default function TemplateFieldsTable({
       showToast("Erledigt", "Die Reihenfolge wurde aktualisiert.");
     },
     onError: () => {
-      showToast(
-        "Unerwarteter Fehler",
-        "Möglicherweise hat diese Authentifiezerungsmethode noch Benutzer.",
-      );
+      showErrorToast()
     },
   });
 

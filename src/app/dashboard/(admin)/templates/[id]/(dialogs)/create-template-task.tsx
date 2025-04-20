@@ -12,7 +12,7 @@ import { Button } from "~/components/ui/button";
 import * as React from "react";
 import { type TemplateTask } from "@prisma/client";
 import { api } from "~/trpc/react";
-import { showToast } from "~/lib/utils";
+import { showErrorToast, showToast } from "~/lib/utils";
 
 export default function CreateTemplateTaskDialog({
   templateId,
@@ -48,10 +48,7 @@ export default function CreateTemplateTaskDialog({
           setDescription("");
         },
         onError: () => {
-          showToast(
-            "Unerwarteter Fehler",
-            "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
-          );
+          showErrorToast()
         },
       },
     );

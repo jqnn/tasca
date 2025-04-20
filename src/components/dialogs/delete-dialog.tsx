@@ -9,7 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
-import { showToast } from "~/lib/utils";
+import { showErrorToast, showToast } from "~/lib/utils";
 
 type MutationInput = {
   id: number;
@@ -42,10 +42,7 @@ export function DeleteDialog({
 }) {
   const handleConfirm = () => {
     if (!data) {
-      showToast(
-        "Unerwarteter Fehler",
-        "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
-      );
+      showErrorToast()
       setOpen(false);
       return;
     }
@@ -66,10 +63,7 @@ export function DeleteDialog({
         );
       },
       onError: () => {
-        showToast(
-          "Unerwarteter Fehler",
-          "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
-        );
+        showErrorToast()
       },
     });
   };
