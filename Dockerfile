@@ -16,7 +16,7 @@ RUN mkdir -p .next/standalone/.next && \
 
 FROM node:18-slim AS runner
 RUN apt-get update && apt-get install -y openssl
-RUN npm i -D tsx
+RUN npm install tsx
 WORKDIR /app
 COPY --from=builder /app/.next/standalone ./
 EXPOSE 3000
