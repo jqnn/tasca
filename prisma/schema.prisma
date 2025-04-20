@@ -17,7 +17,6 @@ model User {
   role             Role               @default(USER)
   createdAt        DateTime           @default(now())
   Template         Template[]
-  TaskInstance     InstanceTask[]
   TemplateInstance InstanceTemplate[]
 }
 
@@ -84,7 +83,7 @@ model InstanceTemplate {
 
 model InstanceField {
   id         Int              @id @default(autoincrement())
-  value      String
+  value      String           @default("")
   updatedAt  DateTime         @default(now())
   fieldId    Int
   field      TemplateField    @relation(fields: [fieldId], references: [id])
@@ -100,8 +99,6 @@ model InstanceTask {
   task       TemplateTask     @relation(fields: [taskId], references: [id])
   instanceId Int
   instance   InstanceTemplate @relation(fields: [instanceId], references: [id])
-  userId     Int?
-  User       User?            @relation(fields: [userId], references: [id])
 }
 
 enum Role {
