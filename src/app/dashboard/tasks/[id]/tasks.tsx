@@ -7,21 +7,26 @@ import type { InstanceStatus } from "@prisma/client";
 import { DataTable } from "~/components/table/data-table";
 import { centeredColumn } from "~/components/table/table";
 import TaskCheck from "~/components/instance/task-check";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "~/components/ui/tooltip";
 
 type InstanceType = {
   task: {
-    id: number
-    description: string
-    templateId: number
-    task: string
-    order: number
-  }
+    id: number;
+    description: string;
+    templateId: number;
+    task: string;
+    order: number;
+  };
 } & {
-  id: number
-  status: InstanceStatus
-  updatedAt: Date
-  instanceId: number
-  taskId: number
+  id: number;
+  status: InstanceStatus;
+  updatedAt: Date;
+  instanceId: number;
+  taskId: number;
 };
 
 interface TasksTableProps {
@@ -39,19 +44,24 @@ export default function TasksTable({ instances }: TasksTableProps) {
     {
       accessorKey: "checked",
       header: () => <div />,
-      cell: ({row}) => {
-        return <TaskCheck instance={row.original} />
-      }
+      cell: ({ row }) => {
+        return <TaskCheck instance={row.original} />;
+      },
     },
-    centeredColumn("task", "Aufgabe", (value) => value.task),
-    centeredColumn("updatedAt", "Bearbeitet am", (value) => value.toLocaleString()),
+    centeredColumn("task", "Aufgabe", (value) => (
+      <Tooltip>
+        <TooltipTrigger>{value.task}</TooltipTrigger>
+        {value.description && (
+          <TooltipContent>
+            <p>{value.description}</p>
+          </TooltipContent>
+        )}
+      </Tooltip>
+    )),
+    centeredColumn("updatedAt", "Bearbeitet am", (value) =>
+      value.toLocaleString(),
+    ),
   ];
 
-  return (
-    <DataTable
-      data={tableData}
-      columns={columns}
-      className={"mt-8"}
-    />
-  );
+  return <DataTable data={tableData} columns={columns} className={"mt-8"} />;
 }
