@@ -53,9 +53,7 @@ export default function CreateTemplateFieldDialog({
           onCreate(data);
           setOpen(false);
         },
-        onError: () => {
-          showErrorToast();
-        },
+        onError: () => showErrorToast(),
       },
     );
   };
