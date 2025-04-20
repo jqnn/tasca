@@ -9,6 +9,7 @@ export const instanceRouter = createTRPCRouter({
         return ctx.db.instanceTemplate.findMany({
           include: {
             template: true,
+            createdBy: true
           },
         });
       } else {
@@ -16,6 +17,7 @@ export const instanceRouter = createTRPCRouter({
           where: { status: "OPEN" },
           include: {
             template: true,
+            createdBy: true
           },
         });
       }
