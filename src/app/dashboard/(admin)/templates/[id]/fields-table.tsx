@@ -53,7 +53,6 @@ export default function TemplateFieldsTable({
       <SortableDataTable
         data={tableData}
         columns={columns}
-        loading={false}
         onButtonClick={() => setCreateOpen(true)}
         onSaveButtonClick={(data) => {
           updateOrderMutation.mutate({

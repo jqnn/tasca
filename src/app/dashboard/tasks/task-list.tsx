@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Skeleton } from "~/components/ui/skeleton";
 import * as React from "react";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
@@ -17,6 +16,7 @@ import { Switch } from "~/components/ui/switch";
 import { Label } from "~/components/ui/label";
 import CreateTaskByTemplateDialog from "~/app/dashboard/tasks/(dialogs)/create-task";
 import { beautifyInstanceStatus } from "~/lib/utils";
+import Spinner from "~/components/ui/spinner";
 
 export function TaskList() {
   const router = useRouter();
@@ -30,6 +30,10 @@ export function TaskList() {
   const { data: tasks, status } = api.instance.findAll.useQuery({
     completed: showComplete,
   });
+
+  if(status !== "success") {
+    return <Spinner />
+  }
 
   return (
     <div>
@@ -52,42 +56,25 @@ export function TaskList() {
         </div>
       </div>
 
-      {status !== "success" && (
+      {tasks && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 3 }).map((_, index) => (
-            <Card key={index}>
-              <CardHeader>
-                <Skeleton className="h-4 max-w-1/3" />
-                <Skeleton className="mt-1.5 h-4 max-w-2/3" />
-              </CardHeader>
-            </Card>
+          {tasks.map((task) => (
+            <Link key={task.id} href={`/dashboard/tasks/${task.id}`}>
+              <Card key={task.id}>
+                <CardHeader>
+                  <CardTitle>{task.template.name}</CardTitle>
+                  <CardDescription>
+                    Ersteller -&nbsp;
+                    {task.createdBy.displayName ?? task.createdBy.userName}
+                  </CardDescription>
+                  <CardDescription>
+                    Status - {beautifyInstanceStatus(task.status)}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </Link>
           ))}
         </div>
-      )}
-
-      {status === "success" && (
-        <>
-          {tasks && (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {tasks.map((task) => (
-                <Link key={task.id} href={`/dashboard/tasks/${task.id}`}>
-                  <Card key={task.id}>
-                    <CardHeader>
-                      <CardTitle>{task.template.name}</CardTitle>
-                      <CardDescription>
-                        Ersteller -&nbsp;
-                        {task.createdBy.displayName ?? task.createdBy.userName}
-                      </CardDescription>
-                      <CardDescription>
-                        Status - {beautifyInstanceStatus(task.status)}
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          )}
-        </>
       )}
 
       <CreateTaskByTemplateDialog

@@ -18,7 +18,6 @@ import {
   TableRow,
 } from "~/components/table/table";
 import { Button } from "~/components/ui/button";
-import { Skeleton } from "~/components/ui/skeleton";
 
 import {
   closestCenter,
@@ -44,7 +43,6 @@ interface HasId {
 interface DataTableProps<TData extends HasId> {
   data: TData[];
   columns: ColumnDef<TData>[];
-  loading?: boolean;
   onButtonClick?: (() => void) | null;
   buttonText?: string | null;
   children?: ReactNode | null;
@@ -55,7 +53,6 @@ interface DataTableProps<TData extends HasId> {
 export function SortableDataTable<TData extends HasId>({
   data,
   columns,
-  loading = false,
   onButtonClick,
   buttonText,
   children,
@@ -190,20 +187,7 @@ export function SortableDataTable<TData extends HasId>({
               </TableHeader>
 
               <TableBody>
-                {loading ? (
-                  Array.from({ length: 3 }).map((_, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="w-8 px-2">
-                        <Skeleton className="h-4 w-4" />
-                      </TableCell>
-                      {columns.map((_, colIndex) => (
-                        <TableCell key={colIndex}>
-                          <Skeleton className="h-4 w-full" />
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : items.length ? (
+                {items.length ? (
                   items.map((row, rowIndex) => {
                     const rowId = getId(row, rowIndex);
                     const tableRow = table.getRowModel().rows[rowIndex];

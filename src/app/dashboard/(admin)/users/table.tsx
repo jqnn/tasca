@@ -11,20 +11,23 @@ import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { centeredColumn } from "~/components/table/table";
 import TableActions from "~/components/table/table-actions";
 import { beautifyRole } from "~/lib/utils";
+import Spinner from "~/components/ui/spinner";
 
 export default function UsersTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
 
-  const { data, isLoading } = api.user.findAll.useQuery();
+  const { data, status } = api.user.findAll.useQuery();
   const [tableData, setTableData] = React.useState<User[]>([]);
   const deleteUser = api.user.delete.useMutation();
 
   React.useEffect(() => {
-    if (!isLoading) {
-      setTableData(data ?? []);
-    }
-  }, [data, isLoading]);
+    setTableData(data ?? []);
+  }, [data]);
+
+  if (status !== "success") {
+    return <Spinner />;
+  }
 
   const columns: ColumnDef<User>[] = [
     centeredColumn("userName", "Benutzername"),
@@ -44,7 +47,6 @@ export default function UsersTable() {
     <DataTable
       data={tableData}
       columns={columns}
-      loading={isLoading}
       onButtonClick={() => setCreateOpen(true)}
     >
       <CreateUserDialog

@@ -52,7 +52,6 @@ export default function TemplateTaskTable({
       <SortableDataTable
         data={tableData}
         columns={columns}
-        loading={false}
         onButtonClick={() => setCreateOpen(true)}
         onSaveButtonClick={(data) => {
           updateTaskOrder.mutate({

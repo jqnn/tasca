@@ -10,19 +10,23 @@ import CreateTemplateDialog from "~/app/dashboard/(admin)/templates/(dialogs)/cr
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { centeredColumn } from "~/components/table/table";
 import TableActions from "~/components/table/table-actions";
+import Spinner from "~/components/ui/spinner";
 
 export default function TemplateTable() {
-  const { data, isLoading } = api.template.findAll.useQuery();
+  const { data, status } = api.template.findAll.useQuery();
   const [tableData, setTableData] = React.useState<Template[]>([]);
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const deleteTemplate = api.template.delete.useMutation();
 
   React.useEffect(() => {
-    if (!isLoading) {
-      setTableData(data ?? []);
-    }
-  }, [data, isLoading]);
+    setTableData(data ?? []);
+  }, [data]);
+
+  if (status !== "success") {
+    return <Spinner />;
+  }
+
   const columns: ColumnDef<Template>[] = [
     centeredColumn("name", "Name", null, "/dashboard/templates/:id"),
     centeredColumn("description", "Beschreibung"),
@@ -41,7 +45,6 @@ export default function TemplateTable() {
     <DataTable
       data={tableData}
       columns={columns}
-      loading={isLoading}
       onButtonClick={() => setCreateOpen(true)}
     >
       <CreateTemplateDialog

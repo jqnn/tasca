@@ -1,15 +1,6 @@
 import type { ReactNode } from "react";
 import * as React from "react";
 import { cn } from "~/lib/utils";
-import { Skeleton } from "./skeleton";
-
-export function SiteHeaderSkeleton() {
-  return (
-    <SiteHeader>
-      <Skeleton className="h-2/3 w-1/5" />
-    </SiteHeader>
-  );
-}
 
 export function SiteHeader({ children }: Readonly<{ children: ReactNode }>) {
   return (

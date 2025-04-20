@@ -10,19 +10,24 @@ import type { AuthMethod } from "@prisma/client";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { centeredColumn, centeredDataColumn } from "~/components/table/table";
 import TableActions from "~/components/table/table-actions";
+import Spinner from "~/components/ui/spinner";
 
 export default function AuthenticationMethodsTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
-  const { data, isLoading } = api.authMethod.findAll.useQuery();
+  const { data, status } = api.authMethod.findAll.useQuery();
   const [tableData, setTableData] = React.useState<AuthMethod[]>([]);
   const deleteAuthMethod = api.authMethod.delete.useMutation();
 
   React.useEffect(() => {
-    if (!isLoading && data) {
+    if (data) {
       setTableData(data);
     }
-  }, [data, isLoading]);
+  }, [data]);
+
+  if(status !== "success") {
+    return <Spinner />;
+  }
 
   const columns: ColumnDef<AuthMethod>[] = [
     centeredColumn("description", "Beschreibung"),
@@ -45,7 +50,6 @@ export default function AuthenticationMethodsTable() {
     <DataTable
       data={tableData}
       columns={columns}
-      loading={isLoading}
       onButtonClick={() => setCreateOpen(true)}
     >
       <CreateAuthenticationMethodDialog

@@ -7,7 +7,6 @@ import { api } from "~/trpc/react";
 import {
   SiteDescription,
   SiteHeader,
-  SiteHeaderSkeleton,
   SiteTitle,
 } from "~/components/ui/site-header";
 import TemplateTaskTable from "~/app/dashboard/(admin)/templates/[id]/table";
@@ -15,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import TemplateFieldsTable from "~/app/dashboard/(admin)/templates/[id]/fields-table";
 import { Button } from "~/components/ui/button";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
+import Spinner from "~/components/ui/spinner";
 
 interface PageProps {
   params: Promise<{
@@ -37,7 +37,7 @@ export default function TemplatePage({ params }: PageProps) {
   const deleteTemplate = api.template.delete.useMutation();
 
   if (status !== "success") {
-    return <SiteHeaderSkeleton />;
+    return <Spinner />;
   }
 
   if (!template) {

@@ -18,13 +18,11 @@ import {
   TableRow,
 } from "~/components/table/table";
 import { Button } from "~/components/ui/button";
-import { Skeleton } from "~/components/ui/skeleton";
 import { cn } from "~/lib/utils";
 
 interface DataTableProps<TData> {
   data: TData[];
   columns: ColumnDef<TData>[];
-  loading?: boolean;
   onButtonClick?: () => void | null;
   buttonText?: string | null;
   children?: ReactNode | null;
@@ -34,7 +32,6 @@ interface DataTableProps<TData> {
 export function DataTable<TData>({
   data,
   columns,
-  loading = false,
   onButtonClick,
   buttonText,
   children,
@@ -75,17 +72,7 @@ export function DataTable<TData>({
             ))}
           </TableHeader>
           <TableBody>
-            {loading ? (
-              Array.from({ length: 3 }).map((_, index) => (
-                <TableRow key={index}>
-                  {columns.map((_, colIndex) => (
-                    <TableCell key={colIndex}>
-                      <Skeleton className="h-4 w-full" />
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
