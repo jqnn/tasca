@@ -37,7 +37,7 @@ export default function TemplateTaskTable({
       showToast("Erledigt", "Die Reihenfolge wurde aktualisiert.");
     },
     onError: () => {
-      showErrorToast()
+      showErrorToast();
     },
   });
 

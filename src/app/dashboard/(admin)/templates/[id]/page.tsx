@@ -11,7 +11,7 @@ import {
   SiteTitle,
 } from "~/components/ui/site-header";
 import TemplateTaskTable from "~/app/dashboard/(admin)/templates/[id]/table";
-import { Tabs, TabsTrigger, TabsList, TabsContent } from "~/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import TemplateFieldsTable from "~/app/dashboard/(admin)/templates/[id]/fields-table";
 
 interface PageProps {
@@ -65,7 +65,6 @@ export default function TemplatePage({ params }: PageProps) {
               <TemplateTaskTable templateId={template.id} tasks={tasks} />
             </TabsContent>
           </Tabs>
-
         </div>
       </main>
     </>

@@ -12,7 +12,7 @@ import { Button } from "~/components/ui/button";
 import * as React from "react";
 import { type TemplateTask } from "@prisma/client";
 import { api } from "~/trpc/react";
-import { showErrorToast, showToast } from "~/lib/utils";
+import { showErrorToast } from "~/lib/utils";
 
 export default function CreateTemplateTaskDialog({
   templateId,
@@ -48,7 +48,7 @@ export default function CreateTemplateTaskDialog({
           setDescription("");
         },
         onError: () => {
-          showErrorToast()
+          showErrorToast();
         },
       },
     );

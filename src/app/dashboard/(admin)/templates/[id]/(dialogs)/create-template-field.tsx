@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { showErrorToast, showToast } from "~/lib/utils";
+import { showErrorToast } from "~/lib/utils";
 
 export default function CreateTemplateFieldDialog({
   templateId,
@@ -54,7 +54,7 @@ export default function CreateTemplateFieldDialog({
           setOpen(false);
         },
         onError: () => {
-          showErrorToast()
+          showErrorToast();
         },
       },
     );

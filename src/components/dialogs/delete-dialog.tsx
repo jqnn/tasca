@@ -42,7 +42,7 @@ export function DeleteDialog({
 }) {
   const handleConfirm = () => {
     if (!data) {
-      showErrorToast()
+      showErrorToast();
       setOpen(false);
       return;
     }
@@ -63,7 +63,7 @@ export function DeleteDialog({
         );
       },
       onError: () => {
-        showErrorToast()
+        showErrorToast();
       },
     });
   };

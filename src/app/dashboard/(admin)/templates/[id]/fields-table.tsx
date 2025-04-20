@@ -33,7 +33,7 @@ export default function TemplateFieldsTable({
       showToast("Erledigt", "Die Reihenfolge wurde aktualisiert.");
     },
     onError: () => {
-      showErrorToast()
+      showErrorToast();
     },
   });
 
@@ -62,7 +62,6 @@ export default function TemplateFieldsTable({
           });
         }}
       >
-
         <CreateTemplateFieldDialog
           templateId={templateId}
           order={tableData.length + 1}

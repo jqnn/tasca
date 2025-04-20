@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { api } from "~/trpc/react";
-import { showErrorToast, showToast } from "~/lib/utils";
+import { showErrorToast } from "~/lib/utils";
 import SecurityType = $Enums.SecurityType;
 
 export default function CreateAuthenticationMethodDialog({
@@ -63,7 +63,7 @@ export default function CreateAuthenticationMethodDialog({
                 setOpen(false);
               },
               onError: () => {
-                showErrorToast()
+                showErrorToast();
               },
             },
           );

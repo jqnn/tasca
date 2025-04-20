@@ -12,7 +12,7 @@ import { Button } from "~/components/ui/button";
 import * as React from "react";
 import { type Template } from "@prisma/client";
 import { api } from "~/trpc/react";
-import { showErrorToast, showToast } from "~/lib/utils";
+import { showErrorToast } from "~/lib/utils";
 import { useSession } from "next-auth/react";
 
 export default function CreateTemplateDialog({
@@ -48,7 +48,7 @@ export default function CreateTemplateDialog({
                 setOpen(false);
               },
               onError: () => {
-                showErrorToast()
+                showErrorToast();
               },
             },
           );

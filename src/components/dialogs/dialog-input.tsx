@@ -1,7 +1,7 @@
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
-import * as React from "react";
 import type { HTMLInputTypeAttribute } from "react";
+import * as React from "react";
 
 export default function DialogInput({
   id,
@@ -11,7 +11,7 @@ export default function DialogInput({
   setValue,
   min,
   max,
-  type
+  type,
 }: {
   id: string;
   label: string;
