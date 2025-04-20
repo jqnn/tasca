@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { api } from "~/trpc/react";
-import { showErrorToast, showToast } from "~/lib/utils";
+import { beautifyRole, showErrorToast, showToast } from "~/lib/utils";
 
 export default function CreateUserDialog({
   open,
@@ -137,7 +137,7 @@ export default function CreateUserDialog({
                 <SelectContent id={"role"}>
                   {Object.values(Role).map((role) => (
                     <SelectItem key={role} value={role}>
-                      {role}
+                      {beautifyRole(role)}
                     </SelectItem>
                   ))}
                 </SelectContent>

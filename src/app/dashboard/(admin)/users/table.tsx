@@ -10,6 +10,7 @@ import CreateUserDialog from "~/app/dashboard/(admin)/users/(dialogs)/create-use
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { centeredColumn } from "~/components/table/table";
 import TableActions from "~/components/table/table-actions";
+import { beautifyRole } from "~/lib/utils";
 
 export default function UsersTable() {
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
@@ -28,7 +29,7 @@ export default function UsersTable() {
   const columns: ColumnDef<User>[] = [
     centeredColumn("userName", "Benutzername"),
     centeredColumn("displayName", "Anzeigename"),
-    centeredColumn("role", "Anzeigename"),
+    centeredColumn("role", "Rolle", (value) => beautifyRole(value)),
     centeredColumn("createdAt", "Erstellt am", (value) =>
       value.toLocaleString(),
     ),
