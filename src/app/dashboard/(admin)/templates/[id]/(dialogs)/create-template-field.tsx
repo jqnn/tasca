@@ -61,7 +61,7 @@ export default function CreateTemplateFieldDialog({
   };
 
   const [task, setTask] = React.useState<string>("");
-  const [placeHolder, setPlaceHolder] = React.useState<string>("");
+  const [placeHolder, setPlaceHolder] = React.useState<string | null>(null);
   const [fieldType, setFieldType] = React.useState<FieldType>("TEXT");
   const createMutation = api.templateField.create.useMutation();
 
