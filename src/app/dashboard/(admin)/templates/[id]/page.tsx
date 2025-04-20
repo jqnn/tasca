@@ -13,6 +13,7 @@ import {
 import TemplateTaskTable from "~/app/dashboard/(admin)/templates/[id]/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import TemplateFieldsTable from "~/app/dashboard/(admin)/templates/[id]/fields-table";
+import { Button } from "~/components/ui/button";
 
 interface PageProps {
   params: Promise<{
@@ -39,9 +40,6 @@ export default function TemplatePage({ params }: PageProps) {
     notFound();
   }
 
-  const tasks = template.TemplateTask ?? [];
-  const fields = template.TemplateField ?? [];
-
   return (
     <>
       <SiteHeader>
@@ -52,17 +50,35 @@ export default function TemplatePage({ params }: PageProps) {
       </SiteHeader>
 
       <main className="flex shrink-0 items-center gap-2 transition-[width,height] ease-linear">
-        <div className={"flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6"}>
+        <div className="flex w-full flex-col items-center gap-1 px-4 lg:gap-2 lg:px-6">
+          <div className="flex w-full pb-4">
+            <Button variant="outline" className={"mr-2"}>
+              Bearbeiten
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => console.log("löschen")}
+            >
+              Löschen
+            </Button>
+          </div>
+
           <Tabs defaultValue="fields" className="w-full">
             <TabsList className="w-full">
               <TabsTrigger value="fields">Felder</TabsTrigger>
               <TabsTrigger value="tasks">Aufgaben</TabsTrigger>
             </TabsList>
             <TabsContent value="fields">
-              <TemplateFieldsTable templateId={template.id} fields={fields} />
+              <TemplateFieldsTable
+                templateId={template.id}
+                fields={template.TemplateField ?? []}
+              />
             </TabsContent>
             <TabsContent value="tasks">
-              <TemplateTaskTable templateId={template.id} tasks={tasks} />
+              <TemplateTaskTable
+                templateId={template.id}
+                tasks={template.TemplateTask ?? []}
+              />
             </TabsContent>
           </Tabs>
         </div>
