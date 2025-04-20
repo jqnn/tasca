@@ -19,7 +19,7 @@
     "preview": "next build && next start",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "prisma-seed": "node prisma/seed.js"
+    "prisma-seed": "node prisma/seed.cjs"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.2",
