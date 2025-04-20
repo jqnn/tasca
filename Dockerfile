@@ -1,17 +1,22 @@
-FROM node:alpine AS app
+FROM node:18-slim AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
-COPY prisma ./prisma
 RUN npm ci
+COPY prisma ./prisma
 COPY . .
 RUN SKIP_ENV_VALIDATION=1 npm run build
+RUN npx prisma generate
+RUN npm prune --production
 RUN mkdir -p .next/standalone/.next && \
     cp -r .next/static .next/standalone/.next/ && \
     cp -r public .next/standalone/public && \
     cp -r prisma .next/standalone/prisma && \
     cp -r node_modules .next/standalone/node_modules && \
     cp package.json .next/standalone/
-WORKDIR /app/.next/standalone
+
+FROM node:18-slim AS runner
+WORKDIR /app
+COPY --from=builder /app/.next/standalone ./
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
