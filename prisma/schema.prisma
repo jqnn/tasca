@@ -72,7 +72,7 @@ model TemplateTask {
 model InstanceTemplate {
   id            Int             @id @default(autoincrement())
   templateId    Int
-  template      Template        @relation(fields: [templateId], references: [id])
+  template      Template        @relation(fields: [templateId], references: [id], onDelete: Cascade)
   createdAt     DateTime        @default(now())
   createdById   Int
   createdBy     User            @relation(fields: [createdById], references: [id])
@@ -86,9 +86,9 @@ model InstanceField {
   value      String           @default("")
   updatedAt  DateTime         @default(now())
   fieldId    Int
-  field      TemplateField    @relation(fields: [fieldId], references: [id])
+  field      TemplateField    @relation(fields: [fieldId], references: [id], onDelete: Cascade)
   instanceId Int
-  instance   InstanceTemplate @relation(fields: [instanceId], references: [id])
+  instance   InstanceTemplate @relation(fields: [instanceId], references: [id], onDelete: Cascade)
 }
 
 model InstanceTask {
@@ -96,9 +96,9 @@ model InstanceTask {
   updatedAt  DateTime         @default(now())
   status     InstanceStatus   @default(OPEN)
   taskId     Int
-  task       TemplateTask     @relation(fields: [taskId], references: [id])
+  task       TemplateTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   instanceId Int
-  instance   InstanceTemplate @relation(fields: [instanceId], references: [id])
+  instance   InstanceTemplate @relation(fields: [instanceId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
