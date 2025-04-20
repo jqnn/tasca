@@ -6,7 +6,6 @@ COPY prisma ./prisma
 RUN npm ci
 COPY . .
 RUN SKIP_ENV_VALIDATION=1 npm run build
-RUN npm prune --omit=dev
 RUN mkdir -p .next/standalone/.next && \
     cp -r .next/static .next/standalone/.next/ && \
     cp -r public .next/standalone/public && \
