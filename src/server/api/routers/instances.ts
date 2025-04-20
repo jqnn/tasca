@@ -30,7 +30,11 @@ export const instanceRouter = createTRPCRouter({
         where: { id: input.id },
         include: {
           template: true,
-          InstanceField: true,
+          InstanceField: {
+            include: {
+              field: true
+            }
+          },
           InstanceTask: true,
         },
       });
