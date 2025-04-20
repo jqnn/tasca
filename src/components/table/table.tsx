@@ -5,6 +5,7 @@ import * as React from "react";
 import { cn } from "~/lib/utils";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
@@ -113,7 +114,7 @@ interface RowData {
 function centeredColumn<TData extends RowData, TKey extends keyof TData>(
   accessorKey: TKey,
   headerText: string,
-  formatter?: ((value: TData[TKey]) => string) | null,
+  formatter?: ((value: TData[TKey]) => string | ReactNode) | null,
   href?: string | null,
 ): ColumnDef<TData> {
   return {
