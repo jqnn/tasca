@@ -16,7 +16,7 @@ import { Button } from "~/components/ui/button";
 import { Switch } from "~/components/ui/switch";
 import { Label } from "~/components/ui/label";
 import CreateTaskByTemplateDialog from "~/app/dashboard/tasks/(dialogs)/create-task";
-import { instanceStatus } from "~/lib/utils";
+import { beautifyInstanceStatus } from "~/lib/utils";
 
 export function TaskList() {
   const router = useRouter();
@@ -79,7 +79,7 @@ export function TaskList() {
                         {task.createdBy.displayName ?? task.createdBy.userName}
                       </CardDescription>
                       <CardDescription>
-                        Status - {instanceStatus(task.status)}
+                        Status - {beautifyInstanceStatus(task.status)}
                       </CardDescription>
                     </CardHeader>
                   </Card>
