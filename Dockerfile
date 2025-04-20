@@ -1,6 +1,7 @@
-FROM node:18-slim AS builder
+FROM node:18-slim AS job
 WORKDIR /app
 RUN apt-get update && apt-get install -y openssl
+RUN npm install -g tsx
 COPY package.json package-lock.json ./
 COPY prisma ./prisma
 RUN npm ci
@@ -12,12 +13,7 @@ RUN mkdir -p .next/standalone/.next && \
     cp -r prisma .next/standalone/prisma && \
     cp -r node_modules .next/standalone/node_modules && \
     cp package.json .next/standalone/
-
-FROM node:18-slim AS runner
-RUN apt-get update && apt-get install -y openssl
-RUN npm install -g tsx
-WORKDIR /app
-COPY --from=builder /app/.next/standalone ./
+WORKDIR /app/.next/standalone
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
