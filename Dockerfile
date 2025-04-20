@@ -1,8 +1,9 @@
 FROM node:18-slim AS builder
 WORKDIR /app
+RUN apt-get update && apt-get install -y openssl
 COPY package.json package-lock.json ./
-RUN npm ci
 COPY prisma ./prisma
+RUN npm ci
 COPY . .
 RUN SKIP_ENV_VALIDATION=1 npm run build
 RUN npx prisma generate
