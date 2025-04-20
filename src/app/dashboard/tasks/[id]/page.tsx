@@ -10,6 +10,7 @@ import {
 } from "~/components/ui/site-header";
 import { api } from "~/trpc/react";
 import { TaskFields } from "~/app/dashboard/tasks/[id]/fields";
+import TasksTable from "~/app/dashboard/tasks/[id]/tasks";
 
 interface PageProps {
   params: Promise<{
@@ -47,8 +48,9 @@ export default function TaskPage({ params }: PageProps) {
       </SiteHeader>
 
       <main className="flex shrink-0 items-center gap-2 transition-[width,height] ease-linear">
-        <div className={"flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6"}>
+        <div className="flex w-full flex-col items-center gap-1 px-4 lg:gap-2 lg:px-6">
           <TaskFields instances={instance.InstanceField} />
+          <TasksTable instances={instance.InstanceTask} />
         </div>
       </main>
     </>
