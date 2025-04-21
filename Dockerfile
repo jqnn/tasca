@@ -15,7 +15,7 @@ FROM node:18-slim AS runner
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+RUN npm ci && npm prune --omit=dev
 
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/public ./public
