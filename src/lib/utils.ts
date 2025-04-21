@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { sha256 } from "js-sha256";
 import { toast } from "sonner";
-import type { InstanceStatus, Role } from "@prisma/client";
+import type { FieldType, InstanceStatus, Role } from "@prisma/client";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -45,4 +45,56 @@ export function beautifyRole(role: Role) {
   if (role == "OPERATOR") return "Operator";
   if (role == "ADMINISTRATOR") return "Administrator";
   return "Benutzer";
+}
+
+export function isTaskDone(
+  instance: {
+    InstanceField: ({
+      field: {
+        fieldType: FieldType;
+        id: number;
+        label: string;
+        order: number;
+        placeHolder: string | null;
+        templateId: number;
+      };
+    } & {
+      fieldId: number;
+      id: number;
+      instanceId: number;
+      updatedAt: Date;
+      value: string;
+    })[];
+    InstanceTask: ({
+      task: {
+        description: string;
+        id: number;
+        order: number;
+        task: string;
+        templateId: number;
+      };
+    } & {
+      id: number;
+      instanceId: number;
+      status: InstanceStatus;
+      taskId: number;
+      updatedAt: Date;
+    })[];
+    template: {
+      createdAt: Date;
+      createdById: number;
+      description: string | null;
+      id: number;
+      name: string;
+    };
+  } & {
+    createdAt: Date;
+    createdById: number;
+    id: number;
+    status: InstanceStatus;
+    templateId: number;
+  },
+) {
+  if (instance.InstanceTask.find((task) => task.status == "OPEN")) return false;
+  return !instance.InstanceField.find((field) => field.value == "");
 }
