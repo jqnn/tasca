@@ -19,7 +19,7 @@ export default function UsersTable() {
 
   const { data, status } = api.user.findAll.useQuery();
   const [tableData, setTableData] = React.useState<User[]>([]);
-  const deleteUser = api.user.delete.useMutation();
+  const deleteMutation = api.user.delete.useMutation();
 
   React.useEffect(() => {
     setTableData(data ?? []);
@@ -62,7 +62,7 @@ export default function UsersTable() {
         setOpen={(value) => {
           if (!value) setDeleteId(null);
         }}
-        mutation={deleteUser}
+        mutation={deleteMutation}
         data={{ id: deleteId ?? 0 }}
         onDelete={() => {
           setTableData((prev) => prev.filter((item) => item.id !== deleteId));

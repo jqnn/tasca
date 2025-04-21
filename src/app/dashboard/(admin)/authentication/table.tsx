@@ -17,7 +17,7 @@ export default function AuthenticationMethodsTable() {
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const { data, status } = api.authMethod.findAll.useQuery();
   const [tableData, setTableData] = React.useState<AuthMethod[]>([]);
-  const deleteAuthMethod = api.authMethod.delete.useMutation();
+  const deleteMutation = api.authMethod.delete.useMutation();
 
   React.useEffect(() => {
     if (data) {
@@ -70,7 +70,7 @@ export default function AuthenticationMethodsTable() {
         onDelete={() => {
           setTableData(tableData.filter((item) => item.id !== deleteId));
         }}
-        mutation={deleteAuthMethod}
+        mutation={deleteMutation}
       />
     </DataTable>
   );

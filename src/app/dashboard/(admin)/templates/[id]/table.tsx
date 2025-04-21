@@ -23,7 +23,7 @@ export default function TemplateTaskTable({
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const [tableData, setTableData] = React.useState<TemplateTask[]>([]);
-  const deleteTemplateTask = api.templateTask.delete.useMutation();
+  const deleteMutation = api.templateTask.delete.useMutation();
 
   useEffect(() => {
     setTableData(tasks.sort((a, b) => a.order - b.order));
@@ -76,7 +76,7 @@ export default function TemplateTaskTable({
             if (value) return;
             setDeleteId(null);
           }}
-          mutation={deleteTemplateTask}
+          mutation={deleteMutation}
           data={{ id: deleteId ?? 0 }}
           onDelete={() => {
             setTableData(tableData.filter((item) => item.id !== deleteId));

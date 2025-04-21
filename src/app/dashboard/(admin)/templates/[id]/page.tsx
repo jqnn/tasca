@@ -34,7 +34,7 @@ export default function TemplatePage({ params }: PageProps) {
     id: Number(Number(actualParams.id)),
   });
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
-  const deleteTemplate = api.template.delete.useMutation();
+  const deleteMutation = api.template.delete.useMutation();
 
   if (status !== "success") {
     return <Spinner />;
@@ -96,7 +96,7 @@ export default function TemplatePage({ params }: PageProps) {
         }}
         data={{ id: deleteId ?? 0 }}
         onDelete={() => router.push("/dashboard/templates")}
-        mutation={deleteTemplate}
+        mutation={deleteMutation}
       />
     </>
   );
