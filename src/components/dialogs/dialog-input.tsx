@@ -16,7 +16,7 @@ export default function DialogInput({
   id: string;
   label: string;
   placeHolder?: string | null;
-  required: boolean;
+  required?: boolean;
   setValue: (open: string) => void;
   min?: number | string;
   max?: number | string;
