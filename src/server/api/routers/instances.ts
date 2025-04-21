@@ -10,6 +10,11 @@ export const instanceRouter = createTRPCRouter({
           include: {
             template: true,
             createdBy: true,
+            InstanceField: {
+              include: {
+                field: true,
+              },
+            },
           },
         });
       } else {
@@ -18,6 +23,11 @@ export const instanceRouter = createTRPCRouter({
           include: {
             template: true,
             createdBy: true,
+            InstanceField: {
+              include: {
+                field: true,
+              },
+            },
           },
         });
       }
