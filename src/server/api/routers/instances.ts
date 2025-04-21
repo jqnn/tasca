@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { InstanceStatus } from "@prisma/client";
 
 export const instanceRouter = createTRPCRouter({
   findAll: publicProcedure
@@ -93,6 +94,15 @@ export const instanceRouter = createTRPCRouter({
       }
 
       return instance;
+    }),
+
+  updateInstanceState: publicProcedure
+    .input(z.object({id: z.number(), value: z.nativeEnum(InstanceStatus)}))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.instanceTemplate.update({
+        where: { id: input.id },
+        data: { status: input.value },
+      });
     }),
 
   updateValue: publicProcedure
