@@ -14,14 +14,12 @@ RUN npm run build
 FROM node:18-slim AS runner
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci && npm prune --omit=dev
-
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/tsconfig.json ./tsconfig.json
 
 RUN npm install -g tsx prisma
 

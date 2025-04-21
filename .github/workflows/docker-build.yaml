@@ -55,7 +55,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    runs-on: [ubuntu-latest, amd64]
+    runs-on: ubuntu-latest
     steps:
       - name: Check out source code
         uses: actions/checkout@v4
