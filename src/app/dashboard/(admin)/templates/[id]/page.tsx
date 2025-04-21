@@ -88,16 +88,18 @@ export default function TemplatePage({ params }: PageProps) {
         </div>
       </main>
 
-      <DeleteDialog
-        open={deleteId !== null}
-        setOpen={(value) => {
-          if (value) return;
-          setDeleteId(null);
-        }}
-        data={{ id: deleteId ?? 0 }}
-        onDelete={() => router.push("/dashboard/templates")}
-        mutation={deleteMutation}
-      />
+      {deleteId !== null && (
+        <DeleteDialog
+          open={true}
+          setOpen={(value) => {
+            if (value) return;
+            setDeleteId(null);
+          }}
+          data={{ id: deleteId ?? 0 }}
+          onDelete={() => router.push("/dashboard/templates")}
+          mutation={deleteMutation}
+        />
+      )}
     </>
   );
 }

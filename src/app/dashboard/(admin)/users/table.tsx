@@ -60,17 +60,19 @@ export default function UsersTable() {
         />
       )}
 
-      <DeleteDialog
-        open={deleteId !== null}
-        setOpen={(value) => {
-          if (!value) setDeleteId(null);
-        }}
-        mutation={deleteMutation}
-        data={{ id: deleteId ?? 0 }}
-        onDelete={() => {
-          setTableData((prev) => prev.filter((item) => item.id !== deleteId));
-        }}
-      />
+      {deleteId !== null && (
+        <DeleteDialog
+          open={true}
+          setOpen={(value) => {
+            if (!value) setDeleteId(null);
+          }}
+          mutation={deleteMutation}
+          data={{ id: deleteId ?? 0 }}
+          onDelete={() => {
+            setTableData((prev) => prev.filter((item) => item.id !== deleteId));
+          }}
+        />
+      )}
     </DataTable>
   );
 }

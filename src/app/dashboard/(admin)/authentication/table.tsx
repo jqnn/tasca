@@ -63,18 +63,20 @@ export default function AuthenticationMethodsTable() {
         />
       )}
 
-      <DeleteDialog
-        open={deleteId !== null}
-        setOpen={(value) => {
-          if (value) return;
-          setDeleteId(null);
-        }}
-        data={{ id: deleteId ?? 0 }}
-        onDelete={() => {
-          setTableData(tableData.filter((item) => item.id !== deleteId));
-        }}
-        mutation={deleteMutation}
-      />
+      {deleteId !== null && (
+        <DeleteDialog
+          open={true}
+          setOpen={(value) => {
+            if (value) return;
+            setDeleteId(null);
+          }}
+          data={{ id: deleteId ?? 0 }}
+          onDelete={() => {
+            setTableData(tableData.filter((item) => item.id !== deleteId));
+          }}
+          mutation={deleteMutation}
+        />
+      )}
     </DataTable>
   );
 }
