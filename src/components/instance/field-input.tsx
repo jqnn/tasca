@@ -10,12 +10,13 @@ import { showErrorToast } from "~/lib/utils";
 export default function FieldInput({
   instance,
   field,
+  disabled,
 }: {
   instance: InstanceField;
   field: TemplateField;
+  disabled: boolean;
 }) {
   const handleBlur = () => {
-
     updateMutation.mutate({
       id: instance.id,
       value: value,
@@ -28,7 +29,7 @@ export default function FieldInput({
     },
     onSuccess: () => {
       instance.value = value;
-    }
+    },
   });
 
   const [value, setValue] = React.useState<string>(instance.value);
@@ -44,6 +45,7 @@ export default function FieldInput({
         className={"col-span-3"}
         placeholder={field.placeHolder ?? field.label}
         type={field.fieldType}
+        disabled={disabled}
         onChange={(e) => setValue(e.target.value)}
         onBlur={handleBlur}
       />

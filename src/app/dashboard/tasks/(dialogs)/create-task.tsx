@@ -20,7 +20,7 @@ import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
 import { showErrorToast } from "~/lib/utils";
 import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function CreateTaskByTemplateDialog({
   open,
@@ -68,7 +68,7 @@ export default function CreateTaskByTemplateDialog({
   const router = useRouter();
   const { data: session } = useSession();
   if (!session) {
-    router.push("/")
+    router.push("/");
   }
 
   const [template, setTemplate] = React.useState<Template | null>(null);

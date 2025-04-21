@@ -97,7 +97,7 @@ export const instanceRouter = createTRPCRouter({
     }),
 
   updateInstanceState: publicProcedure
-    .input(z.object({id: z.number(), value: z.nativeEnum(InstanceStatus)}))
+    .input(z.object({ id: z.number(), value: z.nativeEnum(InstanceStatus) }))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.instanceTemplate.update({
         where: { id: input.id },

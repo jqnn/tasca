@@ -22,10 +22,10 @@ export default function TaskPage({ params }: PageProps) {
   const actualParams = React.use(params);
   const { data: session } = useSession();
   if (!session) {
-    router.push("/")
+    router.push("/");
   }
 
-  const updateMutation = api.instance.updateInstanceState.useMutation()
+  const updateMutation = api.instance.updateInstanceState.useMutation();
   const { data: instance, status } = api.instance.find.useQuery({
     id: Number(actualParams.id),
   });
@@ -39,25 +39,31 @@ export default function TaskPage({ params }: PageProps) {
   }
 
   const handleDone = () => {
-    if(!(isTaskDone(instance))) {
-      showToast("Fehler", "Die Aufgabe muss erst beendet werden, bevor sie als Fertig markiert werden kann.")
+    if (!isTaskDone(instance)) {
+      showToast(
+        "Fehler",
+        "Die Aufgabe muss erst beendet werden, bevor sie als Fertig markiert werden kann.",
+      );
       return;
     }
 
     showToast("Lädt...", "Die Aufgabe wird aktualisert...");
-    updateMutation.mutate({id: instance.id, value: "COMPLETED"}, {
-      onSuccess: () => {
-        showToast(
-          "Erfolgreich",
-          "Die Aufgabe wurde erfolgreich aktualisiert.",
-        );
-        router.push("/dashboard/tasks")
+    updateMutation.mutate(
+      { id: instance.id, value: "COMPLETED" },
+      {
+        onSuccess: () => {
+          showToast(
+            "Erfolgreich",
+            "Die Aufgabe wurde erfolgreich aktualisiert.",
+          );
+          router.push("/dashboard/tasks");
+        },
+        onError: () => {
+          showErrorToast();
+        },
       },
-      onError: () => {
-        showErrorToast();
-      },
-    });
-  }
+    );
+  };
 
   return (
     <>
@@ -67,12 +73,20 @@ export default function TaskPage({ params }: PageProps) {
 
       <main className="flex shrink-0 items-center gap-2 transition-[width,height] ease-linear">
         <div className="flex w-full flex-col items-center gap-1 px-4 lg:gap-2 lg:px-6">
-          <TaskFields instances={instance.InstanceField} disabled={instance.status == "COMPLETED"} />
-          <TasksTable instances={instance.InstanceTask} disabled={instance.status == "COMPLETED"} />
+          <TaskFields
+            instances={instance.InstanceField}
+            disabled={instance.status == "COMPLETED"}
+          />
+          <TasksTable
+            instances={instance.InstanceTask}
+            disabled={instance.status == "COMPLETED"}
+          />
 
           {instance.status == "OPEN" && (
             <div className={"mt-4"}>
-              <Button variant={"default"} onClick={handleDone}>Als Fertig markieren</Button>
+              <Button variant={"default"} onClick={handleDone}>
+                Als Fertig markieren
+              </Button>
             </div>
           )}
         </div>

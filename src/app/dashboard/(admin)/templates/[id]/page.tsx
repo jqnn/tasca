@@ -1,6 +1,6 @@
 "use client";
 
-import { notFound, redirect, useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import React from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/trpc/react";
@@ -27,7 +27,7 @@ export default function TemplatePage({ params }: PageProps) {
   const actualParams = React.use(params);
   const { data: session } = useSession();
   if (!session) {
-    router.push("/")
+    router.push("/");
   }
 
   const { data: template, status } = api.template.find.useQuery({

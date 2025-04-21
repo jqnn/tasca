@@ -6,7 +6,13 @@ import { showErrorToast } from "~/lib/utils";
 import type { InstanceTask } from "@prisma/client";
 import { Checkbox } from "~/components/ui/checkbox";
 
-export default function TaskCheck({ instance }: { instance: InstanceTask }) {
+export default function TaskCheck({
+  instance,
+  disabled,
+}: {
+  instance: InstanceTask;
+  disabled: boolean;
+}) {
   const handleBlur = () => {
     updateMutation.mutate({
       id: instance.id,
@@ -19,8 +25,8 @@ export default function TaskCheck({ instance }: { instance: InstanceTask }) {
       showErrorToast();
     },
     onSuccess: (data) => {
-      instance.status = data.status
-    }
+      instance.status = data.status;
+    },
   });
 
   const [value, setValue] = React.useState<boolean>(
@@ -31,6 +37,7 @@ export default function TaskCheck({ instance }: { instance: InstanceTask }) {
     <div className={"flex justify-center"}>
       <Checkbox
         checked={value}
+        disabled={disabled}
         onCheckedChange={(e) => setValue(e as boolean)}
         onBlur={handleBlur}
       />

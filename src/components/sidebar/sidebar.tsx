@@ -22,7 +22,7 @@ import {
   SidebarMenuItem,
 } from "~/components/ui/sidebar";
 import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 
 const data = {
@@ -63,7 +63,7 @@ export function SidebarComponent({
   const router = useRouter();
   const { data: session } = useSession();
   if (!session) {
-    router.push("/")
+    router.push("/");
   }
 
   const [role] = api.user.getRole.useSuspenseQuery({
