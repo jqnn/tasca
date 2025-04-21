@@ -9,7 +9,7 @@ import {
   SiteHeader,
   SiteTitle,
 } from "~/components/ui/site-header";
-import TemplateTaskTable from "~/app/dashboard/(admin)/templates/[id]/table";
+import TemplateTaskTable from "~/app/dashboard/(admin)/templates/[id]/tasks-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import TemplateFieldsTable from "~/app/dashboard/(admin)/templates/[id]/fields-table";
 import { Button } from "~/components/ui/button";
