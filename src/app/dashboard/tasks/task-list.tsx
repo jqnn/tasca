@@ -58,22 +58,34 @@ export function TaskList() {
 
       {tasks && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {tasks.map((task) => (
-            <Link key={task.id} href={`/dashboard/tasks/${task.id}`}>
-              <Card key={task.id}>
-                <CardHeader>
-                  <CardTitle>{task.template.name}</CardTitle>
-                  <CardDescription>
-                    Ersteller -&nbsp;
-                    {task.createdBy.displayName ?? task.createdBy.userName}
-                  </CardDescription>
-                  <CardDescription>
-                    Status - {beautifyInstanceStatus(task.status)}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            </Link>
-          ))}
+          {tasks.map((task) => {
+            const field = task.InstanceField.sort(
+              (a, b) => a.field.order - b.field.order,
+            );
+
+            const firstField = field[0];
+
+            return (
+              <Link key={task.id} href={`/dashboard/tasks/${task.id}`}>
+                <Card key={task.id}>
+                  <CardHeader>
+                    <CardTitle>
+                      {firstField
+                        ? firstField.field.label + " - " + firstField.value
+                        : task.template.name}
+                    </CardTitle>
+                    <CardDescription>
+                      <p>
+                        Ersteller -{" "}
+                        {task.createdBy.displayName ?? task.createdBy.userName}
+                      </p>
+                      <p>Status - {beautifyInstanceStatus(task.status)}</p>
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </Link>
+            );
+          })}
         </div>
       )}
 
