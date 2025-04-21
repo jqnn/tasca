@@ -64,6 +64,7 @@ export function SidebarComponent({
   const { data: session } = useSession();
   if (!session) {
     router.push("/");
+    return;
   }
 
   const [role] = api.user.getRole.useSuspenseQuery({

@@ -32,6 +32,7 @@ export function TaskFields({ instances, disabled }: TaskFieldsProps) {
   const { data: session } = useSession();
   if (!session) {
     router.push("/");
+    return;
   }
 
   return (

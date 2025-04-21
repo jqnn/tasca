@@ -69,6 +69,7 @@ export default function CreateTaskByTemplateDialog({
   const { data: session } = useSession();
   if (!session) {
     router.push("/");
+    return;
   }
 
   const [template, setTemplate] = React.useState<Template | null>(null);

@@ -28,6 +28,7 @@ export default function TemplatePage({ params }: PageProps) {
   const { data: session } = useSession();
   if (!session) {
     router.push("/");
+    return;
   }
 
   const { data: template, status } = api.template.find.useQuery({

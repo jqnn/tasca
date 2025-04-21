@@ -23,6 +23,7 @@ export default function TaskPage({ params }: PageProps) {
   const { data: session } = useSession();
   if (!session) {
     router.push("/");
+    return;
   }
 
   const updateMutation = api.instance.updateInstanceState.useMutation();

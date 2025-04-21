@@ -23,6 +23,7 @@ export function TaskList() {
   const { data: session } = useSession();
   if (!session) {
     router.push("/");
+    return;
   }
 
   const [showCreated, setShowCreated] = React.useState(false);
