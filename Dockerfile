@@ -1,8 +1,6 @@
 FROM node:18-slim AS builder
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y openssl
-
 COPY package.json package-lock.json ./
 COPY prisma ./prisma
 RUN npm ci
@@ -21,8 +19,7 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
 
-RUN npm install -g tsx prisma
-RUN apt-get update && apt-get install -y openssl
+RUN npm install -g tsx
 
 EXPOSE 3000
 ENV PORT=3000
