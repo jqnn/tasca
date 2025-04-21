@@ -31,9 +31,10 @@ type InstanceType = {
 
 interface TasksTableProps {
   instances: InstanceType[];
+  disabled: boolean;
 }
 
-export default function TasksTable({ instances }: TasksTableProps) {
+export default function TasksTable({ instances, disabled }: TasksTableProps) {
   const [tableData, setTableData] = React.useState<InstanceType[]>([]);
 
   React.useEffect(() => {
@@ -45,7 +46,7 @@ export default function TasksTable({ instances }: TasksTableProps) {
       accessorKey: "checked",
       header: () => <div />,
       cell: ({ row }) => {
-        return <TaskCheck instance={row.original} />;
+        return <TaskCheck instance={row.original} disabled={disabled} />;
       },
     },
     centeredColumn("task", "Aufgabe", (value) => (

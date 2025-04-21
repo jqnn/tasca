@@ -67,12 +67,14 @@ export default function TaskPage({ params }: PageProps) {
 
       <main className="flex shrink-0 items-center gap-2 transition-[width,height] ease-linear">
         <div className="flex w-full flex-col items-center gap-1 px-4 lg:gap-2 lg:px-6">
-          <TaskFields instances={instance.InstanceField} />
-          <TasksTable instances={instance.InstanceTask} />
+          <TaskFields instances={instance.InstanceField} disabled={instance.status == "COMPLETED"} />
+          <TasksTable instances={instance.InstanceTask} disabled={instance.status == "COMPLETED"} />
 
-          <div className={"mt-4"}>
-            <Button variant={"default"} onClick={handleDone}>Als Fertig markieren</Button>
-          </div>
+          {instance.status == "OPEN" && (
+            <div className={"mt-4"}>
+              <Button variant={"default"} onClick={handleDone}>Als Fertig markieren</Button>
+            </div>
+          )}
         </div>
       </main>
     </>
