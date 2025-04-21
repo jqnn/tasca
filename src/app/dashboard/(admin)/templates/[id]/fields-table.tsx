@@ -61,28 +61,33 @@ export default function TemplateFieldsTable({
           });
         }}
       >
-        <CreateTemplateFieldDialog
-          templateId={templateId}
-          order={tableData.length + 1}
-          open={createOpen}
-          setOpen={setCreateOpen}
-          onCreate={(data) => {
-            setTableData([...tableData, data]);
-          }}
-        />
 
-        <DeleteDialog
-          open={deleteId !== null}
-          setOpen={(value) => {
-            if (value) return;
-            setDeleteId(null);
-          }}
-          mutation={deleteMutation}
-          data={{ id: deleteId ?? 0 }}
-          onDelete={() => {
-            setTableData(tableData.filter((item) => item.id !== deleteId));
-          }}
-        />
+        {createOpen && (
+          <CreateTemplateFieldDialog
+            templateId={templateId}
+            order={tableData.length + 1}
+            open={createOpen}
+            setOpen={setCreateOpen}
+            onCreate={(data) => {
+              setTableData([...tableData, data]);
+            }}
+          />
+        )}
+
+        {deleteId !== null && (
+          <DeleteDialog
+            open={true}
+            setOpen={(value) => {
+              if (value) return;
+              setDeleteId(null);
+            }}
+            mutation={deleteMutation}
+            data={{ id: deleteId ?? 0 }}
+            onDelete={() => {
+              setTableData(tableData.filter((item) => item.id !== deleteId));
+            }}
+          />
+        )}
       </SortableDataTable>
     </div>
   );

@@ -17,7 +17,7 @@ export default function AuthenticationMethodsTable() {
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const { data, status } = api.authMethod.findAll.useQuery();
   const [tableData, setTableData] = React.useState<AuthMethod[]>([]);
-  const deleteAuthMethod = api.authMethod.delete.useMutation();
+  const deleteMutation = api.authMethod.delete.useMutation();
 
   React.useEffect(() => {
     if (data) {
@@ -52,26 +52,31 @@ export default function AuthenticationMethodsTable() {
       columns={columns}
       onButtonClick={() => setCreateOpen(true)}
     >
-      <CreateAuthenticationMethodDialog
-        open={createOpen}
-        setOpen={setCreateOpen}
-        onCreate={(data) => {
-          setTableData([...tableData, data]);
-        }}
-      />
 
-      <DeleteDialog
-        open={deleteId !== null}
-        setOpen={(value) => {
-          if (value) return;
-          setDeleteId(null);
-        }}
-        data={{ id: deleteId ?? 0 }}
-        onDelete={() => {
-          setTableData(tableData.filter((item) => item.id !== deleteId));
-        }}
-        mutation={deleteAuthMethod}
-      />
+      {createOpen && (
+        <CreateAuthenticationMethodDialog
+          open={createOpen}
+          setOpen={setCreateOpen}
+          onCreate={(data) => {
+            setTableData([...tableData, data]);
+          }}
+        />
+      )}
+
+      {deleteId !== null && (
+        <DeleteDialog
+          open={true}
+          setOpen={(value) => {
+            if (value) return;
+            setDeleteId(null);
+          }}
+          data={{ id: deleteId ?? 0 }}
+          onDelete={() => {
+            setTableData(tableData.filter((item) => item.id !== deleteId));
+          }}
+          mutation={deleteMutation}
+        />
+      )}
     </DataTable>
   );
 }

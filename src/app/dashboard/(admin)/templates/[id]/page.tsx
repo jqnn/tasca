@@ -1,6 +1,6 @@
 "use client";
 
-import { notFound, redirect, useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import React from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/trpc/react";
@@ -9,7 +9,7 @@ import {
   SiteHeader,
   SiteTitle,
 } from "~/components/ui/site-header";
-import TemplateTaskTable from "~/app/dashboard/(admin)/templates/[id]/table";
+import TemplateTaskTable from "~/app/dashboard/(admin)/templates/[id]/tasks-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import TemplateFieldsTable from "~/app/dashboard/(admin)/templates/[id]/fields-table";
 import { Button } from "~/components/ui/button";
@@ -23,18 +23,21 @@ interface PageProps {
 }
 
 export default function TemplatePage({ params }: PageProps) {
+  const [deleteId, setDeleteId] = React.useState<number | null>(null);
+
   const router = useRouter();
   const actualParams = React.use(params);
   const { data: session } = useSession();
   if (!session) {
-    redirect("/");
+    router.push("/");
+    return;
   }
 
   const { data: template, status } = api.template.find.useQuery({
     id: Number(Number(actualParams.id)),
   });
-  const [deleteId, setDeleteId] = React.useState<number | null>(null);
-  const deleteTemplate = api.template.delete.useMutation();
+
+  const deleteMutation = api.template.delete.useMutation();
 
   if (status !== "success") {
     return <Spinner />;
@@ -88,16 +91,18 @@ export default function TemplatePage({ params }: PageProps) {
         </div>
       </main>
 
-      <DeleteDialog
-        open={deleteId !== null}
-        setOpen={(value) => {
-          if (value) return;
-          setDeleteId(null);
-        }}
-        data={{ id: deleteId ?? 0 }}
-        onDelete={() => router.push("/dashboard/templates")}
-        mutation={deleteTemplate}
-      />
+      {deleteId !== null && (
+        <DeleteDialog
+          open={true}
+          setOpen={(value) => {
+            if (value) return;
+            setDeleteId(null);
+          }}
+          data={{ id: deleteId ?? 0 }}
+          onDelete={() => router.push("/dashboard/templates")}
+          mutation={deleteMutation}
+        />
+      )}
     </>
   );
 }

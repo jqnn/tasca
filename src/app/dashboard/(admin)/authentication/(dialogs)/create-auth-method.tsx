@@ -38,7 +38,7 @@ export default function CreateAuthenticationMethodDialog({
         onSuccess: (data) => {
           if (data) return;
 
-          createAuthMethod.mutate(
+          createMutation.mutate(
             {
               description: description,
               type: type,
@@ -87,7 +87,7 @@ export default function CreateAuthenticationMethodDialog({
   const [password, setPassword] = React.useState<string>("");
 
   const existsMutation = api.authMethod.exists.useMutation();
-  const createAuthMethod = api.authMethod.create.useMutation();
+  const createMutation = api.authMethod.create.useMutation();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -98,148 +98,154 @@ export default function CreateAuthenticationMethodDialog({
             Erstelle eine neue Authentifizierungsmethode.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid w-full gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="type" className="text-right">
-              Typ
-            </Label>
-            <div className={"col-span-3"}>
-              <Select
+
+        <form onSubmit={handleConfirm}>
+          <div className="grid w-full gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="type" className="text-right">
+                Typ
+              </Label>
+              <div className={"col-span-3"}>
+                <Select
+                  required={true}
+                  onValueChange={(value) => setType(value as AuthMethodType)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Wähle einen Typ" />
+                  </SelectTrigger>
+                  <SelectContent id={"type"}>
+                    {Object.values(AuthMethodType)
+                      .filter((value) => value != "LOCAL")
+                      .map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <DialogInput
+              id={"description"}
+              label={"Beschreibung"}
+              required={true}
+              setValue={setDescription}
+            />
+
+            <div />
+
+            <DialogInput
+              id={"controller"}
+              label={"Controller"}
+              required={true}
+              setValue={setController}
+            />
+
+            <DialogInput
+              id={"baseDN"}
+              label={"Basis-DN"}
+              placeHolder={"CN=Users,CN=Firma,DC=domain,DC=local"}
+              required={true}
+              setValue={setBaseDN}
+            />
+
+            {type == AuthMethodType.AD && (
+              <DialogInput
+                id={"suffix"}
+                label={"Suffix"}
+                placeHolder={"@domain.local"}
                 required={true}
-                onValueChange={(value) => setType(value as AuthMethodType)}
+                setValue={setSuffix}
+              />
+            )}
+
+            {type == AuthMethodType.LDAP && (
+              <>
+                <DialogInput
+                  id={"userDN"}
+                  label={"Benutzer-DN"}
+                  required={true}
+                  setValue={setUserDN}
+                />
+                <DialogInput
+                  id={"uidAttribute"}
+                  label={"UID-Attribut"}
+                  placeHolder={"uid"}
+                  required={true}
+                  setValue={setUID}
+                />
+              </>
+            )}
+
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label
+                htmlFor="securityType"
+                className="text-right text-[0.842rem]"
               >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Wähle einen Typ" />
-                </SelectTrigger>
-                <SelectContent id={"type"}>
-                  {Object.values(AuthMethodType)
-                    .filter((value) => value != "LOCAL")
-                    .map((type) => (
+                Sicherheitstyp
+              </Label>
+              <div className={"col-span-3"}>
+                <Select
+                  required={true}
+                  onValueChange={(value) =>
+                    setSecurityType(value as SecurityType)
+                  }
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Wähle einen Sicherheitstyp" />
+                  </SelectTrigger>
+                  <SelectContent id={"securityType"}>
+                    {Object.values(SecurityType).map((type) => (
                       <SelectItem key={type} value={type}>
                         {type}
                       </SelectItem>
                     ))}
-                </SelectContent>
-              </Select>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-          </div>
 
-          <DialogInput
-            id={"description"}
-            label={"Beschreibung"}
-            required={true}
-            setValue={setDescription}
-          />
-
-          <div />
-
-          <DialogInput
-            id={"controller"}
-            label={"Controller"}
-            required={true}
-            setValue={setController}
-          />
-
-          <DialogInput
-            id={"baseDN"}
-            label={"Basis-DN"}
-            placeHolder={"CN=Users,CN=Firma,DC=domain,DC=local"}
-            required={true}
-            setValue={setBaseDN}
-          />
-
-          {type == AuthMethodType.AD && (
             <DialogInput
-              id={"suffix"}
-              label={"Suffix"}
-              placeHolder={"@domain.local"}
+              id={"port"}
+              label={"Port"}
+              placeHolder={"389"}
               required={true}
-              setValue={setSuffix}
+              setValue={(value) => setPort(Number(value))}
+              type={"number"}
+              min={1}
+              max={65535}
             />
-          )}
 
-          {type == AuthMethodType.LDAP && (
-            <>
-              <DialogInput
-                id={"userDN"}
-                label={"Benutzer-DN"}
-                required={true}
-                setValue={setUserDN}
-              />
-              <DialogInput
-                id={"uidAttribute"}
-                label={"UID-Attribut"}
-                placeHolder={"uid"}
-                required={true}
-                setValue={setUID}
-              />
-            </>
-          )}
+            <div />
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label
-              htmlFor="securityType"
-              className="text-right text-[0.842rem]"
-            >
-              Sicherheitstyp
-            </Label>
-            <div className={"col-span-3"}>
-              <Select
-                required={true}
-                onValueChange={(value) =>
-                  setSecurityType(value as SecurityType)
-                }
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Wähle einen Sicherheitstyp" />
-                </SelectTrigger>
-                <SelectContent id={"securityType"}>
-                  {Object.values(SecurityType).map((type) => (
-                    <SelectItem key={type} value={type}>
-                      {type}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <DialogInput
+              id={"userName"}
+              label={"Benutzername"}
+              placeHolder={"Domänen-Benutzername"}
+              required={true}
+              setValue={setUserName}
+            />
+
+            <DialogInput
+              id={"password"}
+              label={"Passwort"}
+              placeHolder={"Domänen-Passwort"}
+              required={true}
+              setValue={setPassword}
+              type={"password"}
+            />
           </div>
 
-          <DialogInput
-            id={"suffix"}
-            label={"Port"}
-            placeHolder={"389"}
-            required={true}
-            setValue={(value) => setPort(Number(value))}
-            type={"number"}
-            min={1}
-            max={65535}
-          />
-
-          <div />
-
-          <DialogInput
-            id={"userName"}
-            label={"Benutzername"}
-            placeHolder={"Domänen-Benutzername"}
-            required={true}
-            setValue={setUserName}
-          />
-
-          <DialogInput
-            id={"password"}
-            label={"Passwort"}
-            placeHolder={"Domänen-Passwort"}
-            required={true}
-            setValue={setPassword}
-            type={"password"}
-          />
-        </div>
-
-        <DialogFooter>
-          <Button onClick={handleConfirm} type="submit">
-            Erstellen
-          </Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button
+              type="submit"
+              disabled={existsMutation.isPending || createMutation.isPending}
+            >
+              Erstellen
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

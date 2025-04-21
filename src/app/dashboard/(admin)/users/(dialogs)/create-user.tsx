@@ -48,7 +48,7 @@ export default function CreateUserDialog({
             return;
           }
 
-          createAuthMethod.mutate(
+          createMutation.mutate(
             {
               userName: userName,
               password: password,
@@ -83,7 +83,7 @@ export default function CreateUserDialog({
   const [authMethod, setAuthMethod] = React.useState<AuthMethod | null>(null);
 
   const existsMutation = api.user.exists.useMutation();
-  const createAuthMethod = api.user.create.useMutation();
+  const createMutation = api.user.create.useMutation();
 
   const { data } = api.authMethod.findAll.useQuery();
   if (!data) return;
@@ -95,6 +95,7 @@ export default function CreateUserDialog({
           <DialogTitle>Hinzufügen</DialogTitle>
           <DialogDescription>Erstelle einen neuen Benutzer.</DialogDescription>
         </DialogHeader>
+        <form onSubmit={handleConfirm}>
         <div className="grid w-full gap-4 py-4">
           <DialogInput
             id={"userName"}
@@ -175,10 +176,11 @@ export default function CreateUserDialog({
         </div>
 
         <DialogFooter>
-          <Button onClick={handleConfirm} type="submit">
+          <Button type="submit" disabled={existsMutation.isPending || createMutation.isPending}>
             Erstellen
           </Button>
         </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

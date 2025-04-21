@@ -17,7 +17,7 @@ export default function TemplateTable() {
   const [tableData, setTableData] = React.useState<Template[]>([]);
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
-  const deleteTemplate = api.template.delete.useMutation();
+  const deleteMutation = api.template.delete.useMutation();
 
   React.useEffect(() => {
     setTableData(data ?? []);
@@ -47,26 +47,31 @@ export default function TemplateTable() {
       columns={columns}
       onButtonClick={() => setCreateOpen(true)}
     >
-      <CreateTemplateDialog
-        open={createOpen}
-        setOpen={setCreateOpen}
-        onCreate={(data) => {
-          setTableData([...tableData, data]);
-        }}
-      />
 
-      <DeleteDialog
-        open={deleteId !== null}
-        setOpen={(value) => {
-          if (value) return;
-          setDeleteId(null);
-        }}
-        data={{ id: deleteId ?? 0 }}
-        onDelete={() => {
-          setTableData(tableData.filter((item) => item.id !== deleteId));
-        }}
-        mutation={deleteTemplate}
-      />
+      {createOpen && (
+        <CreateTemplateDialog
+          open={createOpen}
+          setOpen={setCreateOpen}
+          onCreate={(data) => {
+            setTableData([...tableData, data]);
+          }}
+        />
+      )}
+
+      {deleteId !== null && (
+        <DeleteDialog
+          open={true}
+          setOpen={(value) => {
+            if (value) return;
+            setDeleteId(null);
+          }}
+          data={{ id: deleteId ?? 0 }}
+          onDelete={() => {
+            setTableData(tableData.filter((item) => item.id !== deleteId));
+          }}
+          mutation={deleteMutation}
+        />
+      )}
     </DataTable>
   );
 }

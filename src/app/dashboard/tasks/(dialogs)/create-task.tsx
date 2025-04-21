@@ -20,7 +20,7 @@ import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
 import { showErrorToast } from "~/lib/utils";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function CreateTaskByTemplateDialog({
   open,
@@ -65,14 +65,16 @@ export default function CreateTaskByTemplateDialog({
     );
   };
 
+  const router = useRouter();
+  const [template, setTemplate] = React.useState<Template | null>(null);
+
   const { data: session } = useSession();
   if (!session) {
-    redirect("/");
+    router.push("/");
+    return;
   }
 
-  const [template, setTemplate] = React.useState<Template | null>(null);
   const createMutation = api.instance.create.useMutation();
-
   const { data } = api.template.findAll.useQuery();
   if (!data) return;
 
@@ -85,46 +87,48 @@ export default function CreateTaskByTemplateDialog({
             Erstelle eine Aufgabe mit Vorlage.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid w-full gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="template" className="text-right">
-              Vorlage
-            </Label>
-            <div className={"col-span-3"}>
-              <Select
-                required={true}
-                onValueChange={(value) => {
-                  const template = data.find((e) => e.id === Number(value));
-                  if (!template) {
-                    setTemplate(null);
-                    return;
-                  }
-                  setTemplate(template);
-                }}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Wähle eine Vorlage" />
-                </SelectTrigger>
-                <SelectContent id={"template"}>
-                  {data.map((template) => (
-                    <SelectItem
-                      key={template.id}
-                      value={template.id.toString()}
-                    >
-                      {template.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+        <form onSubmit={handleConfirm}>
+          <div className="grid w-full gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="template" className="text-right">
+                Vorlage
+              </Label>
+              <div className={"col-span-3"}>
+                <Select
+                  required={true}
+                  onValueChange={(value) => {
+                    const template = data.find((e) => e.id === Number(value));
+                    if (!template) {
+                      setTemplate(null);
+                      return;
+                    }
+                    setTemplate(template);
+                  }}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Wähle eine Vorlage" />
+                  </SelectTrigger>
+                  <SelectContent id={"template"}>
+                    {data.map((template) => (
+                      <SelectItem
+                        key={template.id}
+                        value={template.id.toString()}
+                      >
+                        {template.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
-        </div>
 
-        <DialogFooter>
-          <Button onClick={handleConfirm} type="submit">
-            Erstellen
-          </Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button type="submit" disabled={createMutation.isPending}>
+              Erstellen
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

@@ -23,7 +23,7 @@ export default function TemplateTaskTable({
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const [tableData, setTableData] = React.useState<TemplateTask[]>([]);
-  const deleteTemplateTask = api.templateTask.delete.useMutation();
+  const deleteMutation = api.templateTask.delete.useMutation();
 
   useEffect(() => {
     setTableData(tasks.sort((a, b) => a.order - b.order));
@@ -60,28 +60,33 @@ export default function TemplateTaskTable({
           });
         }}
       >
-        <CreateTemplateTaskDialog
-          templateId={templateId}
-          order={tableData.length + 1}
-          open={createOpen}
-          setOpen={setCreateOpen}
-          onCreate={(data) => {
-            setTableData([...tableData, data]);
-          }}
-        />
 
-        <DeleteDialog
-          open={deleteId !== null}
-          setOpen={(value) => {
-            if (value) return;
-            setDeleteId(null);
-          }}
-          mutation={deleteTemplateTask}
-          data={{ id: deleteId ?? 0 }}
-          onDelete={() => {
-            setTableData(tableData.filter((item) => item.id !== deleteId));
-          }}
-        />
+        {createOpen && (
+          <CreateTemplateTaskDialog
+            templateId={templateId}
+            order={tableData.length + 1}
+            open={createOpen}
+            setOpen={setCreateOpen}
+            onCreate={(data) => {
+              setTableData([...tableData, data]);
+            }}
+          />
+        )}
+
+        {deleteId !== null && (
+          <DeleteDialog
+            open={true}
+            setOpen={(value) => {
+              if (value) return;
+              setDeleteId(null);
+            }}
+            mutation={deleteMutation}
+            data={{ id: deleteId ?? 0 }}
+            onDelete={() => {
+              setTableData(tableData.filter((item) => item.id !== deleteId));
+            }}
+          />
+        )}
       </SortableDataTable>
     </div>
   );

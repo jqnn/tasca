@@ -8,7 +8,7 @@ import {
 } from "~/components/ui/card";
 import * as React from "react";
 import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
@@ -19,14 +19,16 @@ import { beautifyInstanceStatus } from "~/lib/utils";
 import Spinner from "~/components/ui/spinner";
 
 export function TaskList() {
+  const [showCreated, setShowCreated] = React.useState(false);
+  const [showComplete, setShowComplete] = React.useState(false);
+
   const router = useRouter();
   const { data: session } = useSession();
   if (!session) {
-    redirect("/");
+    router.push("/");
+    return;
   }
 
-  const [showCreated, setShowCreated] = React.useState(false);
-  const [showComplete, setShowComplete] = React.useState(false);
   const { data: tasks, status } = api.instance.findAll.useQuery({
     completed: showComplete,
   });
@@ -58,32 +60,46 @@ export function TaskList() {
 
       {tasks && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {tasks.map((task) => (
-            <Link key={task.id} href={`/dashboard/tasks/${task.id}`}>
-              <Card key={task.id}>
-                <CardHeader>
-                  <CardTitle>{task.template.name}</CardTitle>
-                  <CardDescription>
-                    Ersteller -&nbsp;
-                    {task.createdBy.displayName ?? task.createdBy.userName}
-                  </CardDescription>
-                  <CardDescription>
-                    Status - {beautifyInstanceStatus(task.status)}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            </Link>
-          ))}
+          {tasks.map((task) => {
+            const field = task.InstanceField.sort(
+              (a, b) => a.field.order - b.field.order,
+            );
+
+            const firstField = field[0];
+
+            return (
+              <Link key={task.id} href={`/dashboard/tasks/${task.id}`}>
+                <Card key={task.id}>
+                  <CardHeader>
+                    <CardTitle>
+                      {firstField
+                        ? firstField.field.label + " - " + firstField.value
+                        : task.template.name}
+                    </CardTitle>
+                    <CardDescription>
+                      <p>
+                        Ersteller -{" "}
+                        {task.createdBy.displayName ?? task.createdBy.userName}
+                      </p>
+                      <p>Status - {beautifyInstanceStatus(task.status)}</p>
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </Link>
+            );
+          })}
         </div>
       )}
 
-      <CreateTaskByTemplateDialog
-        open={showCreated}
-        setOpen={setShowCreated}
-        onCreate={(instance) => {
-          router.push(`/dashboard/tasks/${instance.id}`);
-        }}
-      />
+      {showCreated && (
+        <CreateTaskByTemplateDialog
+          open={showCreated}
+          setOpen={setShowCreated}
+          onCreate={(instance) => {
+            router.push(`/dashboard/tasks/${instance.id}`);
+          }}
+        />
+      )}
     </div>
   );
 }

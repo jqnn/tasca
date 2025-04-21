@@ -10,9 +10,11 @@ import { showErrorToast } from "~/lib/utils";
 export default function FieldInput({
   instance,
   field,
+  disabled,
 }: {
   instance: InstanceField;
   field: TemplateField;
+  disabled: boolean;
 }) {
   const handleBlur = () => {
     updateMutation.mutate({
@@ -25,21 +27,25 @@ export default function FieldInput({
     onError: () => {
       showErrorToast();
     },
+    onSuccess: () => {
+      instance.value = value;
+    },
   });
 
-  const [value, setValue] = React.useState<string>("");
+  const [value, setValue] = React.useState<string>(instance.value);
 
   return (
-    <div className="grid w-full grid-cols-5 gap-4">
+    <div className="grid w-full grid-cols-4">
       <Label className={"mr-auto ml-auto"} htmlFor={String(instance.id)}>
         {field.label}
       </Label>
       <Input
         id={String(instance.id)}
-        value={instance.value}
-        className={"col-span-4"}
+        value={value}
+        className={"col-span-3"}
         placeholder={field.placeHolder ?? field.label}
         type={field.fieldType}
+        disabled={disabled}
         onChange={(e) => setValue(e.target.value)}
         onBlur={handleBlur}
       />
