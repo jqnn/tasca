@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
+import type { FormEvent } from "react";
 import * as React from "react";
 import { type Template } from "@prisma/client";
 import { api } from "~/trpc/react";
@@ -23,14 +24,16 @@ export default function CreateTemplateDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (template: Template) => void | null;
 }) {
-  const handleConfirm = () => {
+  const handleConfirm = (e: FormEvent) => {
+    e.preventDefault();
+
     existsMutation.mutate(
       { name: name },
       {
         onSuccess: (data) => {
           if (data) return;
 
-          createAuthMethod.mutate(
+          createMutation.mutate(
             {
               name: name,
               description: description,
@@ -62,7 +65,7 @@ export default function CreateTemplateDialog({
   if (session == null) return;
 
   const existsMutation = api.template.exists.useMutation();
-  const createAuthMethod = api.template.create.useMutation();
+  const createMutation = api.template.create.useMutation();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -71,27 +74,31 @@ export default function CreateTemplateDialog({
           <DialogTitle>Hinzufügen</DialogTitle>
           <DialogDescription>Erstelle eine neue Vorlage.</DialogDescription>
         </DialogHeader>
-        <div className="grid w-full gap-4 py-4">
-          <DialogInput
-            id={"name"}
-            label={"Name"}
-            required={true}
-            setValue={setName}
-          />
+        <form onSubmit={handleConfirm}>
+          <div className="grid w-full gap-4 py-4">
+            <DialogInput
+              id={"name"}
+              label={"Name"}
+              required={true}
+              setValue={setName}
+            />
 
-          <DialogInput
-            id={"description"}
-            label={"Beschreibung"}
-            required={true}
-            setValue={setDescription}
-          />
-        </div>
+            <DialogInput
+              id={"description"}
+              label={"Beschreibung"}
+              setValue={setDescription}
+            />
+          </div>
 
-        <DialogFooter>
-          <Button onClick={handleConfirm} type="submit">
-            Erstellen
-          </Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button
+              type="submit"
+              disabled={existsMutation.isPending || createMutation.isPending}
+            >
+              Erstellen
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

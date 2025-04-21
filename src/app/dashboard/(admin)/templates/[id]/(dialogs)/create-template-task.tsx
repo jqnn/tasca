@@ -27,7 +27,7 @@ export default function CreateTemplateTaskDialog({
   onCreate?: (template: TemplateTask) => void | null;
 }) {
   const handleConfirm = () => {
-    createTemplateTask.mutate(
+    createMutation.mutate(
       {
         task: task,
         description: description,
@@ -55,7 +55,7 @@ export default function CreateTemplateTaskDialog({
 
   const [task, setTask] = React.useState<string>("");
   const [description, setDescription] = React.useState<string>("");
-  const createTemplateTask = api.templateTask.create.useMutation();
+  const createMutation = api.templateTask.create.useMutation();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -64,31 +64,29 @@ export default function CreateTemplateTaskDialog({
           <DialogTitle>Hinzufügen</DialogTitle>
           <DialogDescription>Füge eine neue Aufgabe hinzu.</DialogDescription>
         </DialogHeader>
-        <div className="grid w-full gap-4 py-4">
-          <DialogInput
-            id={"task"}
-            label={"Aufgabe"}
-            required={true}
-            setValue={setTask}
-          />
+        <form onSubmit={handleConfirm}>
+          <div className="grid w-full gap-4 py-4">
+            <DialogInput
+              id={"task"}
+              label={"Aufgabe"}
+              required={true}
+              setValue={setTask}
+            />
 
-          <DialogInput
-            id={"description"}
-            label={"Beschreibung"}
-            required={true}
-            setValue={setDescription}
-          />
-        </div>
+            <DialogInput
+              id={"description"}
+              label={"Beschreibung"}
+              required={true}
+              setValue={setDescription}
+            />
+          </div>
 
-        <DialogFooter>
-          <Button
-            onClick={handleConfirm}
-            type="submit"
-            disabled={createTemplateTask.isPending}
-          >
-            Hinzufügen
-          </Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button type="submit" disabled={createMutation.isPending}>
+              Hinzufügen
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
