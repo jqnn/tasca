@@ -8,7 +8,7 @@ import {
 } from "~/components/ui/card";
 import * as React from "react";
 import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
@@ -22,7 +22,7 @@ export function TaskList() {
   const router = useRouter();
   const { data: session } = useSession();
   if (!session) {
-    redirect("/");
+    router.push("/");
   }
 
   const [showCreated, setShowCreated] = React.useState(false);

@@ -27,7 +27,7 @@ export default function TemplatePage({ params }: PageProps) {
   const actualParams = React.use(params);
   const { data: session } = useSession();
   if (!session) {
-    redirect("/");
+    router.push("/")
   }
 
   const { data: template, status } = api.template.find.useQuery({

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import FieldInput from "~/components/instance/field-input";
 import type { FieldType } from "@prisma/client";
 
@@ -27,9 +27,10 @@ interface TaskFieldsProps {
 }
 
 export function TaskFields({ instances }: TaskFieldsProps) {
+  const router = useRouter();
   const { data: session } = useSession();
   if (!session) {
-    redirect("/");
+    router.push("/")
   }
 
   return (
