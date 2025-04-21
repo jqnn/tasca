@@ -66,15 +66,15 @@ export default function CreateTaskByTemplateDialog({
   };
 
   const router = useRouter();
+  const [template, setTemplate] = React.useState<Template | null>(null);
+
   const { data: session } = useSession();
   if (!session) {
     router.push("/");
     return;
   }
 
-  const [template, setTemplate] = React.useState<Template | null>(null);
   const createMutation = api.instance.create.useMutation();
-
   const { data } = api.template.findAll.useQuery();
   if (!data) return;
 

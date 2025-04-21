@@ -23,6 +23,8 @@ interface PageProps {
 }
 
 export default function TemplatePage({ params }: PageProps) {
+  const [deleteId, setDeleteId] = React.useState<number | null>(null);
+
   const router = useRouter();
   const actualParams = React.use(params);
   const { data: session } = useSession();
@@ -34,7 +36,7 @@ export default function TemplatePage({ params }: PageProps) {
   const { data: template, status } = api.template.find.useQuery({
     id: Number(Number(actualParams.id)),
   });
-  const [deleteId, setDeleteId] = React.useState<number | null>(null);
+
   const deleteMutation = api.template.delete.useMutation();
 
   if (status !== "success") {

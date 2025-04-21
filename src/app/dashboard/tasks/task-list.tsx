@@ -19,6 +19,9 @@ import { beautifyInstanceStatus } from "~/lib/utils";
 import Spinner from "~/components/ui/spinner";
 
 export function TaskList() {
+  const [showCreated, setShowCreated] = React.useState(false);
+  const [showComplete, setShowComplete] = React.useState(false);
+
   const router = useRouter();
   const { data: session } = useSession();
   if (!session) {
@@ -26,8 +29,6 @@ export function TaskList() {
     return;
   }
 
-  const [showCreated, setShowCreated] = React.useState(false);
-  const [showComplete, setShowComplete] = React.useState(false);
   const { data: tasks, status } = api.instance.findAll.useQuery({
     completed: showComplete,
   });
