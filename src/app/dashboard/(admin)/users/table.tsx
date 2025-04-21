@@ -49,13 +49,16 @@ export default function UsersTable() {
       columns={columns}
       onButtonClick={() => setCreateOpen(true)}
     >
-      <CreateUserDialog
-        open={createOpen}
-        setOpen={setCreateOpen}
-        onCreate={(data) => {
-          setTableData((prev) => [...prev, data]);
-        }}
-      />
+
+      {createOpen && (
+        <CreateUserDialog
+          open={createOpen}
+          setOpen={setCreateOpen}
+          onCreate={(data) => {
+            setTableData((prev) => [...prev, data]);
+          }}
+        />
+      )}
 
       <DeleteDialog
         open={deleteId !== null}

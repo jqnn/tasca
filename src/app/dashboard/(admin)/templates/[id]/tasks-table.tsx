@@ -60,15 +60,18 @@ export default function TemplateTaskTable({
           });
         }}
       >
-        <CreateTemplateTaskDialog
-          templateId={templateId}
-          order={tableData.length + 1}
-          open={createOpen}
-          setOpen={setCreateOpen}
-          onCreate={(data) => {
-            setTableData([...tableData, data]);
-          }}
-        />
+
+        {createOpen && (
+          <CreateTemplateTaskDialog
+            templateId={templateId}
+            order={tableData.length + 1}
+            open={createOpen}
+            setOpen={setCreateOpen}
+            onCreate={(data) => {
+              setTableData([...tableData, data]);
+            }}
+          />
+        )}
 
         <DeleteDialog
           open={deleteId !== null}

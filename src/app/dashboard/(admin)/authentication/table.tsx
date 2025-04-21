@@ -52,13 +52,16 @@ export default function AuthenticationMethodsTable() {
       columns={columns}
       onButtonClick={() => setCreateOpen(true)}
     >
-      <CreateAuthenticationMethodDialog
-        open={createOpen}
-        setOpen={setCreateOpen}
-        onCreate={(data) => {
-          setTableData([...tableData, data]);
-        }}
-      />
+
+      {createOpen && (
+        <CreateAuthenticationMethodDialog
+          open={createOpen}
+          setOpen={setCreateOpen}
+          onCreate={(data) => {
+            setTableData([...tableData, data]);
+          }}
+        />
+      )}
 
       <DeleteDialog
         open={deleteId !== null}

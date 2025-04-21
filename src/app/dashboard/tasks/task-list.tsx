@@ -89,13 +89,15 @@ export function TaskList() {
         </div>
       )}
 
-      <CreateTaskByTemplateDialog
-        open={showCreated}
-        setOpen={setShowCreated}
-        onCreate={(instance) => {
-          router.push(`/dashboard/tasks/${instance.id}`);
-        }}
-      />
+      {showCreated && (
+        <CreateTaskByTemplateDialog
+          open={showCreated}
+          setOpen={setShowCreated}
+          onCreate={(instance) => {
+            router.push(`/dashboard/tasks/${instance.id}`);
+          }}
+        />
+      )}
     </div>
   );
 }

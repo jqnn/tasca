@@ -47,13 +47,16 @@ export default function TemplateTable() {
       columns={columns}
       onButtonClick={() => setCreateOpen(true)}
     >
-      <CreateTemplateDialog
-        open={createOpen}
-        setOpen={setCreateOpen}
-        onCreate={(data) => {
-          setTableData([...tableData, data]);
-        }}
-      />
+
+      {createOpen && (
+        <CreateTemplateDialog
+          open={createOpen}
+          setOpen={setCreateOpen}
+          onCreate={(data) => {
+            setTableData([...tableData, data]);
+          }}
+        />
+      )}
 
       <DeleteDialog
         open={deleteId !== null}
