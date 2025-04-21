@@ -15,6 +15,7 @@ export default function FieldInput({
   field: TemplateField;
 }) {
   const handleBlur = () => {
+
     updateMutation.mutate({
       id: instance.id,
       value: value,
@@ -25,6 +26,9 @@ export default function FieldInput({
     onError: () => {
       showErrorToast();
     },
+    onSuccess: () => {
+      instance.value = value;
+    }
   });
 
   const [value, setValue] = React.useState<string>(instance.value);

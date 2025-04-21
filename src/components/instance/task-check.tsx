@@ -18,6 +18,9 @@ export default function TaskCheck({ instance }: { instance: InstanceTask }) {
     onError: () => {
       showErrorToast();
     },
+    onSuccess: (data) => {
+      instance.status = data.status
+    }
   });
 
   const [value, setValue] = React.useState<boolean>(
