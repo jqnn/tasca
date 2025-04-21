@@ -22,6 +22,7 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
 
 RUN npm install -g tsx prisma
+RUN apt-get update && apt-get install -y openssl
 
 EXPOSE 3000
 ENV PORT=3000
