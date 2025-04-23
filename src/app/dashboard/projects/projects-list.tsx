@@ -13,6 +13,7 @@ import { api } from "~/trpc/react";
 import Link from "next/link";
 import Spinner from "~/components/ui/spinner";
 import { Button } from "~/components/ui/button";
+import CreateProjectDialog from "~/app/dashboard/projects/(dialogs)/create-project";
 
 export function ProjectList() {
   const [showCreating, setShowCreating] = React.useState(false);
@@ -62,6 +63,16 @@ export function ProjectList() {
             </Link>
           ))}
         </div>
+      )}
+
+      {showCreating && (
+        <CreateProjectDialog
+          open={showCreating}
+          setOpen={setShowCreating}
+          onCreate={(project) => {
+            router.push(`/dashboard/projects/${project.id}`);
+          }}
+        />
       )}
     </div>
   );
