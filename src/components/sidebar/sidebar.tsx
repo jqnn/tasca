@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   IconCategory,
   IconClipboard,
+  IconFolders,
   IconLayoutDashboard,
   IconLock,
   IconPuzzle,
@@ -36,6 +37,11 @@ const data = {
       title: "Aufgaben",
       url: "/dashboard/tasks",
       icon: IconClipboard,
+    },
+    {
+      title: "Projekte",
+      url: "/dashboard/projects",
+      icon: IconFolders,
     },
   ],
   navAdmin: [
