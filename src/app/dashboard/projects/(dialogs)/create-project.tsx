@@ -1,0 +1,103 @@
+import * as React from "react";
+import { type Project } from "@prisma/client";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "~/components/ui/dialog";
+import { Button } from "~/components/ui/button";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import DialogInput from "~/components/dialogs/dialog-input";
+import { api } from "~/trpc/react";
+import { showErrorToast } from "~/lib/utils";
+
+export default function CreateProjectDialog({
+  open,
+  setOpen,
+  onCreate,
+}: {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  onCreate?: (project: Project) => void | null;
+}) {
+  const handleConfirm = () => {
+    createMutation.mutate(
+      {
+        name: name,
+        description: description,
+        userId: session?.user?.id ?? "0",
+      },
+      {
+        onSuccess: (data) => {
+          if (!data) {
+            showErrorToast();
+            return;
+          }
+
+          if (!onCreate) {
+            window.location.reload();
+            return;
+          }
+
+          onCreate(data);
+          setOpen(false);
+        },
+
+        onError: () => {
+          showErrorToast();
+        },
+      },
+    );
+  };
+
+  const [name, setName] = React.useState<string>("");
+  const [description, setDescription] = React.useState<string>("");
+
+  const router = useRouter();
+  const { data: session } = useSession();
+  if (!session) {
+    router.push("/");
+    return;
+  }
+
+  const createMutation = api.project.create.useMutation();
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Hinzufügen</DialogTitle>
+          <DialogDescription>
+            Erstelle ein neues Projekt.
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleConfirm}>
+          <div className="grid w-full gap-4 py-4">
+            <DialogInput
+              id={"name"}
+              label={"Projektname"}
+              setValue={setName}
+              required={true}
+            />
+
+            <DialogInput
+              id={"description"}
+              label={"Beschreibung"}
+              setValue={setDescription}
+            />
+          </div>
+
+          <DialogFooter>
+            <Button type="submit" disabled={createMutation.isPending}>
+              Erstellen
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
