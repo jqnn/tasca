@@ -6,6 +6,7 @@ export const projectRouter = createTRPCRouter({
     return ctx.db.project.findMany({
       include: {
         ProjectMember: true,
+        createdBy: true,
       },
     });
   }),
