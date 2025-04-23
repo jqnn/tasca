@@ -111,6 +111,7 @@ model Project {
   createdAt     DateTime        @default(now())
   createdById   Int
   createdBy     User            @relation(fields: [createdById], references: [id])
+  personal      Boolean         @default(false)
   ProjectMember ProjectMember[]
 }
 
