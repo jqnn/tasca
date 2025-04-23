@@ -19,6 +19,8 @@ model User {
   createdAt        DateTime           @default(now())
   Template         Template[]
   TemplateInstance InstanceTemplate[]
+  Project          Project[]
+  ProjectMember    ProjectMember[]
 }
 
 model AuthMethod {
@@ -100,6 +102,34 @@ model InstanceTask {
   task       TemplateTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   instanceId Int
   instance   InstanceTemplate @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+}
+
+model Project {
+  id            Int             @id @default(autoincrement())
+  name          String
+  description   String?
+  createdAt     DateTime        @default(now())
+  createdById   Int
+  createdBy     User            @relation(fields: [createdById], references: [id])
+  ProjectMember ProjectMember[]
+}
+
+model ProjectMember {
+  userId    Int
+  projectId Int
+  joinedAt  DateTime    @default(now())
+  role      ProjectRole @default(VIEWER)
+
+  user    User    @relation(fields: [userId], references: [id])
+  project Project @relation(fields: [projectId], references: [id])
+
+  @@id([userId, projectId])
+}
+
+enum ProjectRole {
+  OWNER
+  EDITOR
+  VIEWER
 }
 
 enum Role {
