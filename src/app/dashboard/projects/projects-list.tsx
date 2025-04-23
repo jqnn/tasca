@@ -25,23 +25,28 @@ export function ProjectList() {
     return;
   }
 
+  const { data: role, status: roleStatus } = api.user.getRole.useQuery({
+    id: Number(session.user.id),
+  });
   const { data: projects, status } = api.project.findAll.useQuery();
 
-  if (status !== "success") {
+  if (status !== "success" || roleStatus !== "success") {
     return <Spinner />;
   }
 
   return (
     <div>
-      <div className="flex items-center pb-4">
-        <Button
-          variant="outline"
-          className="mr-auto"
-          onClick={() => setShowCreating(true)}
-        >
-          Erstellen
-        </Button>
-      </div>
+      {role !== "USER" && (
+        <div className="flex items-center pb-4">
+          <Button
+            variant="outline"
+            className="mr-auto"
+            onClick={() => setShowCreating(true)}
+          >
+            Erstellen
+          </Button>
+        </div>
+      )}
 
       {projects && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -65,7 +70,7 @@ export function ProjectList() {
         </div>
       )}
 
-      {showCreating && (
+      {(role !== "USER" && showCreating) && (
         <CreateProjectDialog
           open={showCreating}
           setOpen={setShowCreating}
