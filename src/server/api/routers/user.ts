@@ -41,7 +41,7 @@ export const userRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.user.create({
+      const user = await ctx.db.user.create({
         data: {
           userName: input.userName,
           displayName: input.displayName,
@@ -50,6 +50,27 @@ export const userRouter = createTRPCRouter({
           password: input.password && hashPassword(input.password),
         },
       });
+
+      if(!(user)) return null;
+      const project = await ctx.db.project.create({
+        data: {
+          name: input.userName,
+          createdById: Number(user.id),
+          personal: true
+        },
+      })
+
+      if (!project) return null;
+      const projectUser = await ctx.db.projectMember.create({
+        data: {
+          userId: project.createdById,
+          projectId: project.id,
+          role: "OWNER",
+        },
+      });
+
+      if(!(projectUser)) return null
+      return user;
     }),
 
   delete: publicProcedure
