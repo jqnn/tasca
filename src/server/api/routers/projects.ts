@@ -22,4 +22,34 @@ export const projectRouter = createTRPCRouter({
         },
       });
     }),
+
+  create: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        description: z.string().nullable(),
+        userId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const project = await ctx.db.project.create({
+        data: {
+          name: input.name,
+          description: input.description,
+          createdById: Number(input.userId),
+        },
+      });
+
+      if (!project) return null;
+      const user = await ctx.db.projectMember.create({
+        data: {
+          userId: project.createdById,
+          projectId: project.id,
+          role: "OWNER",
+        },
+      });
+
+      if (!user) return null;
+      return project;
+    }),
 });
