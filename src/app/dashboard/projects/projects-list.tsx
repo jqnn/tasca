@@ -28,7 +28,9 @@ export function ProjectList() {
   const { data: role, status: roleStatus } = api.user.getRole.useQuery({
     id: Number(session.user.id),
   });
-  const { data: projects, status } = api.project.findAll.useQuery();
+  const { data: projects, status } = api.project.findAll.useQuery({
+    id: session.user.id,
+  });
 
   if (status !== "success" || roleStatus !== "success") {
     return <Spinner />;
@@ -50,7 +52,8 @@ export function ProjectList() {
 
       {projects && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => {
+          {projects.map((members) => {
+            const project = members.project
             const title = project.personal
               ? (project.createdBy.displayName ?? project.createdBy.userName)
               : project.name;
