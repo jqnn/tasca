@@ -55,7 +55,7 @@ export function ProjectList() {
                       {project.createdBy.displayName ??
                         project.createdBy.userName}
                     </p>
-                    <p>Mitgleider - {project.ProjectMember.length}</p>
+                    <p>Mitglieder - {project.ProjectMember.length}</p>
                   </CardDescription>
                 </CardHeader>
               </Card>
