@@ -66,7 +66,7 @@ export function ProjectList() {
                   <p>Beschreibung - {project.description}</p>
                 )}
                 <p>
-                  Ersteller -{" "}
+                  Besitzer -&nbsp;
                   {project.createdBy.displayName ?? project.createdBy.userName}
                 </p>
               </>
