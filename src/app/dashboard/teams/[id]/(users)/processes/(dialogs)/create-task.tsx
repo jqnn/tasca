@@ -20,8 +20,10 @@ import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
 import { showErrorToast } from "~/lib/utils";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import type { FormEvent } from "react";
+import { useTeam } from "~/context/TeamProvider";
+import Spinner from "~/components/ui/spinner";
 
 export default function CreateTaskByTemplateDialog({
   open,
@@ -41,6 +43,7 @@ export default function CreateTaskByTemplateDialog({
 
     createMutation.mutate(
       {
+        teamId: team.team.id,
         templateId: template.id,
         userId: session?.user?.id ?? "0",
       },
@@ -67,6 +70,7 @@ export default function CreateTaskByTemplateDialog({
     );
   };
 
+  const team = useTeam();
   const router = useRouter();
   const [template, setTemplate] = React.useState<Template | null>(null);
 
@@ -77,8 +81,21 @@ export default function CreateTaskByTemplateDialog({
   }
 
   const createMutation = api.instance.create.useMutation();
-  const { data } = api.template.findAll.useQuery();
-  if (!data) return;
+  const { data, status } = api.template.findAll.useQuery({
+    teamId: team.team.id
+  });
+
+  if(status !== "success") {
+    return <Spinner />
+  }
+
+  if(!(data)) {
+    return notFound();
+  }
+
+  if(!(team)) {
+    return notFound();
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
