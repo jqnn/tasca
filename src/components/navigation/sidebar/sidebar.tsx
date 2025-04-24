@@ -2,13 +2,14 @@
 
 import * as React from "react";
 import {
+  IconBrandEnvato,
   IconCategory,
   IconClipboard,
   IconFolders,
-  IconLayoutDashboard,
-  IconLock,
+  IconLayoutDashboard, IconLetterCase,
+  IconLock, IconMailOpened,
   IconPuzzle,
-  IconUsers,
+  IconUsers
 } from "@tabler/icons-react";
 
 import { SidebarItems } from "~/components/navigation/sidebar/sidebar-items";
@@ -34,14 +35,14 @@ const data = {
       icon: IconLayoutDashboard,
     },
     {
-      title: "Aufgaben",
-      url: "/dashboard/tasks",
-      icon: IconClipboard,
-    },
-    {
       title: "Teams",
       url: "/dashboard/teams",
       icon: IconFolders,
+    },
+    {
+      title: "Einladungen",
+      url: "/dashboard/invites",
+      icon: IconMailOpened,
     },
   ],
   navAdmin: [
