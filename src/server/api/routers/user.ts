@@ -52,7 +52,7 @@ export const userRouter = createTRPCRouter({
       });
 
       if (!user) return null;
-      const project = await ctx.db.project.create({
+      const team = await ctx.db.team.create({
         data: {
           name: input.userName,
           createdById: Number(user.id),
@@ -60,23 +60,23 @@ export const userRouter = createTRPCRouter({
         },
       });
 
-      if (!project) return null;
-      const projectUser = await ctx.db.projectMember.create({
+      if (!team) return null;
+      const teamMember = await ctx.db.teamMember.create({
         data: {
-          userId: project.createdById,
-          projectId: project.id,
+          userId: team.createdById,
+          teamId: team.id,
           role: "OWNER",
         },
       });
 
-      if (!projectUser) return null;
+      if (!teamMember) return null;
       return user;
     }),
 
   delete: publicProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.project.deleteMany({
+      await ctx.db.team.deleteMany({
         where: {
           AND: [{ createdById: input.id }, { personal: true }],
         },
