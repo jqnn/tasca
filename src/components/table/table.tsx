@@ -149,7 +149,7 @@ function centeredColumn<TData extends RowData, TKey extends keyof TData>(
 
 function centeredDataColumn<TData extends RowData>(
   headerText: string,
-  formatter?: (value: number) => string,
+  formatter?: (value: TData) => string,
   href?: string | null,
 ): ColumnDef<TData> {
   return {
@@ -157,7 +157,7 @@ function centeredDataColumn<TData extends RowData>(
     header: () => <div className="text-center">{headerText}</div>,
     cell: ({ row }: { row: Row<TData> }) => {
       const formattedValue = formatter
-        ? formatter(row.original.id)
+        ? formatter(row.original)
         : String(row.original.id);
 
       if (href) {

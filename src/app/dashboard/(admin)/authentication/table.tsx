@@ -32,9 +32,9 @@ export default function AuthenticationMethodsTable() {
   const columns: ColumnDef<AuthMethod>[] = [
     centeredColumn("description", "Beschreibung"),
     centeredColumn("type", "Typ"),
-    centeredDataColumn("Benutzer", (id) => {
+    centeredDataColumn("Benutzer", (method) => {
       const { data: users, isLoading } = api.user.countAuthMethodUsers.useQuery(
-        { id: id },
+        { id: method.id },
       );
       if (isLoading || !users) return "0";
       return `${users}`;
