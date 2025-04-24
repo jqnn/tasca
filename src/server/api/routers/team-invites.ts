@@ -14,7 +14,7 @@ export const teamInvitesRouter = createTRPCRouter({
     }),
 
   findTeams: publicProcedure
-    .input(z.object({ id: z.string() }))
+    .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
       return ctx.db.teamInvite.findMany({
         where: { teamId: Number(input.id) },
