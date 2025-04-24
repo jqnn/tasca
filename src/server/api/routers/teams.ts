@@ -30,6 +30,14 @@ export const teamRouter = createTRPCRouter({
       });
     }),
 
+  findMembers: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.teamMember.findMany({
+        where: { teamId: Number(input.id) },
+      });
+    }),
+
   isMember: publicProcedure
     .input(z.object({ userId: z.number(), teamId: z.number() }))
     .query(async ({ ctx, input }) => {
