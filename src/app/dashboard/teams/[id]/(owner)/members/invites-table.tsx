@@ -12,6 +12,7 @@ import { notFound } from "next/navigation";
 import { centeredColumn } from "~/components/table/table";
 import TableActions from "~/components/table/table-actions";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
+import InviteTeamMemberDialog from "~/app/dashboard/teams/[id]/(owner)/members/(dialogs)/invite-team-member";
 
 export default function TeamInvitesTable() {
   const team = useTeam();
@@ -20,6 +21,7 @@ export default function TeamInvitesTable() {
   });
   const [tableData, setTableData] = React.useState<TeamInvite[]>([]);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
+  const [showModal, setShowModal] = React.useState(false);
 
   const deleteMutation = api.teamInvites.delete.useMutation();
 
@@ -46,7 +48,7 @@ export default function TeamInvitesTable() {
   ];
 
   return (
-    <DataTable data={tableData} columns={columns}>
+    <DataTable data={tableData} columns={columns} buttonText={"Einladen"} onButtonClick={() => setShowModal(true)}>
       {deleteId && (
         <DeleteDialog
           open={true}
@@ -60,6 +62,10 @@ export default function TeamInvitesTable() {
             setTableData(tableData.filter((item) => item.userId !== deleteId));
           }}
         />
+      )}
+
+      {showModal && (
+        <InviteTeamMemberDialog open={showModal} setOpen={(value) => setShowModal(value)} />
       )}
     </DataTable>
   );
