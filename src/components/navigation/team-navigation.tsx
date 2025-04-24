@@ -32,7 +32,7 @@ export function TeamNavigationComponent({ teamId }: PageProps) {
   const isOwner = role == "OWNER";
 
   return (
-    <NavigationMenu>
+    <NavigationMenu className={"ml-auto"}>
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuLink
