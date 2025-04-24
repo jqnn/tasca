@@ -12,6 +12,7 @@ import { notFound } from "next/navigation";
 import { IconTrash } from "@tabler/icons-react";
 import { DeleteDialog } from "~/components/dialogs/delete-team-member-dialog";
 import InviteTeamMemberDialog from "~/app/dashboard/teams/[id]/(owner)/members/(dialogs)/invite-team-member";
+import { beautifyTeamRole } from "~/lib/utils";
 
 export default function TeamMembersTable() {
   const team = useTeam();
@@ -54,7 +55,7 @@ export default function TeamMembersTable() {
     {
       accessorKey: "role",
       header: () => <div className="text-center">Rolle</div>,
-      cell: ({ row }) => <div className="text-center">{row.original.role}</div>,
+      cell: ({ row }) => <div className="text-center">{beautifyTeamRole(row.original.role)}</div>,
     },
     {
       accessorKey: "joinedAt",

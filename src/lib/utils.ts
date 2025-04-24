@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { sha256 } from "js-sha256";
 import { toast } from "sonner";
-import type { FieldType, InstanceStatus, Role } from "@prisma/client";
+import type { FieldType, InstanceStatus, Role, TeamRole } from "@prisma/client";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -45,6 +45,12 @@ export function beautifyRole(role: Role) {
   if (role == "OPERATOR") return "Operator";
   if (role == "ADMINISTRATOR") return "Administrator";
   return "Benutzer";
+}
+
+export function beautifyTeamRole(role: TeamRole) {
+  if (role == "OWNER") return "Besitzer";
+  if (role == "VIEWER") return "Zuschauer";
+  return "Bearbeiter";
 }
 
 export function isTaskDone(
