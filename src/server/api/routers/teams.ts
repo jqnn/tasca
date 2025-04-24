@@ -64,6 +64,19 @@ export const teamRouter = createTRPCRouter({
       }) != null;
     }),
 
+  isMemberMutation: publicProcedure
+    .input(z.object({ userId: z.number(), teamId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.teamMember.findUnique({
+        where: {
+          userId_teamId: {
+            userId: input.userId,
+            teamId: input.teamId
+          }
+        }
+      }) != null;
+    }),
+
   getRole: publicProcedure
     .input(z.object({ userId: z.number(), teamId: z.number() }))
     .query(async ({ ctx, input }) => {
