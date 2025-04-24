@@ -40,11 +40,12 @@ export default async function RootLayout({
     return notFound();
   }
 
-  const isMember = await api.team.isMember({
+  const role = await api.team.getRole({
     userId: Number(session.user.id),
     teamId: team.id,
-  });
-  if (!isMember) {
+  })
+
+  if (!role) {
     return notFound();
   }
 
@@ -55,7 +56,7 @@ export default async function RootLayout({
   const description = team.personal ? "persönliches Team" : team.description;
 
   return (
-    <TeamProvider team={team}>
+    <TeamProvider team={team} userRole={role}>
       <SiteHeader>
         <SiteTitle title={`Team - ${title}`} />
         {description && <SiteDescription description={description} />}
