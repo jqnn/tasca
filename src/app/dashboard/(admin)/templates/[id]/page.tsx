@@ -24,6 +24,7 @@ interface PageProps {
 
 export default function TemplatePage({ params }: PageProps) {
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
+  const [tab, setTab] = React.useState<string>("fields");
 
   const router = useRouter();
   const actualParams = React.use(params);
@@ -70,10 +71,14 @@ export default function TemplatePage({ params }: PageProps) {
             </Button>
           </div>
 
-          <Tabs defaultValue="fields" className="w-full">
+          <Tabs defaultValue={tab} className="w-full">
             <TabsList className="w-full">
-              <TabsTrigger value="fields">Felder</TabsTrigger>
-              <TabsTrigger value="tasks">Aufgaben</TabsTrigger>
+              <TabsTrigger value="fields" onClick={() => setTab("fields")}>
+                Felder
+              </TabsTrigger>
+              <TabsTrigger value="tasks" onClick={() => setTab("tasks")}>
+                Aufgaben
+              </TabsTrigger>
             </TabsList>
             <TabsContent value="fields">
               <TemplateFieldsTable
