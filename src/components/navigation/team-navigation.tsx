@@ -70,7 +70,7 @@ export function TeamNavigationComponent({ teamId }: PageProps) {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
-                href={`/dashboard/teams/${teamId}/templates`}
+                href={`/dashboard/teams/${teamId}/members`}
                 className={navigationMenuTriggerStyle()}
               >
                 Mitglieder
