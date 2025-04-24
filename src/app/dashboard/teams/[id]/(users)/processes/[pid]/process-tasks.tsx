@@ -34,7 +34,7 @@ interface TasksTableProps {
   disabled: boolean;
 }
 
-export default function TasksTable({ instances, disabled }: TasksTableProps) {
+export default function ProcessTasksTable({ instances, disabled }: TasksTableProps) {
   const [tableData, setTableData] = React.useState<InstanceType[]>([]);
 
   React.useEffect(() => {
