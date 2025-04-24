@@ -1,39 +1,43 @@
 "use client";
 
 import type { Role, TeamRole } from "@prisma/client";
-import { createContext, useContext, type ReactNode } from "react";
+import { createContext, type ReactNode, useContext } from "react";
 
-interface TeamType {
+type TeamData = {
   TeamMember: {
-    role: TeamRole;
-    userId: number;
-    teamId: number;
     joinedAt: Date;
+    role: TeamRole;
+    teamId: number;
+    userId: number;
   }[];
   createdBy: {
-    id: number;
-    userName: string;
-    displayName: string | null;
-    password: string | null;
     authMethodId: number;
-    role: Role;
     createdAt: Date;
+    displayName: string | null;
+    id: number;
+    password: string | null;
+    role: Role;
+    userName: string;
   };
-}
+  createdAt: Date;
+  createdById: number;
+  description: string | null;
+  id: number;
+  name: string;
+  personal: boolean;
+};
 
-const TeamContext = createContext<{ team: TeamType } | undefined>(
-  undefined,
-);
+const TeamContext = createContext<{ team: TeamData } | undefined>(undefined);
 
 export const TeamProvider = ({
-  project,
   children,
+  team,
 }: {
-  project: TeamType;
   children: ReactNode;
+  team: TeamData
 }) => {
   return (
-    <TeamContext.Provider value={{ team: project }}>
+    <TeamContext.Provider value={{ team: team }}>
       {children}
     </TeamContext.Provider>
   );
@@ -41,7 +45,6 @@ export const TeamProvider = ({
 
 export const useTeam = () => {
   const context = useContext(TeamContext);
-  if (!context)
-    throw new Error("useTeam must be used within a TeamProvider");
-  return context;
+  if (!context) throw new Error("useTeam must be used within a TeamProvider");
+  return context.team;
 };
