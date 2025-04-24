@@ -63,7 +63,10 @@ export function TaskCardComponent({ task }: PageProps) {
   const firstField = field[0];
 
   return (
-    <Link key={task.id} href={`/dashboard/teams/${task.teamId}/processes/${task.id}`}>
+    <Link
+      key={task.id}
+      href={`/dashboard/teams/${task.teamId}/processes/${task.id}`}
+    >
       <Card key={task.id}>
         <CardHeader>
           <CardTitle>

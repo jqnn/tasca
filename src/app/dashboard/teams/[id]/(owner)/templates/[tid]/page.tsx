@@ -45,8 +45,7 @@ export default function TemplatePage({ params }: PageProps) {
 
   return (
     <>
-
-      <h1 className={"mr-auto font-bold mb-4"}>Vorlage - {template.name}</h1>
+      <h1 className={"mr-auto mb-4 font-bold"}>Vorlage - {template.name}</h1>
       <div className="flex w-full pb-4">
         <Button variant="outline" className={"mr-2"}>
           Bearbeiten

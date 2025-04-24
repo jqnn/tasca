@@ -109,7 +109,10 @@ export default function InviteTeamMemberDialog({
           </div>
 
           <DialogFooter>
-            <Button type="submit" disabled={existsMutation.isPending || inviteMutation.isPending}>
+            <Button
+              type="submit"
+              disabled={existsMutation.isPending || inviteMutation.isPending}
+            >
               Einladen
             </Button>
           </DialogFooter>

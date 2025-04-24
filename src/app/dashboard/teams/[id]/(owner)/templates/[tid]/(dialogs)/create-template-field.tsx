@@ -8,6 +8,7 @@ import {
 } from "~/components/ui/dialog";
 import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
+import type { FormEvent } from "react";
 import * as React from "react";
 import { FieldType, type TemplateField } from "@prisma/client";
 import { api } from "~/trpc/react";
@@ -20,7 +21,6 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { showErrorToast } from "~/lib/utils";
-import type { FormEvent } from "react";
 
 export default function CreateTemplateFieldDialog({
   templateId,
@@ -36,7 +36,7 @@ export default function CreateTemplateFieldDialog({
   onCreate?: (template: TemplateField) => void | null;
 }) {
   const handleConfirm = (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     createMutation.mutate(
       {
         label: task,

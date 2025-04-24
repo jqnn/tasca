@@ -67,7 +67,9 @@ export function TeamProcessesTable() {
           open={showModal}
           setOpen={setShowModal}
           onCreate={(instance) => {
-            router.push(`/dashboard/teams/${team.team.id}/processes/${instance.id}`);
+            router.push(
+              `/dashboard/teams/${team.team.id}/processes/${instance.id}`,
+            );
           }}
         />
       )}

@@ -43,7 +43,7 @@ export default async function RootLayout({
   const role = await api.team.getRole({
     userId: Number(session.user.id),
     teamId: team.id,
-  })
+  });
 
   if (!role) {
     return notFound();

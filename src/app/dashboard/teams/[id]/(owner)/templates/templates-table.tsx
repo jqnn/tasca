@@ -16,7 +16,9 @@ import { notFound } from "next/navigation";
 
 export default function TeamTemplatesTable() {
   const team = useTeam();
-  const { data, status } = api.template.findAll.useQuery({ teamId: team.team.id });
+  const { data, status } = api.template.findAll.useQuery({
+    teamId: team.team.id,
+  });
   const [tableData, setTableData] = React.useState<Template[]>([]);
   const [showModal, setShowModal] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
@@ -35,7 +37,12 @@ export default function TeamTemplatesTable() {
   }
 
   const columns: ColumnDef<Template>[] = [
-    centeredColumn("name", "Name", null, `/dashboard/teams/${team.team.id}/templates/:id`),
+    centeredColumn(
+      "name",
+      "Name",
+      null,
+      `/dashboard/teams/${team.team.id}/templates/:id`,
+    ),
     centeredColumn("description", "Beschreibung"),
     centeredColumn("createdById", "Ersteller", (value) => {
       const { data: user, isLoading } = api.user.find.useQuery({ id: value });

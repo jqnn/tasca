@@ -8,6 +8,7 @@ import {
 } from "~/components/ui/dialog";
 import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
+import type { FormEvent } from "react";
 import * as React from "react";
 import { $Enums, type AuthMethod, AuthMethodType } from "@prisma/client";
 import {
@@ -21,7 +22,6 @@ import { api } from "~/trpc/react";
 import { showErrorToast } from "~/lib/utils";
 import DialogInput from "~/components/dialogs/dialog-input";
 import SecurityType = $Enums.SecurityType;
-import type { FormEvent } from "react";
 
 export default function CreateAuthenticationMethodDialog({
   open,
@@ -33,7 +33,7 @@ export default function CreateAuthenticationMethodDialog({
   onCreate?: (authMethod: AuthMethod) => void | null;
 }) {
   const handleConfirm = (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     existsMutation.mutate(
       { description: description },
       {

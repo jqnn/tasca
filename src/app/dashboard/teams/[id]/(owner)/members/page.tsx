@@ -8,14 +8,14 @@ import TeamInvitesTable from "~/app/dashboard/teams/[id]/(owner)/members/invites
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
 export default function TeamMembersPage() {
-  const team = useTeam()
+  const team = useTeam();
   const [tab, setTab] = React.useState<string>("members");
-  if(!(team)) {
-    return notFound()
+  if (!team) {
+    return notFound();
   }
 
-  if(team.userRole != "OWNER") {
-    return notFound()
+  if (team.userRole != "OWNER") {
+    return notFound();
   }
 
   return (

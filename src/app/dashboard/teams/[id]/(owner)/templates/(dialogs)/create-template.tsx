@@ -71,7 +71,7 @@ export default function CreateTemplateDialog({
   const existsMutation = api.template.exists.useMutation();
   const createMutation = api.template.create.useMutation();
 
-  if(!(team)) {
+  if (!team) {
     return notFound();
   }
 

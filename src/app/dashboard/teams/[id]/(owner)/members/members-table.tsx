@@ -53,7 +53,9 @@ export default function TeamMembersTable() {
     {
       accessorKey: "role",
       header: () => <div className="text-center">Rolle</div>,
-      cell: ({ row }) => <div className="text-center">{beautifyTeamRole(row.original.role)}</div>,
+      cell: ({ row }) => (
+        <div className="text-center">{beautifyTeamRole(row.original.role)}</div>
+      ),
     },
     {
       accessorKey: "joinedAt",

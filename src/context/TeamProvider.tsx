@@ -28,11 +28,11 @@ type TeamData = {
 };
 
 type TeamContextType = {
-  team: TeamData
-  userRole: TeamRole
-}
+  team: TeamData;
+  userRole: TeamRole;
+};
 
-const TeamContext = createContext<TeamContextType | undefined>(undefined)
+const TeamContext = createContext<TeamContextType | undefined>(undefined);
 
 export const TeamProvider = ({
   children,
@@ -40,8 +40,8 @@ export const TeamProvider = ({
   userRole,
 }: {
   children: ReactNode;
-  team: TeamData
-  userRole: TeamRole
+  team: TeamData;
+  userRole: TeamRole;
 }) => {
   return (
     <TeamContext.Provider value={{ team, userRole }}>

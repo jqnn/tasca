@@ -27,7 +27,10 @@ interface TaskFieldsProps {
   disabled: boolean;
 }
 
-export default function ProcessFieldsContainer({ instances, disabled }: TaskFieldsProps) {
+export default function ProcessFieldsContainer({
+  instances,
+  disabled,
+}: TaskFieldsProps) {
   const router = useRouter();
   const { data: session } = useSession();
   if (!session) {

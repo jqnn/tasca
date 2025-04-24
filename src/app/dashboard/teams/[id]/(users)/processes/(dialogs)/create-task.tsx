@@ -1,3 +1,4 @@
+import type { FormEvent } from "react";
 import * as React from "react";
 import { type InstanceTemplate, type Template } from "@prisma/client";
 import {
@@ -21,7 +22,6 @@ import { Button } from "~/components/ui/button";
 import { showErrorToast } from "~/lib/utils";
 import { useSession } from "next-auth/react";
 import { notFound, useRouter } from "next/navigation";
-import type { FormEvent } from "react";
 import { useTeam } from "~/context/TeamProvider";
 import Spinner from "~/components/ui/spinner";
 
@@ -35,7 +35,7 @@ export default function CreateTaskByTemplateDialog({
   onCreate?: (template: InstanceTemplate) => void | null;
 }) {
   const handleConfirm = (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (template == null) {
       showErrorToast();
       return;
@@ -82,18 +82,18 @@ export default function CreateTaskByTemplateDialog({
 
   const createMutation = api.instance.create.useMutation();
   const { data, status } = api.template.findAll.useQuery({
-    teamId: team.team.id
+    teamId: team.team.id,
   });
 
-  if(status !== "success") {
-    return <Spinner />
+  if (status !== "success") {
+    return <Spinner />;
   }
 
-  if(!(data)) {
+  if (!data) {
     return notFound();
   }
 
-  if(!(team)) {
+  if (!team) {
     return notFound();
   }
 

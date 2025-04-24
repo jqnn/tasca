@@ -11,10 +11,10 @@ export const teamRouter = createTRPCRouter({
           team: {
             include: {
               createdBy: true,
-              TeamMember: true
-            }
-          }
-        }
+              TeamMember: true,
+            },
+          },
+        },
       });
     }),
 
@@ -25,8 +25,8 @@ export const teamRouter = createTRPCRouter({
         where: { id: input.id },
         include: {
           createdBy: true,
-          TeamMember: true
-        }
+          TeamMember: true,
+        },
       });
     }),
 
@@ -34,7 +34,7 @@ export const teamRouter = createTRPCRouter({
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
       return ctx.db.teamMember.findMany({
-        where: { teamId: Number(input.id) }
+        where: { teamId: Number(input.id) },
       });
     }),
 
@@ -43,38 +43,39 @@ export const teamRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return ctx.db.teamMember.deleteMany({
         where: {
-          AND: [
-            { userId: input.userId },
-            { teamId: input.teamId }
-          ]
-        }
+          AND: [{ userId: input.userId }, { teamId: input.teamId }],
+        },
       });
     }),
 
   isMember: publicProcedure
     .input(z.object({ userId: z.number(), teamId: z.number() }))
     .query(async ({ ctx, input }) => {
-      return await ctx.db.teamMember.findUnique({
-        where: {
-          userId_teamId: {
-            userId: input.userId,
-            teamId: input.teamId
-          }
-        }
-      }) != null;
+      return (
+        (await ctx.db.teamMember.findUnique({
+          where: {
+            userId_teamId: {
+              userId: input.userId,
+              teamId: input.teamId,
+            },
+          },
+        })) != null
+      );
     }),
 
   isMemberMutation: publicProcedure
     .input(z.object({ userId: z.number(), teamId: z.number() }))
     .mutation(async ({ ctx, input }) => {
-      return await ctx.db.teamMember.findUnique({
-        where: {
-          userId_teamId: {
-            userId: input.userId,
-            teamId: input.teamId
-          }
-        }
-      }) != null;
+      return (
+        (await ctx.db.teamMember.findUnique({
+          where: {
+            userId_teamId: {
+              userId: input.userId,
+              teamId: input.teamId,
+            },
+          },
+        })) != null
+      );
     }),
 
   getRole: publicProcedure
@@ -85,9 +86,9 @@ export const teamRouter = createTRPCRouter({
           where: {
             userId_teamId: {
               userId: input.userId,
-              teamId: input.teamId
-            }
-          }
+              teamId: input.teamId,
+            },
+          },
         })
         .then((member) => {
           if (!member) return null;
@@ -100,16 +101,16 @@ export const teamRouter = createTRPCRouter({
       z.object({
         name: z.string(),
         description: z.string().nullable(),
-        userId: z.string()
-      })
+        userId: z.string(),
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const project = await ctx.db.team.create({
         data: {
           name: input.name,
           description: input.description,
-          createdById: Number(input.userId)
-        }
+          createdById: Number(input.userId),
+        },
       });
 
       if (!project) return null;
@@ -117,11 +118,11 @@ export const teamRouter = createTRPCRouter({
         data: {
           userId: project.createdById,
           teamId: project.id,
-          role: "OWNER"
-        }
+          role: "OWNER",
+        },
       });
 
       if (!user) return null;
       return project;
-    })
+    }),
 });

@@ -60,7 +60,6 @@ export default function TemplateTaskTable({
           });
         }}
       >
-
         {createOpen && (
           <CreateTemplateTaskDialog
             templateId={templateId}

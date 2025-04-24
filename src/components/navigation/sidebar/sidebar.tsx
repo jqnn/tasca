@@ -2,14 +2,12 @@
 
 import * as React from "react";
 import {
-  IconBrandEnvato,
-  IconCategory,
-  IconClipboard,
   IconFolders,
-  IconLayoutDashboard, IconLetterCase,
-  IconLock, IconMailOpened,
+  IconLayoutDashboard,
+  IconLock,
+  IconMailOpened,
   IconPuzzle,
-  IconUsers
+  IconUsers,
 } from "@tabler/icons-react";
 
 import { SidebarItems } from "~/components/navigation/sidebar/sidebar-items";

@@ -1,3 +1,4 @@
+import type { FormEvent } from "react";
 import * as React from "react";
 import {
   Dialog,
@@ -13,8 +14,7 @@ import { useRouter } from "next/navigation";
 import DialogInput from "~/components/dialogs/dialog-input";
 import { api } from "~/trpc/react";
 import { showErrorToast } from "~/lib/utils";
-import type {Team} from "@prisma/client";
-import type {FormEvent} from "react";
+import type { Team } from "@prisma/client";
 
 export default function CreateTeamDialog({
   open,
@@ -26,7 +26,7 @@ export default function CreateTeamDialog({
   onCreate?: (team: Team) => void | null;
 }) {
   const handleConfirm = (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     createMutation.mutate(
       {
         name: name,
@@ -73,9 +73,7 @@ export default function CreateTeamDialog({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Hinzufügen</DialogTitle>
-          <DialogDescription>
-            Erstelle ein neues Team.
-          </DialogDescription>
+          <DialogDescription>Erstelle ein neues Team.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleConfirm}>
           <div className="grid w-full gap-4 py-4">

@@ -48,7 +48,12 @@ export default function TeamInvitesTable() {
   ];
 
   return (
-    <DataTable data={tableData} columns={columns} buttonText={"Einladen"} onButtonClick={() => setShowModal(true)}>
+    <DataTable
+      data={tableData}
+      columns={columns}
+      buttonText={"Einladen"}
+      onButtonClick={() => setShowModal(true)}
+    >
       {deleteId && (
         <DeleteDialog
           open={true}
@@ -65,7 +70,10 @@ export default function TeamInvitesTable() {
       )}
 
       {showModal && (
-        <InviteTeamMemberDialog open={showModal} setOpen={(value) => setShowModal(value)} />
+        <InviteTeamMemberDialog
+          open={showModal}
+          setOpen={(value) => setShowModal(value)}
+        />
       )}
     </DataTable>
   );

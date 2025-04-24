@@ -52,7 +52,6 @@ export default function AuthenticationMethodsTable() {
       columns={columns}
       onButtonClick={() => setCreateOpen(true)}
     >
-
       {createOpen && (
         <CreateAuthenticationMethodDialog
           open={createOpen}

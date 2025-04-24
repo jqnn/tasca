@@ -49,7 +49,6 @@ export default function UsersTable() {
       columns={columns}
       onButtonClick={() => setCreateOpen(true)}
     >
-
       {createOpen && (
         <CreateUserDialog
           open={createOpen}
