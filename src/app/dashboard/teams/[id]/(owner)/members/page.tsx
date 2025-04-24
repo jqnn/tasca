@@ -10,6 +10,10 @@ export default function TeamMembersPage() {
     return notFound()
   }
 
+  if(team.userRole != "OWNER") {
+    return notFound()
+  }
+
   return (
     <p>TODO</p>
   );
