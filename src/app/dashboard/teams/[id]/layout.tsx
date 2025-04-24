@@ -24,14 +24,17 @@ export default async function RootLayout({
   params,
 }: {
   children: ReactNode;
-  params: { id: string };
+  params: Promise<{
+    id: string;
+  }>;
 }) {
   const session = await auth();
   if (!session) {
     redirect("/");
   }
 
-  const { id } = params;
+  const actualParams = await params;
+  const { id } = actualParams;
   const team = await api.team.find({
     id: Number(id),
   });

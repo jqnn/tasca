@@ -8,7 +8,7 @@ export const instanceRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       if (input.completed) {
         return ctx.db.instanceTemplate.findMany({
-          where: { teamId: input.id },
+          where: { teamId: input.teamId },
           include: {
             template: true,
             createdBy: true,
@@ -22,7 +22,7 @@ export const instanceRouter = createTRPCRouter({
       } else {
         return ctx.db.instanceTemplate.findMany({
           where: {
-            AND: [{ status: "OPEN" }, { teamId: input.id }],
+            AND: [{ status: "OPEN" }, { teamId: input.teamId }],
           },
           include: {
             template: true,
