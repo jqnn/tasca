@@ -18,7 +18,7 @@ export default function TeamTemplatesTable() {
   const team = useTeam();
   const { data, status } = api.template.findAll.useQuery({ id: team.team.id });
   const [tableData, setTableData] = React.useState<Template[]>([]);
-  const [createOpen, setCreateOpen] = React.useState<boolean>(false);
+  const [showModal, setShowModal] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const deleteMutation = api.template.delete.useMutation();
 
@@ -52,12 +52,12 @@ export default function TeamTemplatesTable() {
     <DataTable
       data={tableData}
       columns={columns}
-      onButtonClick={() => setCreateOpen(true)}
+      onButtonClick={() => setShowModal(true)}
     >
-      {createOpen && (
+      {showModal && (
         <CreateTemplateDialog
-          open={createOpen}
-          setOpen={setCreateOpen}
+          open={showModal}
+          setOpen={setShowModal}
           onCreate={(data) => {
             setTableData([...tableData, data]);
           }}
