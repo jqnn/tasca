@@ -3,10 +3,10 @@ import { z } from "zod";
 
 export const templateRouter = createTRPCRouter({
   findAll: publicProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ teamId: z.number() }))
     .query(async ({ ctx, input }) => {
       return ctx.db.template.findMany({
-        where: { teamId: input.id },
+        where: { teamId: input.teamId },
       });
     }),
 

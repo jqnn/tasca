@@ -16,7 +16,7 @@ import { notFound } from "next/navigation";
 
 export default function TeamTemplatesTable() {
   const team = useTeam();
-  const { data, status } = api.template.findAll.useQuery({ id: team.team.id });
+  const { data, status } = api.template.findAll.useQuery({ teamId: team.team.id });
   const [tableData, setTableData] = React.useState<Template[]>([]);
   const [showModal, setShowModal] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
