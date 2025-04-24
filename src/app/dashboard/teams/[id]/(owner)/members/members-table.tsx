@@ -11,12 +11,14 @@ import { useTeam } from "~/context/TeamProvider";
 import { notFound } from "next/navigation";
 import { IconTrash } from "@tabler/icons-react";
 import { DeleteDialog } from "~/components/dialogs/delete-team-member-dialog";
+import InviteTeamMemberDialog from "~/app/dashboard/teams/[id]/(owner)/members/(dialogs)/invite-team-member";
 
 export default function TeamMembersTable() {
   const team = useTeam();
   const { data, status } = api.team.findMembers.useQuery({ id: team.team.id });
   const [tableData, setTableData] = React.useState<TeamMember[]>([]);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
+  const [showModal, setShowModal] = React.useState(false);
 
   const removeMutation = api.team.removeMember.useMutation();
 
@@ -87,7 +89,7 @@ export default function TeamMembersTable() {
   ];
 
   return (
-    <DataTable data={tableData} columns={columns}>
+    <DataTable data={tableData} columns={columns} buttonText={"Einladen"} onButtonClick={() => setShowModal(true)}>
       {deleteId && (
         <DeleteDialog
           open={true}
@@ -98,6 +100,10 @@ export default function TeamMembersTable() {
           data={{ userId: deleteId ?? 0, teamId: team.team.id }}
           mutation={removeMutation}
         />
+      )}
+
+      {showModal && (
+        <InviteTeamMemberDialog open={showModal} setOpen={(value) => setShowModal(value)} />
       )}
     </DataTable>
   );
