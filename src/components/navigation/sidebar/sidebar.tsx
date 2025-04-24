@@ -46,11 +46,6 @@ const data = {
   ],
   navAdmin: [
     {
-      title: "Vorlagen",
-      url: "/dashboard/templates",
-      icon: IconCategory,
-    },
-    {
       title: "Benutzer",
       url: "/dashboard/users",
       icon: IconUsers,
