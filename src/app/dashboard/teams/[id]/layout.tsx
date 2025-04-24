@@ -26,7 +26,7 @@ export default async function RootLayout({
   children: ReactNode;
   params: { id: string };
 }) {
-  const  session = await auth();
+  const session = await auth();
   if (!session) {
     redirect("/");
   }
@@ -40,8 +40,11 @@ export default async function RootLayout({
     return notFound();
   }
 
-  const isMember = await api.team.isMember({userId: Number(session.user.id), teamId: team.id});
-  if(!(isMember)) {
+  const isMember = await api.team.isMember({
+    userId: Number(session.user.id),
+    teamId: team.id,
+  });
+  if (!isMember) {
     return notFound();
   }
 
@@ -52,15 +55,15 @@ export default async function RootLayout({
   const description = team.personal ? "persönliches Team" : team.description;
 
   return (
-    <TeamProvider project={team}>
+    <TeamProvider team={team}>
       <SiteHeader>
         <SiteTitle title={`Team - ${title}`} />
         {description && <SiteDescription description={description} />}
+        <TeamNavigationComponent teamId={team.id} />
       </SiteHeader>
 
       <main className="flex shrink-0 items-center gap-2 transition-[width,height] ease-linear">
         <div className="flex w-full flex-col items-center gap-1 px-4 lg:gap-2 lg:px-6">
-          <TeamNavigationComponent teamId={team.id} />
           {children}
         </div>
       </main>
