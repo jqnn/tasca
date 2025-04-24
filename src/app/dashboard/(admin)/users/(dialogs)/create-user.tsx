@@ -20,6 +20,7 @@ import {
 import { api } from "~/trpc/react";
 import { beautifyRole, showErrorToast, showToast } from "~/lib/utils";
 import DialogInput from "~/components/dialogs/dialog-input";
+import type { FormEvent } from "react";
 
 export default function CreateUserDialog({
   open,
@@ -30,7 +31,9 @@ export default function CreateUserDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (user: User) => void | null;
 }) {
-  const handleConfirm = () => {
+  const handleConfirm = (e: FormEvent) => {
+    e.preventDefault()
+    
     if (authMethod == null) {
       showErrorToast();
       return;

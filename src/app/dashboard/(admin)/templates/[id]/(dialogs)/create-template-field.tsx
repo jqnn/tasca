@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { showErrorToast } from "~/lib/utils";
+import type { FormEvent } from "react";
 
 export default function CreateTemplateFieldDialog({
   templateId,
@@ -34,7 +35,8 @@ export default function CreateTemplateFieldDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (template: TemplateField) => void | null;
 }) {
-  const handleConfirm = () => {
+  const handleConfirm = (e: FormEvent) => {
+    e.preventDefault()
     createMutation.mutate(
       {
         label: task,

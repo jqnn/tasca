@@ -21,6 +21,7 @@ import { Button } from "~/components/ui/button";
 import { showErrorToast } from "~/lib/utils";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import type { FormEvent } from "react";
 
 export default function CreateTaskByTemplateDialog({
   open,
@@ -31,7 +32,8 @@ export default function CreateTaskByTemplateDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (template: InstanceTemplate) => void | null;
 }) {
-  const handleConfirm = () => {
+  const handleConfirm = (e: FormEvent) => {
+    e.preventDefault()
     if (template == null) {
       showErrorToast();
       return;

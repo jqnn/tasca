@@ -12,6 +12,7 @@ import { type TemplateTask } from "@prisma/client";
 import { api } from "~/trpc/react";
 import { showErrorToast } from "~/lib/utils";
 import DialogInput from "~/components/dialogs/dialog-input";
+import type { FormEvent } from "react";
 
 export default function CreateTemplateTaskDialog({
   templateId,
@@ -26,7 +27,8 @@ export default function CreateTemplateTaskDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (template: TemplateTask) => void | null;
 }) {
-  const handleConfirm = () => {
+  const handleConfirm = (e: FormEvent) => {
+    e.preventDefault()
     createMutation.mutate(
       {
         task: task,
