@@ -47,6 +47,8 @@ model Template {
   createdById      Int
   createdBy        User               @relation(fields: [createdById], references: [id])
   createdAt        DateTime           @default(now())
+  teamId           Int
+  team             Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
   TemplateTask     TemplateTask[]
   TemplateField    TemplateField[]
   TemplateInstance InstanceTemplate[]
@@ -115,6 +117,7 @@ model Team {
   personal    Boolean      @default(false)
   TeamMember  TeamMember[]
   TeamInvites TeamInvite[]
+  Template    Template[]
 }
 
 model TeamMember {
