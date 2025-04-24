@@ -1,6 +1,6 @@
 import { SiteHeader, SiteTitle } from "~/components/ui/site-header";
 import * as React from "react";
-import { TeamList } from "~/app/dashboard/teams/projects-list";
+import { TeamList } from "~/app/dashboard/teams/team-list";
 
 export default function Tasks() {
   return (
