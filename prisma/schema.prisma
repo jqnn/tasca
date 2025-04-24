@@ -83,6 +83,8 @@ model InstanceTemplate {
   createdById   Int
   createdBy     User            @relation(fields: [createdById], references: [id])
   status        InstanceStatus  @default(OPEN)
+  teamId        Int
+  team          Team            @relation(fields: [teamId], references: [id], onDelete: Cascade)
   InstanceField InstanceField[]
   InstanceTask  InstanceTask[]
 }
@@ -108,16 +110,17 @@ model InstanceTask {
 }
 
 model Team {
-  id          Int          @id @default(autoincrement())
-  name        String
-  description String?
-  createdAt   DateTime     @default(now())
-  createdById Int
-  createdBy   User         @relation(fields: [createdById], references: [id])
-  personal    Boolean      @default(false)
-  TeamMember  TeamMember[]
-  TeamInvites TeamInvite[]
-  Template    Template[]
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String?
+  createdAt        DateTime           @default(now())
+  createdById      Int
+  createdBy        User               @relation(fields: [createdById], references: [id])
+  personal         Boolean            @default(false)
+  TeamMember       TeamMember[]
+  TeamInvites      TeamInvite[]
+  Template         Template[]
+  InstanceTemplate InstanceTemplate[]
 }
 
 model TeamMember {
