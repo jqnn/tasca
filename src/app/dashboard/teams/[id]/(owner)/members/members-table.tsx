@@ -36,9 +36,18 @@ export default function TeamMembersTable() {
     {
       accessorKey: "userId",
       header: () => <div className="text-center">Benutzer</div>,
-      cell: ({ row }) => (
-        <div className="text-center">{row.original.userId}</div>
-      ),
+      cell: ({ row }) => {
+        const { data: user, isLoading } = api.user.find.useQuery({
+          id: row.original.userId,
+        });
+        if (isLoading || !user)
+          return <div className="text-center">Unbekannt</div>;
+        return (
+          <div className={"text-center"}>
+            {user.displayName ?? user.userName}
+          </div>
+        );
+      },
     },
     {
       accessorKey: "role",
