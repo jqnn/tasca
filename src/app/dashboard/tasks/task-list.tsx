@@ -7,7 +7,7 @@ import { api } from "~/trpc/react";
 import { Button } from "~/components/ui/button";
 import { Switch } from "~/components/ui/switch";
 import { Label } from "~/components/ui/label";
-import CreateTaskByTemplateDialog from "~/app/dashboard/tasks/(dialogs)/create-task";
+import CreateTaskByTemplateDialog from "~/app/dashboard/teams/[id]/(users)/processes/(dialogs)/create-task";
 import Spinner from "~/components/ui/spinner";
 import { TaskCardComponent } from "~/components/cards/task-card";
 
