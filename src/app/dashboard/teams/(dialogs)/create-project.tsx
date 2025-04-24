@@ -55,7 +55,7 @@ export default function CreateTeamDialog({
   };
 
   const [name, setName] = React.useState<string>("");
-  const [description, setDescription] = React.useState<string>("");
+  const [description, setDescription] = React.useState<string | null>(null);
 
   const router = useRouter();
   const { data: session } = useSession();
