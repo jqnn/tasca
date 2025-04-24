@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useSession } from "next-auth/react";
-import { SiteHeader, SiteTitle } from "~/components/ui/site-header";
 import { api } from "~/trpc/react";
 import Spinner from "~/components/ui/spinner";
 import { Button } from "~/components/ui/button";
@@ -68,28 +67,26 @@ export default function TaskPage({ params }: PageProps) {
 
   return (
     <>
-      <h1 className={"mr-auto font-bold mb-4"}>Prozess - {instance.template.name}</h1>
+      <h1 className={"mr-auto mb-4 font-bold"}>
+        Prozess - {instance.template.name}
+      </h1>
 
-      <main className="flex shrink-0 items-center gap-2 transition-[width,height] ease-linear">
-        <div className="flex w-full flex-col items-center gap-1 px-4 lg:gap-2 lg:px-6">
-          <ProcessFieldsContainer
-            instances={instance.InstanceField}
-            disabled={instance.status == "COMPLETED"}
-          />
-          <ProcessTasksTable
-            instances={instance.InstanceTask}
-            disabled={instance.status == "COMPLETED"}
-          />
+      <ProcessFieldsContainer
+        instances={instance.InstanceField}
+        disabled={instance.status == "COMPLETED"}
+      />
+      <ProcessTasksTable
+        instances={instance.InstanceTask}
+        disabled={instance.status == "COMPLETED"}
+      />
 
-          {instance.status == "OPEN" && (
-            <div className={"mt-4"}>
-              <Button variant={"default"} onClick={handleDone}>
-                Als Fertig markieren
-              </Button>
-            </div>
-          )}
+      {instance.status == "OPEN" && (
+        <div className={"mt-4"}>
+          <Button variant={"default"} onClick={handleDone}>
+            Als Fertig markieren
+          </Button>
         </div>
-      </main>
+      )}
     </>
   );
 }
