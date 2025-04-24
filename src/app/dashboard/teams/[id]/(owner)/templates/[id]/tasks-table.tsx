@@ -6,12 +6,12 @@ import { type ColumnDef } from "@tanstack/react-table";
 
 import type { TemplateTask } from "@prisma/client";
 import { SortableDataTable } from "~/components/table/sortable-table";
-import CreateTemplateTaskDialog from "~/app/dashboard/(admin)/templates/[id]/(dialogs)/create-template-task";
 import { api } from "~/trpc/react";
 import { showErrorToast, showToast } from "~/lib/utils";
 import { centeredColumn } from "~/components/table/table";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import TableActions from "~/components/table/table-actions";
+import CreateTemplateTaskDialog from "~/app/dashboard/teams/[id]/(owner)/templates/[id]/(dialogs)/create-template-task";
 
 export default function TemplateTaskTable({
   templateId,

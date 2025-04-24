@@ -9,12 +9,12 @@ import {
   SiteHeader,
   SiteTitle,
 } from "~/components/ui/site-header";
-import TemplateTaskTable from "~/app/dashboard/(admin)/templates/[id]/tasks-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import TemplateFieldsTable from "~/app/dashboard/(admin)/templates/[id]/fields-table";
 import { Button } from "~/components/ui/button";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import Spinner from "~/components/ui/spinner";
+import TemplateTaskTable from "~/app/dashboard/teams/[id]/(owner)/templates/[id]/tasks-table";
+import TemplateFieldsTable from "~/app/dashboard/teams/[id]/(owner)/templates/[id]/fields-table";
 
 interface PageProps {
   params: Promise<{
