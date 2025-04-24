@@ -3,6 +3,7 @@
 import React from "react";
 import { useTeam } from "~/context/TeamProvider";
 import { notFound } from "next/navigation";
+import TeamMembersTable from "~/app/dashboard/teams/[id]/(owner)/members/members-table";
 
 export default function TeamMembersPage() {
   const team = useTeam()
@@ -15,6 +16,6 @@ export default function TeamMembersPage() {
   }
 
   return (
-    <p>TODO</p>
+    <TeamMembersTable />
   );
 }
