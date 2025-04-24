@@ -19,8 +19,8 @@ model User {
   createdAt        DateTime           @default(now())
   Template         Template[]
   TemplateInstance InstanceTemplate[]
-  Project          Project[]
-  ProjectMember    ProjectMember[]
+  Team             Team[]
+  TeamMember       TeamMember[]
 }
 
 model AuthMethod {
@@ -104,30 +104,30 @@ model InstanceTask {
   instance   InstanceTemplate @relation(fields: [instanceId], references: [id], onDelete: Cascade)
 }
 
-model Project {
-  id            Int             @id @default(autoincrement())
-  name          String
-  description   String?
-  createdAt     DateTime        @default(now())
-  createdById   Int
-  createdBy     User            @relation(fields: [createdById], references: [id])
-  personal      Boolean         @default(false)
-  ProjectMember ProjectMember[]
+model Team {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime     @default(now())
+  createdById Int
+  createdBy   User         @relation(fields: [createdById], references: [id])
+  personal    Boolean      @default(false)
+  TeamMember  TeamMember[]
 }
 
-model ProjectMember {
-  userId    Int
-  projectId Int
-  joinedAt  DateTime    @default(now())
-  role      ProjectRole @default(VIEWER)
+model TeamMember {
+  userId   Int
+  teamId   Int
+  joinedAt DateTime @default(now())
+  role     TeamRole @default(VIEWER)
 
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
-  @@id([userId, projectId])
+  @@id([userId, teamId])
 }
 
-enum ProjectRole {
+enum TeamRole {
   OWNER
   EDITOR
   VIEWER
