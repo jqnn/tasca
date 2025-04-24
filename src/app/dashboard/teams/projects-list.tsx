@@ -28,7 +28,7 @@ export function TeamList() {
   const { data: role, status: roleStatus } = api.user.getRole.useQuery({
     id: Number(session.user.id),
   });
-  const { data: projects, status } = api.project.findAll.useQuery({
+  const { data: teams, status } = api.team.findAll.useQuery({
     id: session.user.id,
   });
 
@@ -50,35 +50,35 @@ export function TeamList() {
         </div>
       )}
 
-      {projects && (
+      {teams && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((members) => {
-            const project = members.project
-            const title = project.personal
-              ? (project.createdBy.displayName ?? project.createdBy.userName)
-              : project.name;
+          {teams.map((members) => {
+            const team = members.team
+            const title = team.personal
+              ? (team.createdBy.displayName ?? team.createdBy.userName)
+              : team.name;
 
-            const description = project.personal ? (
+            const description = team.personal ? (
               <>
                 <p>persönliches Projekt</p>
                 <p>Aufgaben - 0</p>
               </>
             ) : (
               <>
-                {project.description ? (
-                  <p>Beschreibung - {project.description}</p>
+                {team.description ? (
+                  <p>Beschreibung - {team.description}</p>
                 ): (
-                  <p>Mitglieder - {project.ProjectMember.length}</p>
+                  <p>Mitglieder - {team.TeamMember.length}</p>
                   )}
                 <p>
                   Besitzer -&nbsp;
-                  {project.createdBy.displayName ?? project.createdBy.userName}
+                  {team.createdBy.displayName ?? team.createdBy.userName}
                 </p>
               </>
             );
 
             return (
-              <Link key={project.id} href={`/dashboard/teams/${project.id}`}>
+              <Link key={team.id} href={`/dashboard/teams/${team.id}`}>
                 <Card>
                   <CardHeader>
                     <CardTitle>{title}</CardTitle>
