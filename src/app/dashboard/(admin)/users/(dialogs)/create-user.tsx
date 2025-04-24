@@ -58,6 +58,11 @@ export default function CreateUserDialog({
             },
             {
               onSuccess: (data) => {
+                if (!data) {
+                  showErrorToast();
+                  return;
+                }
+
                 if (!onCreate) {
                   window.location.reload();
                   return;
