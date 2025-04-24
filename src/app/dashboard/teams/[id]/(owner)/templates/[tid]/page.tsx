@@ -13,12 +13,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Button } from "~/components/ui/button";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import Spinner from "~/components/ui/spinner";
-import TemplateTaskTable from "~/app/dashboard/teams/[id]/(owner)/templates/[id]/tasks-table";
-import TemplateFieldsTable from "~/app/dashboard/teams/[id]/(owner)/templates/[id]/fields-table";
+import TemplateTaskTable from "~/app/dashboard/teams/[id]/(owner)/templates/[tid]/tasks-table";
+import TemplateFieldsTable from "~/app/dashboard/teams/[id]/(owner)/templates/[tid]/fields-table";
 
 interface PageProps {
   params: Promise<{
-    id: string;
+    tid: string;
   }>;
 }
 
@@ -35,7 +35,7 @@ export default function TemplatePage({ params }: PageProps) {
   }
 
   const { data: template, status } = api.template.find.useQuery({
-    id: Number(Number(actualParams.id)),
+    id: Number(Number(actualParams.tid)),
   });
 
   const deleteMutation = api.template.delete.useMutation();
