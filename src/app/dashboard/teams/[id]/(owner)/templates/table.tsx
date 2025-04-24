@@ -6,14 +6,17 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { api } from "~/trpc/react";
 import type { Template } from "@prisma/client";
 import { DataTable } from "~/components/table/data-table";
-import CreateTemplateDialog from "~/app/dashboard/(admin)/templates/(dialogs)/create-template";
+import CreateTemplateDialog from "~/app/dashboard/teams/[id]/(owner)/templates/(dialogs)/create-template";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { centeredColumn } from "~/components/table/table";
 import TableActions from "~/components/table/table-actions";
 import Spinner from "~/components/ui/spinner";
+import { useTeam } from "~/context/TeamProvider";
+import { notFound } from "next/navigation";
 
-export default function TemplateTable() {
-  const { data, status } = api.template.findAll.useQuery();
+export default function TeamTemplatesTable() {
+  const team = useTeam();
+  const { data, status } = api.template.findAll.useQuery({ id: team.team.id });
   const [tableData, setTableData] = React.useState<Template[]>([]);
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
@@ -22,6 +25,10 @@ export default function TemplateTable() {
   React.useEffect(() => {
     setTableData(data ?? []);
   }, [data]);
+
+  if (!team) {
+    return notFound();
+  }
 
   if (status !== "success") {
     return <Spinner />;
@@ -47,7 +54,6 @@ export default function TemplateTable() {
       columns={columns}
       onButtonClick={() => setCreateOpen(true)}
     >
-
       {createOpen && (
         <CreateTemplateDialog
           open={createOpen}

@@ -14,6 +14,8 @@ import { api } from "~/trpc/react";
 import { showErrorToast } from "~/lib/utils";
 import { useSession } from "next-auth/react";
 import DialogInput from "~/components/dialogs/dialog-input";
+import { useTeam } from "~/context/TeamProvider";
+import { notFound } from "next/navigation";
 
 export default function CreateTemplateDialog({
   open,
@@ -35,6 +37,7 @@ export default function CreateTemplateDialog({
 
           createMutation.mutate(
             {
+              teamId: team.team.id,
               name: name,
               description: description,
               userId: session?.user?.id ?? "0",
@@ -59,6 +62,7 @@ export default function CreateTemplateDialog({
     );
   };
 
+  const team = useTeam();
   const [name, setName] = React.useState<string>("");
   const [description, setDescription] = React.useState<string | null>(null);
   const { data: session } = useSession();
@@ -66,6 +70,10 @@ export default function CreateTemplateDialog({
 
   const existsMutation = api.template.exists.useMutation();
   const createMutation = api.template.create.useMutation();
+
+  if(!(team)) {
+    return notFound();
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
