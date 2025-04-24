@@ -27,17 +27,24 @@ type TeamData = {
   personal: boolean;
 };
 
-const TeamContext = createContext<{ team: TeamData } | undefined>(undefined);
+type TeamContextType = {
+  team: TeamData
+  userRole: TeamRole
+}
+
+const TeamContext = createContext<TeamContextType | undefined>(undefined)
 
 export const TeamProvider = ({
   children,
   team,
+  userRole,
 }: {
   children: ReactNode;
   team: TeamData
+  userRole: TeamRole
 }) => {
   return (
-    <TeamContext.Provider value={{ team: team }}>
+    <TeamContext.Provider value={{ team, userRole }}>
       {children}
     </TeamContext.Provider>
   );
@@ -46,5 +53,5 @@ export const TeamProvider = ({
 export const useTeam = () => {
   const context = useContext(TeamContext);
   if (!context) throw new Error("useTeam must be used within a TeamProvider");
-  return context.team;
+  return context;
 };
