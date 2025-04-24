@@ -21,6 +21,7 @@ model User {
   TemplateInstance InstanceTemplate[]
   Team             Team[]
   TeamMember       TeamMember[]
+  TeamInvites      TeamInvites[]
 }
 
 model AuthMethod {
@@ -105,14 +106,15 @@ model InstanceTask {
 }
 
 model Team {
-  id          Int          @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   name        String
   description String?
-  createdAt   DateTime     @default(now())
+  createdAt   DateTime      @default(now())
   createdById Int
-  createdBy   User         @relation(fields: [createdById], references: [id])
-  personal    Boolean      @default(false)
+  createdBy   User          @relation(fields: [createdById], references: [id])
+  personal    Boolean       @default(false)
   TeamMember  TeamMember[]
+  TeamInvites TeamInvites[]
 }
 
 model TeamMember {
@@ -125,6 +127,15 @@ model TeamMember {
   team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
   @@id([userId, teamId])
+}
+
+model TeamInvites {
+  id     Int      @id @default(autoincrement())
+  userId Int
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamId Int
+  team   Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  sentAt DateTime @default(now())
 }
 
 enum TeamRole {
