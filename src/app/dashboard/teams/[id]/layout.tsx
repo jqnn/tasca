@@ -3,15 +3,15 @@ import "~/styles/globals.css";
 import { type Metadata } from "next";
 import React, { type ReactNode } from "react";
 import { TeamProvider } from "~/context/TeamProvider";
-import Spinner from "~/components/ui/spinner";
 import {
   SiteDescription,
   SiteHeader,
   SiteTitle,
 } from "~/components/ui/site-header";
 import { TeamNavigationComponent } from "~/components/navigation/team-navigation";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { api } from "~/trpc/server";
+import { auth } from "~/server/auth";
 
 export const metadata: Metadata = {
   title: "Tasca | Dashboard",
@@ -26,12 +26,22 @@ export default async function RootLayout({
   children: ReactNode;
   params: { id: string };
 }) {
+  const  session = await auth();
+  if (!session) {
+    redirect("/");
+  }
+
   const { id } = params;
   const team = await api.team.find({
     id: Number(id),
   });
 
   if (!team) {
+    return notFound();
+  }
+
+  const isMember = await api.team.isMember({userId: Number(session.user.id), teamId: team.id});
+  if(!(isMember)) {
     return notFound();
   }
 
