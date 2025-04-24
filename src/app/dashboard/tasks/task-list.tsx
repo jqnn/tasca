@@ -1,22 +1,15 @@
 "use client";
 
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
 import * as React from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
-import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { Switch } from "~/components/ui/switch";
 import { Label } from "~/components/ui/label";
 import CreateTaskByTemplateDialog from "~/app/dashboard/tasks/(dialogs)/create-task";
-import { beautifyInstanceStatus } from "~/lib/utils";
 import Spinner from "~/components/ui/spinner";
+import { TaskCardComponent } from "~/components/cards/task-card";
 
 export function TaskList() {
   const [showCreated, setShowCreated] = React.useState(false);
@@ -60,34 +53,9 @@ export function TaskList() {
 
       {tasks && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {tasks.map((task) => {
-            const field = task.InstanceField.sort(
-              (a, b) => a.field.order - b.field.order,
-            );
-
-            const firstField = field[0];
-
-            return (
-              <Link key={task.id} href={`/dashboard/tasks/${task.id}`}>
-                <Card key={task.id}>
-                  <CardHeader>
-                    <CardTitle>
-                      {firstField
-                        ? firstField.field.label + " - " + firstField.value
-                        : task.template.name}
-                    </CardTitle>
-                    <CardDescription>
-                      <p>
-                        Ersteller -{" "}
-                        {task.createdBy.displayName ?? task.createdBy.userName}
-                      </p>
-                      <p>Status - {beautifyInstanceStatus(task.status)}</p>
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              </Link>
-            );
-          })}
+          {tasks.map((task) => (
+            <TaskCardComponent key={task.id} task={task} />
+          ))}
         </div>
       )}
 
