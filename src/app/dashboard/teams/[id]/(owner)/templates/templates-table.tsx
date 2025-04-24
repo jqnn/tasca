@@ -35,7 +35,7 @@ export default function TeamTemplatesTable() {
   }
 
   const columns: ColumnDef<Template>[] = [
-    centeredColumn("name", "Name", null, "/dashboard/templates/:id"),
+    centeredColumn("name", "Name", null, `/dashboard/teams/${team.team.id}/templates/:id`),
     centeredColumn("description", "Beschreibung"),
     centeredColumn("createdById", "Ersteller", (value) => {
       const { data: user, isLoading } = api.user.find.useQuery({ id: value });
