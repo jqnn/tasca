@@ -5,15 +5,15 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import { SiteHeader, SiteTitle } from "~/components/ui/site-header";
 import { api } from "~/trpc/react";
-import { TaskFields } from "~/app/dashboard/tasks/[id]/fields";
-import TasksTable from "~/app/dashboard/tasks/[id]/tasks";
 import Spinner from "~/components/ui/spinner";
 import { Button } from "~/components/ui/button";
 import { isTaskDone, showErrorToast, showToast } from "~/lib/utils";
+import ProcessTasksTable from "~/app/dashboard/teams/[id]/(users)/processes/[pid]/process-tasks";
+import ProcessFieldsContainer from "~/app/dashboard/teams/[id]/(users)/processes/[pid]/process-fields";
 
 interface PageProps {
   params: Promise<{
-    id: string;
+    pid: string;
   }>;
 }
 
@@ -28,7 +28,7 @@ export default function TaskPage({ params }: PageProps) {
 
   const updateMutation = api.instance.updateInstanceState.useMutation();
   const { data: instance, status } = api.instance.find.useQuery({
-    id: Number(actualParams.id),
+    id: Number(actualParams.pid),
   });
 
   if (status !== "success") {
@@ -74,11 +74,11 @@ export default function TaskPage({ params }: PageProps) {
 
       <main className="flex shrink-0 items-center gap-2 transition-[width,height] ease-linear">
         <div className="flex w-full flex-col items-center gap-1 px-4 lg:gap-2 lg:px-6">
-          <TaskFields
+          <ProcessFieldsContainer
             instances={instance.InstanceField}
             disabled={instance.status == "COMPLETED"}
           />
-          <TasksTable
+          <ProcessTasksTable
             instances={instance.InstanceTask}
             disabled={instance.status == "COMPLETED"}
           />
