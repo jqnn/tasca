@@ -65,9 +65,11 @@ export function ProjectList() {
               </>
             ) : (
               <>
-                {project.description && (
+                {project.description ? (
                   <p>Beschreibung - {project.description}</p>
-                )}
+                ): (
+                  <p>Mitglieder - {project.ProjectMember.length}</p>
+                  )}
                 <p>
                   Besitzer -&nbsp;
                   {project.createdBy.displayName ?? project.createdBy.userName}

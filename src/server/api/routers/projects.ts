@@ -9,7 +9,8 @@ export const projectRouter = createTRPCRouter({
       include: {
         project: {
           include: {
-            createdBy: true
+            createdBy: true,
+            ProjectMember: true,
           }
         }
       },
