@@ -11,8 +11,8 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 
-import { SidebarItems } from "~/components/sidebar/sidebar-items";
-import { SidebarUser } from "~/components/sidebar/sidebar-user";
+import { SidebarItems } from "~/components/navigation/sidebar/sidebar-items";
+import { SidebarUser } from "~/components/navigation/sidebar/sidebar-user";
 import {
   Sidebar,
   SidebarContent,
