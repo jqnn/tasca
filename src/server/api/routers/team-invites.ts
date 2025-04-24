@@ -16,14 +16,14 @@ export const teamInvitesRouter = createTRPCRouter({
   create: publicProcedure
     .input(
       z.object({
-        userId: z.string(),
+        userId: z.number(),
         teamId: z.number(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       return ctx.db.teamInvites.create({
         data: {
-          userId: Number(input.userId),
+          userId: input.userId,
           teamId: input.teamId,
         },
       });
