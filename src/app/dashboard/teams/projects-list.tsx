@@ -7,7 +7,7 @@ import { api } from "~/trpc/react";
 import Spinner from "~/components/ui/spinner";
 import { Button } from "~/components/ui/button";
 import CreateTeamDialog from "~/app/dashboard/teams/(dialogs)/create-project";
-import { TeamCardComponent } from "~/components/team-card";
+import { TeamCardComponent } from "~/components/cards/team-card";
 
 export function TeamList() {
   const [showCreating, setShowCreating] = React.useState(false);
