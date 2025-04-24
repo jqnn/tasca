@@ -64,7 +64,7 @@ export default function CreateTeamDialog({
     return;
   }
 
-  const createMutation = api.project.create.useMutation();
+  const createMutation = api.team.create.useMutation();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -26,7 +26,7 @@ export default function ProjectPage({ params }: PageProps) {
     return;
   }
 
-  const { data: project, status } = api.project.find.useQuery({
+  const { data: project, status } = api.team.find.useQuery({
     id: Number(actualParams.id),
   });
 
