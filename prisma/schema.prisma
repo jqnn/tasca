@@ -136,6 +136,8 @@ model TeamInvites {
   teamId Int
   team   Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
   sentAt DateTime @default(now())
+
+  @@unique([userId, teamId])
 }
 
 enum TeamRole {
