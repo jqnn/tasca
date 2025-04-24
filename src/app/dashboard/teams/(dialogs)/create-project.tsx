@@ -15,7 +15,7 @@ import DialogInput from "~/components/dialogs/dialog-input";
 import { api } from "~/trpc/react";
 import { showErrorToast } from "~/lib/utils";
 
-export default function CreateProjectDialog({
+export default function CreateTeamDialog({
   open,
   setOpen,
   onCreate,
@@ -72,14 +72,14 @@ export default function CreateProjectDialog({
         <DialogHeader>
           <DialogTitle>Hinzufügen</DialogTitle>
           <DialogDescription>
-            Erstelle ein neues Projekt.
+            Erstelle ein neues Team.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleConfirm}>
           <div className="grid w-full gap-4 py-4">
             <DialogInput
               id={"name"}
-              label={"Projektname"}
+              label={"Teamname"}
               setValue={setName}
               required={true}
             />

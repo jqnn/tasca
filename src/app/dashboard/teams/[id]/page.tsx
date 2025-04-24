@@ -49,7 +49,7 @@ export default function ProjectPage({ params }: PageProps) {
   return (
     <>
       <SiteHeader>
-        <SiteTitle title={`Projekt - ${title}`} />
+        <SiteTitle title={`Team - ${title}`} />
         {description && (
           <SiteDescription description={description} />
         )}

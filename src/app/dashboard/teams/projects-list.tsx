@@ -13,9 +13,9 @@ import { api } from "~/trpc/react";
 import Link from "next/link";
 import Spinner from "~/components/ui/spinner";
 import { Button } from "~/components/ui/button";
-import CreateProjectDialog from "~/app/dashboard/projects/(dialogs)/create-project";
+import CreateTeamDialog from "~/app/dashboard/teams/(dialogs)/create-project";
 
-export function ProjectList() {
+export function TeamList() {
   const [showCreating, setShowCreating] = React.useState(false);
 
   const router = useRouter();
@@ -78,7 +78,7 @@ export function ProjectList() {
             );
 
             return (
-              <Link key={project.id} href={`/dashboard/projects/${project.id}`}>
+              <Link key={project.id} href={`/dashboard/teams/${project.id}`}>
                 <Card>
                   <CardHeader>
                     <CardTitle>{title}</CardTitle>
@@ -92,7 +92,7 @@ export function ProjectList() {
       )}
 
       {role !== "USER" && showCreating && (
-        <CreateProjectDialog
+        <CreateTeamDialog
           open={showCreating}
           setOpen={setShowCreating}
           onCreate={(project) => {
