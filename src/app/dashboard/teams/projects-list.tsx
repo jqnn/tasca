@@ -95,8 +95,8 @@ export function TeamList() {
         <CreateTeamDialog
           open={showCreating}
           setOpen={setShowCreating}
-          onCreate={(project) => {
-            router.push(`/dashboard/projects/${project.id}`);
+          onCreate={(team) => {
+            router.push(`/dashboard/projects/${team.id}`);
           }}
         />
       )}

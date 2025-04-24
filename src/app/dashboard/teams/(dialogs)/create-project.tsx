@@ -1,5 +1,4 @@
 import * as React from "react";
-import { type Project } from "@prisma/client";
 import {
   Dialog,
   DialogContent,
@@ -14,6 +13,7 @@ import { useRouter } from "next/navigation";
 import DialogInput from "~/components/dialogs/dialog-input";
 import { api } from "~/trpc/react";
 import { showErrorToast } from "~/lib/utils";
+import type {Team} from "@prisma/client";
 
 export default function CreateTeamDialog({
   open,
@@ -22,7 +22,7 @@ export default function CreateTeamDialog({
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
-  onCreate?: (project: Project) => void | null;
+  onCreate?: (team: Team) => void | null;
 }) {
   const handleConfirm = () => {
     createMutation.mutate(
