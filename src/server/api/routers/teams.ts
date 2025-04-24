@@ -1,16 +1,16 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 
-export const projectRouter = createTRPCRouter({
+export const teamRouter = createTRPCRouter({
   findAll: publicProcedure
     .input(z.object({id: z.string()})).query(async ({ ctx, input }) => {
-    return ctx.db.projectMember.findMany({
+    return ctx.db.teamMember.findMany({
       where: {userId: Number(input.id)},
       include: {
-        project: {
+        team: {
           include: {
             createdBy: true,
-            ProjectMember: true,
+            TeamMember: true,
           }
         }
       },
@@ -20,11 +20,11 @@ export const projectRouter = createTRPCRouter({
   find: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
-      return ctx.db.project.findUnique({
+      return ctx.db.team.findUnique({
         where: { id: input.id },
         include: {
           createdBy: true,
-          ProjectMember: true,
+          TeamMember: true,
         },
       });
     }),
@@ -38,7 +38,7 @@ export const projectRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const project = await ctx.db.project.create({
+      const project = await ctx.db.team.create({
         data: {
           name: input.name,
           description: input.description,
@@ -47,10 +47,10 @@ export const projectRouter = createTRPCRouter({
       });
 
       if (!project) return null;
-      const user = await ctx.db.projectMember.create({
+      const user = await ctx.db.teamMember.create({
         data: {
           userId: project.createdById,
-          projectId: project.id,
+          teamId: project.id,
           role: "OWNER",
         },
       });
