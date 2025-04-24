@@ -3,19 +3,20 @@ import { z } from "zod";
 
 export const teamRouter = createTRPCRouter({
   findAll: publicProcedure
-    .input(z.object({id: z.string()})).query(async ({ ctx, input }) => {
-    return ctx.db.teamMember.findMany({
-      where: {userId: Number(input.id)},
-      include: {
-        team: {
-          include: {
-            createdBy: true,
-            TeamMember: true,
-          }
-        }
-      },
-    });
-  }),
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.teamMember.findMany({
+        where: { userId: Number(input.id) },
+        include: {
+          team: {
+            include: {
+              createdBy: true,
+              TeamMember: true,
+            },
+          },
+        },
+      });
+    }),
 
   find: publicProcedure
     .input(z.object({ id: z.number() }))
@@ -27,6 +28,24 @@ export const teamRouter = createTRPCRouter({
           TeamMember: true,
         },
       });
+    }),
+
+  getRole: publicProcedure
+    .input(z.object({ userId: z.number(), teamId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.teamMember
+        .findUnique({
+          where: {
+            userId_teamId: {
+              userId: input.userId,
+              teamId: input.teamId,
+            },
+          },
+        })
+        .then((member) => {
+          if (!member) return null;
+          return member.role;
+        });
     }),
 
   create: publicProcedure
