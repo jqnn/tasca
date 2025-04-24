@@ -39,8 +39,8 @@ const data = {
       icon: IconClipboard,
     },
     {
-      title: "Projekte",
-      url: "/dashboard/projects",
+      title: "Teams",
+      url: "/dashboard/teams",
       icon: IconFolders,
     },
   ],
