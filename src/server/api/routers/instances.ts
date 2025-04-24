@@ -4,10 +4,11 @@ import { InstanceStatus } from "@prisma/client";
 
 export const instanceRouter = createTRPCRouter({
   findAll: publicProcedure
-    .input(z.object({ completed: z.boolean() }))
+    .input(z.object({ teamId: z.number(), completed: z.boolean() }))
     .query(async ({ ctx, input }) => {
       if (input.completed) {
         return ctx.db.instanceTemplate.findMany({
+          where: { teamId: input.teamId },
           include: {
             template: true,
             createdBy: true,
@@ -20,7 +21,9 @@ export const instanceRouter = createTRPCRouter({
         });
       } else {
         return ctx.db.instanceTemplate.findMany({
-          where: { status: "OPEN" },
+          where: {
+            AND: [{ status: "OPEN" }, { teamId: input.teamId }],
+          },
           include: {
             template: true,
             createdBy: true,
@@ -56,7 +59,13 @@ export const instanceRouter = createTRPCRouter({
     }),
 
   create: publicProcedure
-    .input(z.object({ templateId: z.number(), userId: z.string() }))
+    .input(
+      z.object({
+        teamId: z.number(),
+        templateId: z.number(),
+        userId: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const template = await ctx.db.template.findUnique({
         where: { id: input.templateId },
@@ -69,6 +78,7 @@ export const instanceRouter = createTRPCRouter({
       if (!template) return null;
       const instance = await ctx.db.instanceTemplate.create({
         data: {
+          teamId: input.teamId,
           templateId: input.templateId,
           createdById: Number(input.userId),
         },

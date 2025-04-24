@@ -2,9 +2,13 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 
 export const templateRouter = createTRPCRouter({
-  findAll: publicProcedure.query(async ({ ctx }) => {
-    return ctx.db.template.findMany();
-  }),
+  findAll: publicProcedure
+    .input(z.object({ teamId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.template.findMany({
+        where: { teamId: input.teamId },
+      });
+    }),
 
   find: publicProcedure
     .input(z.object({ id: z.number() }))
@@ -31,6 +35,7 @@ export const templateRouter = createTRPCRouter({
   create: publicProcedure
     .input(
       z.object({
+        teamId: z.number(),
         name: z.string(),
         description: z.string().nullable(),
         userId: z.string(),
@@ -39,6 +44,7 @@ export const templateRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return ctx.db.template.create({
         data: {
+          teamId: input.teamId,
           name: input.name,
           description: input.description ?? null,
           createdById: Number(input.userId),

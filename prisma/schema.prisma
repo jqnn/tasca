@@ -19,6 +19,9 @@ model User {
   createdAt        DateTime           @default(now())
   Template         Template[]
   TemplateInstance InstanceTemplate[]
+  Team             Team[]
+  TeamMember       TeamMember[]
+  TeamInvites      TeamInvite[]
 }
 
 model AuthMethod {
@@ -44,6 +47,8 @@ model Template {
   createdById      Int
   createdBy        User               @relation(fields: [createdById], references: [id])
   createdAt        DateTime           @default(now())
+  teamId           Int
+  team             Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
   TemplateTask     TemplateTask[]
   TemplateField    TemplateField[]
   TemplateInstance InstanceTemplate[]
@@ -78,6 +83,8 @@ model InstanceTemplate {
   createdById   Int
   createdBy     User            @relation(fields: [createdById], references: [id])
   status        InstanceStatus  @default(OPEN)
+  teamId        Int
+  team          Team            @relation(fields: [teamId], references: [id], onDelete: Cascade)
   InstanceField InstanceField[]
   InstanceTask  InstanceTask[]
 }
@@ -100,6 +107,49 @@ model InstanceTask {
   task       TemplateTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   instanceId Int
   instance   InstanceTemplate @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+}
+
+model Team {
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String?
+  createdAt        DateTime           @default(now())
+  createdById      Int
+  createdBy        User               @relation(fields: [createdById], references: [id])
+  personal         Boolean            @default(false)
+  TeamMember       TeamMember[]
+  TeamInvites      TeamInvite[]
+  Template         Template[]
+  InstanceTemplate InstanceTemplate[]
+}
+
+model TeamMember {
+  userId   Int
+  teamId   Int
+  joinedAt DateTime @default(now())
+  role     TeamRole @default(VIEWER)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@id([userId, teamId])
+}
+
+model TeamInvite {
+  id     Int      @id @default(autoincrement())
+  userId Int
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamId Int
+  team   Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  sentAt DateTime @default(now())
+
+  @@unique([userId, teamId])
+}
+
+enum TeamRole {
+  OWNER
+  EDITOR
+  VIEWER
 }
 
 enum Role {

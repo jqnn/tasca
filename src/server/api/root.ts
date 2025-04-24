@@ -5,6 +5,8 @@ import { templateRouter } from "~/server/api/routers/template";
 import { templateTaskRouter } from "~/server/api/routers/template-task";
 import { templateFieldRouter } from "~/server/api/routers/template-field";
 import { instanceRouter } from "~/server/api/routers/instances";
+import { teamRouter } from "~/server/api/routers/teams";
+import { teamInvitesRouter } from "~/server/api/routers/team-invites";
 
 /**
  * This is the primary router for your server.
@@ -18,6 +20,8 @@ export const appRouter = createTRPCRouter({
   templateTask: templateTaskRouter,
   templateField: templateFieldRouter,
   instance: instanceRouter,
+  team: teamRouter,
+  teamInvites: teamInvitesRouter,
 });
 
 // export type definition of API

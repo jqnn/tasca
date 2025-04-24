@@ -13,7 +13,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    runs-on: [self-hosted, arm64]
+    runs-on: [ self-hosted, arm64 ]
     steps:
       - name: Check out source code
         uses: actions/checkout@v4
