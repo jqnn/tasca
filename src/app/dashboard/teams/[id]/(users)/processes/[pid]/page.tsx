@@ -68,9 +68,7 @@ export default function TaskPage({ params }: PageProps) {
 
   return (
     <>
-      <SiteHeader>
-        <SiteTitle title={"Aufgabe - " + instance.template.name} />
-      </SiteHeader>
+      <h1 className={"mr-auto font-bold mb-4"}>Prozess - {instance.template.name}</h1>
 
       <main className="flex shrink-0 items-center gap-2 transition-[width,height] ease-linear">
         <div className="flex w-full flex-col items-center gap-1 px-4 lg:gap-2 lg:px-6">
