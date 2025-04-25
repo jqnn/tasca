@@ -95,6 +95,8 @@ export function TeamNavigationComponent({ teamId }: PageProps) {
               mutation={deleteMutation}
               open={showModal}
               setOpen={setShowModal}
+              loadingMessage={"Das Team wird gelöscht..."}
+              successMessage={"Das Team wurde gelöscht."}
               onDelete={() => {
                 router.push("/dashboard/teams");
               }}
@@ -105,6 +107,8 @@ export function TeamNavigationComponent({ teamId }: PageProps) {
               mutation={removeMutation}
               open={showModal}
               setOpen={setShowModal}
+              loadingMessage={"Das Team wird verlassen..."}
+              successMessage={"Das Team wurde verlassen."}
               onDelete={() => {
                 router.push("/dashboard/teams");
               }}
