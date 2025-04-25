@@ -29,7 +29,6 @@ export function TeamNavigationComponent({ teamId }: PageProps) {
     userId: Number(session.user?.id),
     teamId: teamId,
   });
-  const isOwner = role == "OWNER";
 
   return (
     <NavigationMenu className={"ml-auto"}>
@@ -50,25 +49,27 @@ export function TeamNavigationComponent({ teamId }: PageProps) {
             Prozesse
           </NavigationMenuLink>
         </NavigationMenuItem>
-        {isOwner && (
-          <>
-            <NavigationMenuItem>
-              <NavigationMenuLink
-                href={`/dashboard/teams/${teamId}/templates`}
-                className={navigationMenuTriggerStyle()}
-              >
-                Vorlagen
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink
-                href={`/dashboard/teams/${teamId}/members`}
-                className={navigationMenuTriggerStyle()}
-              >
-                Mitglieder
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-          </>
+
+        {(role == "OWNER" || role == "ADMIN") && (
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              href={`/dashboard/teams/${teamId}/templates`}
+              className={navigationMenuTriggerStyle()}
+            >
+              Vorlagen
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        )}
+
+        {role == "OWNER" && (
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              href={`/dashboard/teams/${teamId}/members`}
+              className={navigationMenuTriggerStyle()}
+            >
+              Mitglieder
+            </NavigationMenuLink>
+          </NavigationMenuItem>
         )}
       </NavigationMenuList>
     </NavigationMenu>

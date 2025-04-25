@@ -11,7 +11,7 @@ export default function TeamTemplatesPage() {
     return notFound();
   }
 
-  if (team.userRole != "OWNER") {
+  if (team.userRole == "MEMBER") {
     return notFound();
   }
 
