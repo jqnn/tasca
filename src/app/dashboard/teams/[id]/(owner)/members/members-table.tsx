@@ -4,14 +4,21 @@ import * as React from "react";
 import { type ColumnDef } from "@tanstack/react-table";
 
 import { api } from "~/trpc/react";
-import type { TeamMember } from "@prisma/client";
+import { type TeamMember, TeamRole } from "@prisma/client";
 import { DataTable } from "~/components/table/data-table";
 import Spinner from "~/components/ui/spinner";
 import { useTeam } from "~/context/TeamProvider";
 import { notFound } from "next/navigation";
 import { IconTrash } from "@tabler/icons-react";
 import { DeleteDialog } from "~/components/dialogs/delete-team-member-dialog";
-import { beautifyTeamRole } from "~/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import { beautifyTeamRole, showErrorToast, showToast } from "~/lib/utils";
 
 export default function TeamMembersTable() {
   const team = useTeam();
@@ -19,6 +26,17 @@ export default function TeamMembersTable() {
   const [tableData, setTableData] = React.useState<TeamMember[]>([]);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
 
+  const updateMutation = api.team.updateRole.useMutation({
+    onMutate: () => {
+      showToast("Lädt...", "Die Rolle des Benutzers wird aktualisert...")
+    },
+    onSuccess: () => {
+      showToast("Erfolgreich", "Die Rolle des Benutzers wurde aktualisert.")
+    },
+    onError: () => {
+      showErrorToast()
+    }
+  });
   const removeMutation = api.team.removeMember.useMutation();
 
   React.useEffect(() => {
@@ -53,9 +71,42 @@ export default function TeamMembersTable() {
     {
       accessorKey: "role",
       header: () => <div className="text-center">Rolle</div>,
-      cell: ({ row }) => (
-        <div className="text-center">{beautifyTeamRole(row.original.role)}</div>
-      ),
+      cell: ({ row }) => {
+        if (row.original.role == "OWNER") {
+          return (
+            <div className={"text-center"}>
+              {beautifyTeamRole(row.original.role)}
+            </div>
+          );
+        }
+
+        return (
+          <div className={"flex flex-row justify-center gap-2"}>
+            <Select defaultValue={row.original.role} onValueChange={(value) => {
+              updateMutation.mutate({
+                userId: row.original.userId,
+                teamId: row.original.teamId,
+                role: value as TeamRole,
+              })
+              row.original.role = value as TeamRole;
+            }}>
+              <SelectTrigger className="w-1/2">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(TeamRole).map((role) => {
+                  if (role == "OWNER") return;
+                  return (
+                    <SelectItem key={role} value={role}>
+                      {beautifyTeamRole(role)}
+                    </SelectItem>
+                  );
+                })}
+              </SelectContent>
+            </Select>
+          </div>
+        );
+      },
     },
     {
       accessorKey: "joinedAt",
