@@ -80,7 +80,7 @@ model InstanceTemplate {
   templateId    Int
   template      Template        @relation(fields: [templateId], references: [id], onDelete: Cascade)
   createdAt     DateTime        @default(now())
-  closedAt      DateTime
+  closedAt      DateTime?
   createdById   Int
   createdBy     User            @relation(fields: [createdById], references: [id])
   status        InstanceStatus  @default(OPEN)
