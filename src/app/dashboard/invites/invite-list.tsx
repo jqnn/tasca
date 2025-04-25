@@ -33,10 +33,10 @@ export default function TeamInvitesTable() {
   }
 
   const columns: ColumnDef<TeamInvite>[] = [
-    centeredColumn("userId", "Benutzer", (value) => {
-      const { data: user, isLoading } = api.user.find.useQuery({ id: value });
-      if (isLoading || !user) return "Unbekannt";
-      return user.displayName ?? user.userName;
+    centeredColumn("teamId", "Team", (value) => {
+      const { data: team, isLoading } = api.team.find.useQuery({ id: value });
+      if (isLoading || !team) return "Unbekannt";
+      return team.name;
     }),
     centeredColumn("sentAt", "Gesendet am", (value) => value.toLocaleString()),
     TableActions(null, (value) => setDeleteId(value)),
