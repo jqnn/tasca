@@ -40,6 +40,27 @@ export const teamInvitesRouter = createTRPCRouter({
       });
     }),
 
+  accept: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const invite = await ctx.db.teamInvite.findUnique({
+        where: { id: input.id },
+      });
+      if (!invite) return null;
+
+      const team = await ctx.db.teamMember.create({
+        data: {
+          userId: invite.userId,
+          teamId: invite.teamId,
+        },
+      });
+      if (!team) return null;
+
+      return ctx.db.teamInvite.delete({
+        where: { id: input.id },
+      });
+    }),
+
   delete: publicProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {

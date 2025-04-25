@@ -37,7 +37,7 @@ export function LoginForm({ className, ...props }: ComponentProps<"div">) {
       return;
     }
 
-    router.push("/dashboard");
+    router.push("/dashboard/teams");
   };
 
   return (

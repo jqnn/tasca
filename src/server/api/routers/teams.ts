@@ -1,5 +1,6 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
+import { TeamRole } from "@prisma/client";
 
 export const teamRouter = createTRPCRouter({
   findAll: publicProcedure
@@ -44,6 +45,25 @@ export const teamRouter = createTRPCRouter({
       return ctx.db.teamMember.deleteMany({
         where: {
           AND: [{ userId: input.userId }, { teamId: input.teamId }],
+        },
+      });
+    }),
+
+  updateRole: publicProcedure
+    .input(
+      z.object({
+        userId: z.number(),
+        teamId: z.number(),
+        role: z.nativeEnum(TeamRole),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.teamMember.updateMany({
+        where: {
+          AND: [{ userId: input.userId }, { teamId: input.teamId }],
+        },
+        data: {
+          role: input.role,
         },
       });
     }),
@@ -124,5 +144,11 @@ export const teamRouter = createTRPCRouter({
 
       if (!user) return null;
       return project;
+    }),
+
+  delete: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.team.delete({ where: { id: input.id } });
     }),
 });

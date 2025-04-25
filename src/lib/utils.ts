@@ -49,8 +49,8 @@ export function beautifyRole(role: Role) {
 
 export function beautifyTeamRole(role: TeamRole) {
   if (role == "OWNER") return "Besitzer";
-  if (role == "VIEWER") return "Zuschauer";
-  return "Bearbeiter";
+  if (role == "ADMIN") return "Administrator";
+  return "Mitglied";
 }
 
 export function isTaskDone(

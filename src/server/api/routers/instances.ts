@@ -111,7 +111,7 @@ export const instanceRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return ctx.db.instanceTemplate.update({
         where: { id: input.id },
-        data: { status: input.value },
+        data: { status: input.value, closedAt: new Date() },
       });
     }),
 

@@ -28,11 +28,6 @@ import { api } from "~/trpc/react";
 const data = {
   navMain: [
     {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: IconLayoutDashboard,
-    },
-    {
       title: "Teams",
       url: "/dashboard/teams",
       icon: IconFolders,
