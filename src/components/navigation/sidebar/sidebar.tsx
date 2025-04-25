@@ -3,7 +3,6 @@
 import * as React from "react";
 import {
   IconFolders,
-  IconLayoutDashboard,
   IconLock,
   IconMailOpened,
   IconPuzzle,
