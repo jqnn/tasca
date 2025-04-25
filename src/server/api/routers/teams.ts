@@ -50,15 +50,21 @@ export const teamRouter = createTRPCRouter({
     }),
 
   updateRole: publicProcedure
-    .input(z.object({ userId: z.number(), teamId: z.number(), role: z.nativeEnum(TeamRole) }))
+    .input(
+      z.object({
+        userId: z.number(),
+        teamId: z.number(),
+        role: z.nativeEnum(TeamRole),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       return ctx.db.teamMember.updateMany({
         where: {
           AND: [{ userId: input.userId }, { teamId: input.teamId }],
         },
         data: {
-          role: input.role
-        }
+          role: input.role,
+        },
       });
     }),
 
@@ -138,5 +144,11 @@ export const teamRouter = createTRPCRouter({
 
       if (!user) return null;
       return project;
+    }),
+
+  delete: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.team.delete({ where: { id: input.id } });
     }),
 });
