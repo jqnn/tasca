@@ -62,7 +62,7 @@ export function TeamDashboardStatsChartComponent() {
       </CardHeader>
 
       <CardContent>
-        <ChartContainer config={chartConfig} className={"max-h-[540px] w-full"}>
+        <ChartContainer config={chartConfig} className={"max-h-[500px] w-full"}>
           <AreaChart data={mergedData}>
             <CartesianGrid vertical={false} />
             <XAxis
