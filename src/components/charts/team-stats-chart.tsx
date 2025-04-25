@@ -79,11 +79,7 @@ export function TeamDashboardStatsChartComponent() {
                 });
               }}
             />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              domain={[0, "auto"]}
-            />
+            <YAxis tickLine={false} axisLine={false} domain={[0, "auto"]} />
             <ChartTooltip
               cursor={false}
               content={
@@ -135,17 +131,28 @@ function mergeStats(open: GroupedOpen[], closed: GroupedClosed[]) {
     string,
     { date: string; created: number; completed: number }
   >();
+  const now = new Date();
+
+  for (let i = 29; i >= 0; i--) {
+    const date = format(
+      new Date(now.getFullYear(), now.getMonth(), now.getDate() - i),
+      "yyyy-MM-dd",
+    );
+    map.set(date, { date, created: 0, completed: 0 });
+  }
 
   for (const o of open) {
     const date = format(new Date(o.createdAt), "yyyy-MM-dd");
-    if (!map.has(date)) map.set(date, { date, created: 0, completed: 0 });
-    map.get(date)!.created = o._count;
+    if (map.has(date)) {
+      map.get(date)!.created += o._count;
+    }
   }
 
   for (const c of closed) {
-    const date = format(new Date(c.closedAt ?? Date()), "yyyy-MM-dd");
-    if (!map.has(date)) map.set(date, { date, created: 0, completed: 0 });
-    map.get(date)!.completed = c._count;
+    const date = format(new Date(c.closedAt ?? now), "yyyy-MM-dd");
+    if (map.has(date)) {
+      map.get(date)!.completed += c._count;
+    }
   }
 
   return Array.from(map.values()).sort((a, b) => a.date.localeCompare(b.date));
