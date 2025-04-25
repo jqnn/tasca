@@ -128,7 +128,7 @@ model TeamMember {
   userId   Int
   teamId   Int
   joinedAt DateTime @default(now())
-  role     TeamRole @default(VIEWER)
+  role     TeamRole @default(MEMBER)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
@@ -149,8 +149,8 @@ model TeamInvite {
 
 enum TeamRole {
   OWNER
-  EDITOR
-  VIEWER
+  ADMIN
+  MEMBER
 }
 
 enum Role {
