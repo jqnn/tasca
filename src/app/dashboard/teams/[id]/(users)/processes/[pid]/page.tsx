@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import React from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/trpc/react";
@@ -9,6 +9,7 @@ import { Button } from "~/components/ui/button";
 import { isTaskDone, showErrorToast, showToast } from "~/lib/utils";
 import ProcessTasksTable from "~/app/dashboard/teams/[id]/(users)/processes/[pid]/process-tasks";
 import ProcessFieldsContainer from "~/app/dashboard/teams/[id]/(users)/processes/[pid]/process-fields";
+import { useTeam } from "~/context/TeamProvider";
 
 interface PageProps {
   params: Promise<{
@@ -17,12 +18,17 @@ interface PageProps {
 }
 
 export default function TaskPage({ params }: PageProps) {
+  const team = useTeam();
   const router = useRouter();
   const actualParams = React.use(params);
   const { data: session } = useSession();
   if (!session) {
     router.push("/");
     return;
+  }
+
+  if(!(team)) {
+    return notFound();
   }
 
   const updateMutation = api.instance.updateInstanceState.useMutation();
@@ -35,7 +41,7 @@ export default function TaskPage({ params }: PageProps) {
   }
 
   if (!instance) {
-    return <p>Keine Aufgabe gefunden.</p>;
+    return notFound();
   }
 
   const handleDone = () => {
