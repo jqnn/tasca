@@ -12,11 +12,29 @@ import { centeredColumn } from "~/components/table/table";
 import TableActions from "~/components/table/table-actions";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { useSession } from "next-auth/react";
+import { showErrorToast, showToast } from "~/lib/utils";
 
 export default function TeamInvitesTable() {
   const router = useRouter();
   const { data: session } = useSession();
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
+  const acceptMutation = api.teamInvites.accept.useMutation({
+    onMutate: () => {
+      showToast("Lädt...", "Die Einladung wird angenommen...")
+    },
+    onSuccess: (data) => {
+      if(!(data)) {
+        showErrorToast()
+        return;
+      }
+
+      showToast("Erfolgreich", "Die Einladung wurde angenommen.")
+      router.push(`/dashboard/teams/${data.id}`)
+    },
+    onError: () => {
+      showErrorToast()
+    }
+  });
   const deleteMutation = api.teamInvites.delete.useMutation();
 
   if (!session) {
@@ -39,7 +57,10 @@ export default function TeamInvitesTable() {
       return team.name;
     }),
     centeredColumn("sentAt", "Gesendet am", (value) => value.toLocaleString()),
-    TableActions(null, (value) => setDeleteId(value)),
+    TableActions(
+      (value) => acceptMutation.mutate({ id: value }),
+      (value) => setDeleteId(value),
+    ),
   ];
 
   return (
