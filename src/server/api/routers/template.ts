@@ -22,16 +22,6 @@ export const templateRouter = createTRPCRouter({
       });
     }),
 
-  exists: publicProcedure
-    .input(z.object({ name: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      return ctx.db.template
-        .findFirst({ where: { name: input.name } })
-        .then((template) => {
-          return template != null;
-        });
-    }),
-
   create: publicProcedure
     .input(
       z.object({

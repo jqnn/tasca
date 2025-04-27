@@ -29,34 +29,25 @@ export default function CreateTemplateDialog({
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();
 
-    existsMutation.mutate(
-      { name: name },
+    createMutation.mutate(
+      {
+        teamId: team.team.id,
+        name: name,
+        description: description,
+        userId: session?.user?.id ?? "0",
+      },
       {
         onSuccess: (data) => {
-          if (data) return;
+          if (!onCreate) {
+            window.location.reload();
+            return;
+          }
 
-          createMutation.mutate(
-            {
-              teamId: team.team.id,
-              name: name,
-              description: description,
-              userId: session?.user?.id ?? "0",
-            },
-            {
-              onSuccess: (data) => {
-                if (!onCreate) {
-                  window.location.reload();
-                  return;
-                }
-
-                onCreate(data);
-                setOpen(false);
-              },
-              onError: () => {
-                showErrorToast();
-              },
-            },
-          );
+          onCreate(data);
+          setOpen(false);
+        },
+        onError: () => {
+          showErrorToast();
         },
       },
     );
@@ -68,7 +59,6 @@ export default function CreateTemplateDialog({
   const { data: session } = useSession();
   if (session == null) return;
 
-  const existsMutation = api.template.exists.useMutation();
   const createMutation = api.template.create.useMutation();
 
   if (!team) {
