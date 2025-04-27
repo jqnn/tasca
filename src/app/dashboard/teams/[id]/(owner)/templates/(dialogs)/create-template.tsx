@@ -91,7 +91,7 @@ export default function CreateTemplateDialog({
           <DialogFooter>
             <Button
               type="submit"
-              disabled={existsMutation.isPending || createMutation.isPending}
+              disabled={createMutation.isPending}
             >
               Erstellen
             </Button>
