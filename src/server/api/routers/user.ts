@@ -14,12 +14,6 @@ export const userRouter = createTRPCRouter({
       return ctx.db.user.findUnique({ where: { id: input.id } });
     }),
 
-  countAuthMethodUsers: publicProcedure
-    .input(z.object({ id: z.number() }))
-    .query(async ({ ctx, input }) => {
-      return ctx.db.user.count({ where: { authMethodId: input.id } });
-    }),
-
   exists: publicProcedure
     .input(z.object({ userName: z.string() }))
     .mutation(async ({ ctx, input }) => {
