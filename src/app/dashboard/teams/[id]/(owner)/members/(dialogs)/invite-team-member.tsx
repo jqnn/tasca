@@ -72,7 +72,7 @@ export default function InviteTeamMemberDialog({
   const team = useTeam();
   const [userId, setUserId] = React.useState<number | null>(null);
   const { data, status } = api.user.findAll.useQuery();
-  const existsMutation = api.team.isMemberMutation.useMutation();
+  const existsMutation = api.teamMember.isMemberMutation.useMutation();
   const inviteMutation = api.teamInvites.create.useMutation();
 
   if (!team) {

@@ -22,11 +22,11 @@ import { beautifyTeamRole, showErrorToast, showToast } from "~/lib/utils";
 
 export default function TeamMembersTable() {
   const team = useTeam();
-  const { data, status } = api.team.findMembers.useQuery({ id: team.team.id });
+  const { data, status } = api.teamMember.findAll.useQuery({ id: team.team.id });
   const [tableData, setTableData] = React.useState<TeamMember[]>([]);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
 
-  const updateMutation = api.team.updateRole.useMutation({
+  const updateMutation = api.teamMember.updateRole.useMutation({
     onMutate: () => {
       showToast("Lädt...", "Die Rolle des Benutzers wird aktualisert...")
     },
@@ -37,7 +37,7 @@ export default function TeamMembersTable() {
       showErrorToast()
     }
   });
-  const removeMutation = api.team.removeMember.useMutation();
+  const removeMutation = api.teamMember.remove.useMutation();
 
   React.useEffect(() => {
     setTableData(data ?? []);

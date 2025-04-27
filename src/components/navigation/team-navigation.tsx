@@ -31,9 +31,9 @@ export function TeamNavigationComponent({ teamId }: PageProps) {
   }
 
   const deleteMutation = api.team.delete.useMutation();
-  const removeMutation = api.team.removeMember.useMutation();
+  const removeMutation = api.teamMember.remove.useMutation();
 
-  const [role] = api.team.getRole.useSuspenseQuery({
+  const [role] = api.teamMember.getRole.useSuspenseQuery({
     userId: Number(session.user?.id),
     teamId: teamId,
   });

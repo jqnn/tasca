@@ -43,7 +43,7 @@ export default async function RootLayout({
     return notFound();
   }
 
-  const role = await api.team.getRole({
+  const role = await api.teamMember.getRole({
     userId: Number(session.user.id),
     teamId: team.id,
   });
