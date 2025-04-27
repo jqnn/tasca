@@ -20,20 +20,20 @@ export default function TeamInvitesTable() {
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const acceptMutation = api.teamInvites.accept.useMutation({
     onMutate: () => {
-      showToast("Lädt...", "Die Einladung wird angenommen...")
+      showToast("Lädt...", "Die Einladung wird angenommen...");
     },
     onSuccess: (data) => {
-      if(!(data)) {
-        showErrorToast()
+      if (!data) {
+        showErrorToast();
         return;
       }
 
-      showToast("Erfolgreich", "Die Einladung wurde angenommen.")
-      router.push(`/dashboard/teams/${data.id}`)
+      showToast("Erfolgreich", "Die Einladung wurde angenommen.");
+      router.push(`/dashboard/teams/${data.id}`);
     },
     onError: () => {
-      showErrorToast()
-    }
+      showErrorToast();
+    },
   });
   const deleteMutation = api.teamInvites.delete.useMutation();
 

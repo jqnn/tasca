@@ -22,20 +22,22 @@ import { beautifyTeamRole, showErrorToast, showToast } from "~/lib/utils";
 
 export default function TeamMembersTable() {
   const team = useTeam();
-  const { data, status } = api.teamMember.findAll.useQuery({ id: team.team.id });
+  const { data, status } = api.teamMember.findAll.useQuery({
+    id: team.team.id,
+  });
   const [tableData, setTableData] = React.useState<TeamMember[]>([]);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
 
   const updateMutation = api.teamMember.updateRole.useMutation({
     onMutate: () => {
-      showToast("Lädt...", "Die Rolle des Benutzers wird aktualisert...")
+      showToast("Lädt...", "Die Rolle des Benutzers wird aktualisert...");
     },
     onSuccess: () => {
-      showToast("Erfolgreich", "Die Rolle des Benutzers wurde aktualisert.")
+      showToast("Erfolgreich", "Die Rolle des Benutzers wurde aktualisert.");
     },
     onError: () => {
-      showErrorToast()
-    }
+      showErrorToast();
+    },
   });
   const removeMutation = api.teamMember.remove.useMutation();
 
@@ -82,14 +84,17 @@ export default function TeamMembersTable() {
 
         return (
           <div className={"flex flex-row justify-center gap-2"}>
-            <Select defaultValue={row.original.role} onValueChange={(value) => {
-              updateMutation.mutate({
-                userId: row.original.userId,
-                teamId: row.original.teamId,
-                role: value as TeamRole,
-              })
-              row.original.role = value as TeamRole;
-            }}>
+            <Select
+              defaultValue={row.original.role}
+              onValueChange={(value) => {
+                updateMutation.mutate({
+                  userId: row.original.userId,
+                  teamId: row.original.teamId,
+                  role: value as TeamRole,
+                });
+                row.original.role = value as TeamRole;
+              }}
+            >
               <SelectTrigger className="w-1/2">
                 <SelectValue />
               </SelectTrigger>

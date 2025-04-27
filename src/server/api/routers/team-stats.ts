@@ -50,7 +50,7 @@ export const teamStatsRouter = createTRPCRouter({
 
       const processes = await ctx.db.instanceTemplate.count({
         where: {
-          AND: [{ teamId: input.id }, {status: "OPEN"}]
+          AND: [{ teamId: input.id }, { status: "OPEN" }],
         },
       });
 
@@ -58,6 +58,6 @@ export const teamStatsRouter = createTRPCRouter({
         members: members,
         templates: templates,
         processes: processes,
-      }
+      };
     }),
 });

@@ -18,17 +18,21 @@ export default function ProjectPage() {
     id: team.team.id,
   });
 
-  if(status !== "success") {
+  if (status !== "success") {
     return <Spinner />;
   }
 
-  if(!(data)) {
+  if (!data) {
     return notFound();
   }
 
   return (
-    <div className={"w-full grid grid-cols-1 gap-10"}>
-      <TeamDashboardCardsComponent openProcessCount={data.processes} memberCount={data.members} templateCount={data.templates} />
+    <div className={"grid w-full grid-cols-1 gap-10"}>
+      <TeamDashboardCardsComponent
+        openProcessCount={data.processes}
+        memberCount={data.members}
+        templateCount={data.templates}
+      />
       <TeamDashboardStatsChartComponent />
     </div>
   );

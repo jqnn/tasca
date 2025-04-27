@@ -27,7 +27,7 @@ export default function TaskPage({ params }: PageProps) {
     return;
   }
 
-  if(!(team)) {
+  if (!team) {
     return notFound();
   }
 

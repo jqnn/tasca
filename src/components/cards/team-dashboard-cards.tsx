@@ -10,9 +10,13 @@ type ComponentProps = {
   openProcessCount: number;
   memberCount: number;
   templateCount: number;
-}
+};
 
-export function TeamDashboardCardsComponent({openProcessCount, memberCount, templateCount}: ComponentProps) {
+export function TeamDashboardCardsComponent({
+  openProcessCount,
+  memberCount,
+  templateCount,
+}: ComponentProps) {
   return (
     <div className={"grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"}>
       <Card className={"w-full"}>
