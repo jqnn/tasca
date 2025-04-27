@@ -5,7 +5,7 @@ import { templateRouter } from "~/server/api/routers/template";
 import { templateTaskRouter } from "~/server/api/routers/template-task";
 import { templateFieldRouter } from "~/server/api/routers/template-field";
 import { instanceRouter } from "~/server/api/routers/instances";
-import { teamRouter } from "~/server/api/routers/teams";
+import { teamRouter } from "~/server/api/routers/team";
 import { teamInvitesRouter } from "~/server/api/routers/team-invites";
 import { teamStatsRouter } from "~/server/api/routers/team-stats";
 
