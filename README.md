@@ -25,6 +25,7 @@ Aufgaben.
 ```
 
 **Umgebungsvariablen konfigurieren**
+
 Erstelle eine ```.env``` Datei im Projektverzeichnis und füge die folgenden Variablen hinzu:
 
 | **Variable**   | **Benötigt** |                                                    **Beschreibung** |                                  **Beispiel** |
@@ -55,6 +56,7 @@ managing recurring tasks.
 ```
 
 **Configure environment variables**
+
 Create a .env file in the project directory and add the following variables:
 
 | Variable       | Required |                                                  Description |                                  Example |
