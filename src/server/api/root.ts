@@ -8,6 +8,7 @@ import { instanceRouter } from "~/server/api/routers/instances";
 import { teamRouter } from "~/server/api/routers/team";
 import { teamInvitesRouter } from "~/server/api/routers/team-invites";
 import { teamStatsRouter } from "~/server/api/routers/team-stats";
+import { teamMemberRouter } from "~/server/api/routers/team-members";
 
 /**
  * This is the primary router for your server.
@@ -22,6 +23,7 @@ export const appRouter = createTRPCRouter({
   templateField: templateFieldRouter,
   instance: instanceRouter,
   team: teamRouter,
+  teamMember: teamMemberRouter,
   teamInvites: teamInvitesRouter,
   teamStats: teamStatsRouter,
 });
