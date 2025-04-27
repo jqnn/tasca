@@ -11,7 +11,7 @@ import { TooltipProvider } from "~/components/ui/tooltip";
 export const metadata: Metadata = {
   title: "Tasca",
   description: "Task-Management",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/favicon.svg" }],
 };
 
 export default function RootLayout({
