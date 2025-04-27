@@ -14,32 +14,33 @@ services:
       - mariadb_data:/var/lib/mysql
 
   web:
-    image: ghcr.io/jqnn/tasca:development
-    container_name: dashboard
+    image: ghcr.io/jqnn/tasca:latest
+    container_name: web
     restart: unless-stopped
     depends_on:
       - mariadb
     environment:
-      AUTH_SECRET: "e7/cdIqpDohMjxC156FXuZ6tercbpP43OLPqNxvb7lY="
+      AUTH_SECRET: "abcdefghijklmnopqrstuvwxyz1234567890"
       ADMIN_PASSWORD: "passwort"
       DATABASE_URL: "mysql://tasca:passwort@mariadb/tasca"
-      NEXTAUTH_URL: http://192.168.178.135:3000/
+      NEXTAUTH_URL: http://127.0.0.1:3000/
     ports:
       - "3000:3000"
 
-  phpmyadmin:
-    image: phpmyadmin:latest
-    container_name: phpmyadmin
-    restart: unless-stopped
-    environment:
-      PMA_HOST: mariadb
-      PMA_PORT: 3306
-      PMA_USER: tasca
-      PMA_PASSWORD: passwort
-    ports:
-      - "8080:80"
-    depends_on:
-      - mariadb
+# Optional
+#  phpmyadmin:
+#    image: phpmyadmin:latest
+#    container_name: phpmyadmin
+#    restart: unless-stopped
+#    environment:
+#      PMA_HOST: mariadb
+#      PMA_PORT: 3306
+#      PMA_USER: tasca
+#      PMA_PASSWORD: passwort
+#    ports:
+#      - "8080:80"
+#    depends_on:
+#      - mariadb
 
 volumes:
   mariadb_data:
