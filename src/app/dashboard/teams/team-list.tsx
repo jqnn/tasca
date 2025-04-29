@@ -57,7 +57,7 @@ export function TeamList() {
           open={showCreating}
           setOpen={setShowCreating}
           onCreate={(team) => {
-            router.push(`/dashboard/teams/${team.id}`);
+            router.push(`/dashboard/teams/${team.id}/processes`);
           }}
         />
       )}

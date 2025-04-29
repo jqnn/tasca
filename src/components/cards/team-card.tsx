@@ -62,7 +62,7 @@ export function TeamCardComponent({ team }: PageProps) {
   );
 
   return (
-    <Link key={team.id} href={`/dashboard/teams/${team.id}`}>
+    <Link key={team.id} href={`/dashboard/teams/${team.id}/processes`}>
       <Card>
         <CardHeader>
           <CardTitle>{title}</CardTitle>

@@ -5,11 +5,15 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/trpc/react";
 import Spinner from "~/components/ui/spinner";
-import { Button } from "~/components/ui/button";
-import { isTaskDone, showErrorToast, showToast } from "~/lib/utils";
-import ProcessTasksTable from "~/app/dashboard/teams/[id]/(users)/processes/[pid]/process-tasks";
-import ProcessFieldsContainer from "~/app/dashboard/teams/[id]/(users)/processes/[pid]/process-fields";
 import { useTeam } from "~/context/TeamProvider";
+import {
+  ChildrenHeader,
+  SiteDescription,
+  SiteTitle,
+} from "~/components/ui/site-header";
+import ProjectTasksTable from "~/app/dashboard/teams/[id]/(users)/projects/[pid]/project-tasks";
+import { Button } from "~/components/ui/button";
+import { isProjectDone, showErrorToast, showToast } from "~/lib/utils";
 
 interface PageProps {
   params: Promise<{
@@ -21,6 +25,7 @@ export default function TaskPage({ params }: PageProps) {
   const team = useTeam();
   const router = useRouter();
   const actualParams = React.use(params);
+
   const { data: session } = useSession();
   if (!session) {
     router.push("/");
@@ -31,8 +36,8 @@ export default function TaskPage({ params }: PageProps) {
     return notFound();
   }
 
-  const updateMutation = api.instance.updateInstanceState.useMutation();
-  const { data: instance, status } = api.instance.find.useQuery({
+  const updateMutation = api.teamProjects.updateProjectState.useMutation();
+  const { data: project, status } = api.teamProjects.find.useQuery({
     id: Number(actualParams.pid),
   });
 
@@ -40,29 +45,29 @@ export default function TaskPage({ params }: PageProps) {
     return <Spinner />;
   }
 
-  if (!instance) {
+  if (!project) {
     return notFound();
   }
 
   const handleDone = () => {
-    if (!isTaskDone(instance)) {
+    if (!isProjectDone(project.ProjectTask)) {
       showToast(
         "Fehler",
-        "Die Aufgabe muss erst beendet werden, bevor sie als Fertig markiert werden kann.",
+        "Das Projekt muss erst beendet werden, bevor es als Fertig markiert werden kann.",
       );
       return;
     }
 
-    showToast("Lädt...", "Die Aufgabe wird aktualisert...");
+    showToast("Lädt...", "Das Projekt wird aktualisert...");
     updateMutation.mutate(
-      { id: instance.id, value: "COMPLETED" },
+      { id: project.id, value: "COMPLETED" },
       {
         onSuccess: () => {
           showToast(
             "Erfolgreich",
-            "Die Aufgabe wurde erfolgreich aktualisiert.",
+            "Das Projekt wurde erfolgreich aktualisiert.",
           );
-          router.push(`/dashboard/teams/${instance.teamId}/processes`);
+          router.push(`/dashboard/teams/${project.teamId}/projects`);
         },
         onError: () => {
           showErrorToast();
@@ -72,27 +77,23 @@ export default function TaskPage({ params }: PageProps) {
   };
 
   return (
-    <>
-      <h1 className={"mr-auto mb-4 font-bold"}>
-        Prozess - {instance.template.name}
-      </h1>
+    <div className={"w-full"}>
+      <ChildrenHeader>
+        <SiteTitle title={"Project - " + project.name} />
+        {project.description && (
+          <SiteDescription description={project.description} />
+        )}
+      </ChildrenHeader>
 
-      <ProcessFieldsContainer
-        instances={instance.InstanceField}
-        disabled={instance.status == "COMPLETED"}
-      />
-      <ProcessTasksTable
-        instances={instance.InstanceTask}
-        disabled={instance.status == "COMPLETED"}
-      />
+      <ProjectTasksTable project={project} tasks={project.ProjectTask} />
 
-      {instance.status == "OPEN" && (
+      {project.status == "OPEN" && (
         <div className={"mt-4"}>
           <Button variant={"default"} onClick={handleDone}>
             Als Fertig markieren
           </Button>
         </div>
       )}
-    </>
+    </div>
   );
 }

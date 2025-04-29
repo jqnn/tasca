@@ -6,35 +6,24 @@ export const instanceRouter = createTRPCRouter({
   findAll: publicProcedure
     .input(z.object({ teamId: z.number(), completed: z.boolean() }))
     .query(async ({ ctx, input }) => {
-      if (input.completed) {
-        return ctx.db.instanceTemplate.findMany({
-          where: { teamId: input.teamId },
-          include: {
-            template: true,
-            createdBy: true,
-            InstanceField: {
-              include: {
-                field: true,
-              },
+      const { teamId } = input;
+
+      const where = input.completed
+        ? { teamId }
+        : { AND: [{ teamId }, { status: "OPEN" as const }] };
+
+      return ctx.db.instanceTemplate.findMany({
+        where,
+        include: {
+          template: true,
+          createdBy: true,
+          InstanceField: {
+            include: {
+              field: true,
             },
           },
-        });
-      } else {
-        return ctx.db.instanceTemplate.findMany({
-          where: {
-            AND: [{ status: "OPEN" }, { teamId: input.teamId }],
-          },
-          include: {
-            template: true,
-            createdBy: true,
-            InstanceField: {
-              include: {
-                field: true,
-              },
-            },
-          },
-        });
-      }
+        },
+      });
     }),
 
   find: publicProcedure
