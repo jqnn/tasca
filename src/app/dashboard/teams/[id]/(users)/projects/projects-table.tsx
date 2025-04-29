@@ -12,6 +12,7 @@ import Spinner from "~/components/ui/spinner";
 import { TaskCardComponent } from "~/components/cards/task-card";
 import { useTeam } from "~/context/TeamProvider";
 import { ProjectCardComponent } from "~/components/cards/project-card";
+import CreateProjectDialog from "~/app/dashboard/teams/[id]/(users)/projects/(dialogs)/create-project";
 
 export function TeamProjectsTable() {
   const team = useTeam();
@@ -50,6 +51,18 @@ export function TeamProjectsTable() {
             <ProjectCardComponent key={project.id} project={project} />
           ))}
         </div>
+      )}
+
+      {showModal && (
+        <CreateProjectDialog
+          open={showModal}
+          setOpen={setShowModal}
+          onCreate={(project) => {
+            router.push(
+              `/dashboard/teams/${team.team.id}/projects/${project.id}`,
+            );
+          }}
+        />
       )}
     </div>
   );

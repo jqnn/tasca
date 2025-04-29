@@ -18,4 +18,17 @@ export const teamProjectsRouter = createTRPCRouter({
         ProjectTask: true
       }})
     }),
+
+  create: publicProcedure
+    .input(z.object({name: z.string(), description: z.string().optional(), userId: z.string(), teamId: z.number()}))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.project.create({
+        data: {
+          name: input.name,
+          description: input.description,
+          createdById: Number(input.userId),
+          teamId: input.teamId
+        }
+      })
+    })
 });
