@@ -22,6 +22,8 @@ model User {
   Team             Team[]
   TeamMember       TeamMember[]
   TeamInvites      TeamInvite[]
+  Project          Project[]
+  ProjectTask      ProjectTask[]
 }
 
 model AuthMethod {
@@ -122,6 +124,7 @@ model Team {
   TeamInvites      TeamInvite[]
   Template         Template[]
   InstanceTemplate InstanceTemplate[]
+  ProjectTask      ProjectTask[]
 }
 
 model TeamMember {
@@ -145,6 +148,25 @@ model TeamInvite {
   sentAt DateTime @default(now())
 
   @@unique([userId, teamId])
+}
+
+model Project {
+  id          Int     @id @default(autoincrement())
+  name        String
+  descritpion String?
+  createdById Int
+  createdBy   User    @relation(fields: [createdById], references: [id])
+}
+
+model ProjectTask {
+  id          Int            @id @default(autoincrement())
+  task        String
+  description String?
+  createdById Int
+  createdBy   User           @relation(fields: [createdById], references: [id])
+  teamId      Int
+  team        Team           @relation(fields: [teamId], references: [id])
+  status      InstanceStatus @default(OPEN)
 }
 
 enum TeamRole {
