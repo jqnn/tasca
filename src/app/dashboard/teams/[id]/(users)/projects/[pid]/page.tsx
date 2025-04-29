@@ -12,6 +12,8 @@ import {
   SiteTitle,
 } from "~/components/ui/site-header";
 import ProjectTasksTable from "~/app/dashboard/teams/[id]/(users)/projects/[pid]/project-tasks";
+import { Button } from "~/components/ui/button";
+import { isProjectDone, isTaskDone, showErrorToast, showToast } from "~/lib/utils";
 
 interface PageProps {
   params: Promise<{
@@ -34,6 +36,7 @@ export default function TaskPage({ params }: PageProps) {
     return notFound();
   }
 
+  const updateMutation = api.teamProjects.updateProjectState.useMutation();
   const { data: project, status } = api.teamProjects.find.useQuery({
     id: Number(actualParams.pid),
   });
@@ -46,6 +49,33 @@ export default function TaskPage({ params }: PageProps) {
     return notFound();
   }
 
+  const handleDone = () => {
+    if (!isProjectDone(project.ProjectTask)) {
+      showToast(
+        "Fehler",
+        "Das Projekt muss erst beendet werden, bevor es als Fertig markiert werden kann.",
+      );
+      return;
+    }
+
+    showToast("Lädt...", "Das Projekt wird aktualisert...");
+    updateMutation.mutate(
+      { id: project.id, value: "COMPLETED" },
+      {
+        onSuccess: () => {
+          showToast(
+            "Erfolgreich",
+            "Das Projekt wurde erfolgreich aktualisiert.",
+          );
+          router.push(`/dashboard/teams/${project.teamId}/projects`);
+        },
+        onError: () => {
+          showErrorToast();
+        },
+      },
+    );
+  };
+
   return (
     <div className={"w-full"}>
       <ChildrenHeader>
@@ -56,6 +86,14 @@ export default function TaskPage({ params }: PageProps) {
       </ChildrenHeader>
 
       <ProjectTasksTable project={project} tasks={project.ProjectTask} />
+
+      {project.status == "OPEN" && (
+        <div className={"mt-4"}>
+          <Button variant={"default"} onClick={handleDone}>
+            Als Fertig markieren
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
