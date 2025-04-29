@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from "~/components/ui/tooltip";
 import CreateProjectTaskDialog from "~/app/dashboard/teams/[id]/(users)/projects/[pid]/(dialogs)/create-project-task";
+import { api } from "~/trpc/react";
 
 export default function ProjectTasksTable({
   project,
@@ -47,7 +48,9 @@ export default function ProjectTasksTable({
       </Tooltip>
     )),
     centeredColumn("createdById", "Erstellt von", (value) => {
-      return String(value);
+      const { data: user, isLoading } = api.user.find.useQuery({ id: value });
+      if (isLoading || !user) return "Unbekannt";
+      return user.displayName ?? user.userName;
     }),
     centeredColumn("updatedAt", "Bearbeitet am", (value) =>
       value.toLocaleString(),
