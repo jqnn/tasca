@@ -8,6 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import { beautifyInstanceStatus } from "~/lib/utils";
+import type { InstanceStatus } from "@prisma/client";
 
 interface PageProps {
   project: {
@@ -16,6 +18,7 @@ interface PageProps {
     createdById: number;
     teamId: number;
     description: string | null;
+    status: InstanceStatus;
   };
 }
 
@@ -29,8 +32,8 @@ export function ProjectCardComponent({ project }: PageProps) {
         <CardHeader>
           <CardTitle>{project.name}</CardTitle>
           <CardDescription>
-            <p>Ersteller - {project.createdById}</p>
-            <p>Status - TODO</p>
+            {project.description && <p>Beschreibung - {project.description}</p>}
+            <p>Status - {beautifyInstanceStatus(project.status)}</p>
           </CardDescription>
         </CardHeader>
       </Card>
