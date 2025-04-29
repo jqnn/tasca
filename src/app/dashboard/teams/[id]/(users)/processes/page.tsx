@@ -17,7 +17,7 @@ export default function TeamProcessesPage() {
       <ChildrenHeader>
         <SiteTitle title={"Prozesse"} />
       </ChildrenHeader>
-      
+
       <TeamProcessesTable />
     </>
   );

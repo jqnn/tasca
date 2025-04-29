@@ -26,7 +26,7 @@ export function TeamProjectsTable() {
 
   const { data: projects, status } = api.teamProjects.findAll.useQuery({
     teamId: team.team.id,
-    completed: showComplete
+    completed: showComplete,
   });
 
   if (status !== "success") {

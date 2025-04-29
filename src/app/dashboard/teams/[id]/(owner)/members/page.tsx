@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import TeamMembersTable from "~/app/dashboard/teams/[id]/(owner)/members/members-table";
 import TeamInvitesTable from "~/app/dashboard/teams/[id]/(owner)/members/invites-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { ChildrenHeader, SiteHeader, SiteTitle } from "~/components/ui/site-header";
+import { ChildrenHeader, SiteTitle } from "~/components/ui/site-header";
 
 export default function TeamMembersPage() {
   const team = useTeam();

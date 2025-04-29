@@ -13,7 +13,7 @@ import {
 } from "~/components/ui/site-header";
 import ProjectTasksTable from "~/app/dashboard/teams/[id]/(users)/projects/[pid]/project-tasks";
 import { Button } from "~/components/ui/button";
-import { isProjectDone, isTaskDone, showErrorToast, showToast } from "~/lib/utils";
+import { isProjectDone, showErrorToast, showToast } from "~/lib/utils";
 
 interface PageProps {
   params: Promise<{
