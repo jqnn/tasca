@@ -58,6 +58,15 @@ export function TeamNavigationComponent({ teamId }: PageProps) {
           </NavigationMenuLink>
         </NavigationMenuItem>
 
+        <NavigationMenuItem>
+          <NavigationMenuLink
+            href={`/dashboard/teams/${teamId}/projects`}
+            className={navigationMenuTriggerStyle()}
+          >
+            Projekte
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+
         {(role == "OWNER" || role == "ADMIN") && (
           <NavigationMenuItem>
             <NavigationMenuLink
