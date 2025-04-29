@@ -56,7 +56,7 @@ export default function TeamInvitesTable() {
       if (isLoading || !team) return "Unbekannt";
       return team.name;
     }),
-    centeredColumn("sentAt", "Gesendet am", (value) => value.toLocaleString()),
+    centeredColumn("sentAt", "Erhalten am", (value) => value.toLocaleString()),
     TableActions(
       (value) => acceptMutation.mutate({ id: value }),
       (value) => setDeleteId(value),
