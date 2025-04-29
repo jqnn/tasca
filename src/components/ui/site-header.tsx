@@ -20,6 +20,14 @@ export function SiteHeader({ children }: Readonly<{ children: ReactNode }>) {
   );
 }
 
+export function ChildrenHeader({
+  children,
+}: Readonly<{ children: ReactNode }>) {
+  return (
+    <div className="flex w-full items-center gap-1 lg:gap-2">{children}</div>
+  );
+}
+
 export function SiteTitle({ title }: { title: string }) {
   return <h1 className="text-base font-medium">{title}</h1>;
 }
