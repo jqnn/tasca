@@ -6,12 +6,12 @@ import { type ColumnDef } from "@tanstack/react-table";
 import type { InstanceStatus } from "@prisma/client";
 import { DataTable } from "~/components/table/data-table";
 import { centeredColumn } from "~/components/table/table";
-import TaskCheck from "~/components/instance/task-check";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "~/components/ui/tooltip";
+import { TaskCheck } from "~/components/instance/task-check";
 
 type InstanceType = {
   task: {
