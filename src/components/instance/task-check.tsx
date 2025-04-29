@@ -15,7 +15,7 @@ export function TaskCheck({
   disabled: boolean;
 }) {
   const handleCheckedChange = (value: CheckedState) => {
-    const checked = value as boolean
+    const checked = value as boolean;
 
     updateMutation.mutate({
       id: instance.id,
@@ -43,13 +43,9 @@ export function TaskCheck({
   );
 }
 
-export function ProjectTaskCheck({
-  task,
-}: {
-  task: ProjectTask;
-}) {
+export function ProjectTaskCheck({ task }: { task: ProjectTask }) {
   const handleCheckedChange = (value: CheckedState) => {
-    const checked = value as boolean
+    const checked = value as boolean;
 
     updateMutation.mutate({
       id: task.id,

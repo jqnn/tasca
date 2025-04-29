@@ -14,7 +14,13 @@ import {
 } from "~/components/ui/tooltip";
 import CreateProjectTaskDialog from "~/app/dashboard/teams/[id]/(users)/projects/[pid]/(dialogs)/create-project-task";
 
-export default function ProjectTasksTable({ project, tasks }: { project: Project, tasks: ProjectTask[] }) {
+export default function ProjectTasksTable({
+  project,
+  tasks,
+}: {
+  project: Project;
+  tasks: ProjectTask[];
+}) {
   const [tableData, setTableData] = React.useState<ProjectTask[]>([]);
   const [showModal, setShowModal] = React.useState(false);
 
@@ -41,7 +47,7 @@ export default function ProjectTasksTable({ project, tasks }: { project: Project
       </Tooltip>
     )),
     centeredColumn("createdById", "Erstellt von", (value) => {
-    return   String(value)
+      return String(value);
     }),
     centeredColumn("updatedAt", "Bearbeitet am", (value) =>
       value.toLocaleString(),

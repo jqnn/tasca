@@ -11,11 +11,11 @@ import {
 
 interface PageProps {
   project: {
-    name: string
-    id: number
-    createdById: number
-    teamId: number
-    description: string | null
+    name: string;
+    id: number;
+    createdById: number;
+    teamId: number;
+    description: string | null;
   };
 }
 
@@ -27,14 +27,9 @@ export function ProjectCardComponent({ project }: PageProps) {
     >
       <Card>
         <CardHeader>
-          <CardTitle>
-            {project.name}
-          </CardTitle>
+          <CardTitle>{project.name}</CardTitle>
           <CardDescription>
-            <p>
-              Ersteller -{" "}
-              {project.createdById}
-            </p>
+            <p>Ersteller - {project.createdById}</p>
             <p>Status - TODO</p>
           </CardDescription>
         </CardHeader>

@@ -1,9 +1,6 @@
 import type { FormEvent } from "react";
 import * as React from "react";
-import {
-  type Project,
-
-} from "@prisma/client";
+import { type Project } from "@prisma/client";
 import { api } from "~/trpc/react";
 import {
   Dialog,
@@ -37,7 +34,7 @@ export default function CreateProjectDialog({
         teamId: team.team.id,
         userId: session?.user?.id ?? "0",
         name: name,
-        description: description
+        description: description,
       },
       {
         onSuccess: (data) => {
@@ -65,7 +62,9 @@ export default function CreateProjectDialog({
   const team = useTeam();
   const router = useRouter();
   const [name, setName] = React.useState<string>("");
-  const [description, setDescription] = React.useState<string | undefined>(undefined);
+  const [description, setDescription] = React.useState<string | undefined>(
+    undefined,
+  );
 
   const { data: session } = useSession();
   if (!session) {

@@ -1,6 +1,6 @@
 import type { FormEvent } from "react";
 import * as React from "react";
-import { type Project, type ProjectTask } from "@prisma/client";
+import { type ProjectTask } from "@prisma/client";
 import { api } from "~/trpc/react";
 import {
   Dialog,
@@ -21,12 +21,12 @@ export default function CreateProjectTaskDialog({
   open,
   setOpen,
   onCreate,
-  projectId
+  projectId,
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
   onCreate?: (projectTask: ProjectTask) => void | null;
-  projectId: number,
+  projectId: number;
 }) {
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();
