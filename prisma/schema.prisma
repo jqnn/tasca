@@ -154,7 +154,7 @@ model TeamInvite {
 model Project {
   id          Int           @id @default(autoincrement())
   name        String
-  descritpion String?
+  description String?
   createdById Int
   createdBy   User          @relation(fields: [createdById], references: [id])
   teamId      Int
