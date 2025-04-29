@@ -24,7 +24,7 @@ export function ChildrenHeader({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <div className="flex w-full items-center gap-1 lg:gap-2">{children}</div>
+    <div className="flex w-full items-center gap-1 lg:gap-2 mb-4">{children}</div>
   );
 }
 
