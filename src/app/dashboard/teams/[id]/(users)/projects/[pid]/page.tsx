@@ -6,6 +6,13 @@ import { useSession } from "next-auth/react";
 import { api } from "~/trpc/react";
 import Spinner from "~/components/ui/spinner";
 import { useTeam } from "~/context/TeamProvider";
+import {
+  ChildrenHeader,
+  SiteDescription,
+  SiteTitle,
+} from "~/components/ui/site-header";
+import { Button } from "~/components/ui/button";
+import CreateProjectTaskDialog from "~/app/dashboard/teams/[id]/(users)/projects/[pid]/(dialogs)/create-project-task";
 
 interface PageProps {
   params: Promise<{
@@ -17,6 +24,8 @@ export default function TaskPage({ params }: PageProps) {
   const team = useTeam();
   const router = useRouter();
   const actualParams = React.use(params);
+  const [showModal, setShowModal] = React.useState(false);
+
   const { data: session } = useSession();
   if (!session) {
     router.push("/");
@@ -40,10 +49,27 @@ export default function TaskPage({ params }: PageProps) {
   }
 
   return (
-    <>
-      <h1 className={"mr-auto mb-4 font-bold"}>
-        Projekt - {project.name}
-      </h1>
-    </>
+    <div className={"w-full"}>
+      <ChildrenHeader>
+        <SiteTitle title={"Project - " + project.name} />
+        {project.description && (
+          <SiteDescription description={project.description} />
+        )}
+      </ChildrenHeader>
+
+      <div className="flex items-center pb-4">
+        <Button
+          variant="outline"
+          className="mr-auto"
+          onClick={() => setShowModal(true)}
+        >
+          Erstellen
+        </Button>
+      </div>
+
+      {showModal && (
+        <CreateProjectTaskDialog open={showModal} setOpen={setShowModal} projectId={project.id} />
+      )}
+    </div>
   );
 }
