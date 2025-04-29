@@ -62,7 +62,7 @@ export default function TaskPage({ params }: PageProps) {
             "Erfolgreich",
             "Die Aufgabe wurde erfolgreich aktualisiert.",
           );
-          router.push("/dashboard/tasks");
+          router.push(`/dashboard/teams/${instance.teamId}/processes`);
         },
         onError: () => {
           showErrorToast();
