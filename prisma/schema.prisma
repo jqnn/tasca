@@ -125,6 +125,7 @@ model Team {
   Template         Template[]
   InstanceTemplate InstanceTemplate[]
   ProjectTask      ProjectTask[]
+  Project          Project[]
 }
 
 model TeamMember {
@@ -156,6 +157,8 @@ model Project {
   descritpion String?
   createdById Int
   createdBy   User    @relation(fields: [createdById], references: [id])
+  teamId      Int
+  team        Team    @relation(fields: [teamId], references: [id])
 }
 
 model ProjectTask {
@@ -164,9 +167,9 @@ model ProjectTask {
   description String?
   createdById Int
   createdBy   User           @relation(fields: [createdById], references: [id])
-  teamId      Int
-  team        Team           @relation(fields: [teamId], references: [id])
   status      InstanceStatus @default(OPEN)
+  Team        Team?          @relation(fields: [teamId], references: [id])
+  teamId      Int?
 }
 
 enum TeamRole {
