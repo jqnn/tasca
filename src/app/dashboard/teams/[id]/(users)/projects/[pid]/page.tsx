@@ -11,8 +11,7 @@ import {
   SiteDescription,
   SiteTitle,
 } from "~/components/ui/site-header";
-import { Button } from "~/components/ui/button";
-import CreateProjectTaskDialog from "~/app/dashboard/teams/[id]/(users)/projects/[pid]/(dialogs)/create-project-task";
+import ProjectTasksTable from "~/app/dashboard/teams/[id]/(users)/projects/[pid]/project-tasks";
 
 interface PageProps {
   params: Promise<{
@@ -24,7 +23,6 @@ export default function TaskPage({ params }: PageProps) {
   const team = useTeam();
   const router = useRouter();
   const actualParams = React.use(params);
-  const [showModal, setShowModal] = React.useState(false);
 
   const { data: session } = useSession();
   if (!session) {
@@ -57,19 +55,7 @@ export default function TaskPage({ params }: PageProps) {
         )}
       </ChildrenHeader>
 
-      <div className="flex items-center pb-4">
-        <Button
-          variant="outline"
-          className="mr-auto"
-          onClick={() => setShowModal(true)}
-        >
-          Erstellen
-        </Button>
-      </div>
-
-      {showModal && (
-        <CreateProjectTaskDialog open={showModal} setOpen={setShowModal} projectId={project.id} />
-      )}
+      <ProjectTasksTable project={project} tasks={project.ProjectTask} />
     </div>
   );
 }
