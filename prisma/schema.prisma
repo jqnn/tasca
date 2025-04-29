@@ -152,13 +152,14 @@ model TeamInvite {
 }
 
 model Project {
-  id          Int     @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   name        String
   descritpion String?
   createdById Int
-  createdBy   User    @relation(fields: [createdById], references: [id])
+  createdBy   User          @relation(fields: [createdById], references: [id])
   teamId      Int
-  team        Team    @relation(fields: [teamId], references: [id])
+  team        Team          @relation(fields: [teamId], references: [id])
+  ProjectTask ProjectTask[]
 }
 
 model ProjectTask {
@@ -168,6 +169,8 @@ model ProjectTask {
   createdById Int
   createdBy   User           @relation(fields: [createdById], references: [id])
   status      InstanceStatus @default(OPEN)
+  projectId   Int
+  project     Project        @relation(fields: [projectId], references: [id])
   Team        Team?          @relation(fields: [teamId], references: [id])
   teamId      Int?
 }
