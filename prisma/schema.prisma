@@ -124,7 +124,6 @@ model Team {
   TeamInvites      TeamInvite[]
   Template         Template[]
   InstanceTemplate InstanceTemplate[]
-  ProjectTask      ProjectTask[]
   Project          Project[]
 }
 
@@ -171,8 +170,6 @@ model ProjectTask {
   status      InstanceStatus @default(OPEN)
   projectId   Int
   project     Project        @relation(fields: [projectId], references: [id])
-  Team        Team?          @relation(fields: [teamId], references: [id])
-  teamId      Int?
 }
 
 enum TeamRole {
