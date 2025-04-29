@@ -9,10 +9,13 @@ import Spinner from "~/components/ui/spinner";
 import { useTeam } from "~/context/TeamProvider";
 import { ProjectCardComponent } from "~/components/cards/project-card";
 import CreateProjectDialog from "~/app/dashboard/teams/[id]/(users)/projects/(dialogs)/create-project";
+import { Switch } from "~/components/ui/switch";
+import { Label } from "~/components/ui/label";
 
 export function TeamProjectsTable() {
   const team = useTeam();
   const [showModal, setShowModal] = React.useState(false);
+  const [showComplete, setShowComplete] = React.useState(false);
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -22,7 +25,8 @@ export function TeamProjectsTable() {
   }
 
   const { data: projects, status } = api.teamProjects.findAll.useQuery({
-    id: team.team.id,
+    teamId: team.team.id,
+    completed: showComplete
   });
 
   if (status !== "success") {
@@ -39,6 +43,15 @@ export function TeamProjectsTable() {
         >
           Erstellen
         </Button>
+
+        <div className="flex items-center space-x-2">
+          <Switch
+            checked={showComplete}
+            onCheckedChange={setShowComplete}
+            id="completed"
+          />
+          <Label htmlFor="completed">Fertige anzeigen</Label>
+        </div>
       </div>
 
       {projects && (

@@ -4,10 +4,16 @@ import { InstanceStatus } from "@prisma/client";
 
 export const teamProjectsRouter = createTRPCRouter({
   findAll: publicProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ teamId: z.number(), completed: z.boolean() }))
     .query(async ({ ctx, input }) => {
+      const { teamId } = input;
+
+      const where = input.completed
+        ? { teamId }
+        : { AND: [{ teamId }, { status: "OPEN" as const }] };
+
       return ctx.db.project.findMany({
-        where: { teamId: Number(input.id) },
+        where,
       });
     }),
 
