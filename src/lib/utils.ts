@@ -2,7 +2,13 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { sha256 } from "js-sha256";
 import { toast } from "sonner";
-import type { FieldType, InstanceStatus, Role, TeamRole } from "@prisma/client";
+import type {
+  FieldType,
+  InstanceStatus,
+  ProjectTask,
+  Role,
+  TeamRole,
+} from "@prisma/client";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -51,6 +57,10 @@ export function beautifyTeamRole(role: TeamRole) {
   if (role == "OWNER") return "Besitzer";
   if (role == "ADMIN") return "Administrator";
   return "Mitglied";
+}
+
+export function isProjectDone(projectTasks: ProjectTask[]) {
+  return !projectTasks.find((task) => task.status == "OPEN");
 }
 
 export function isTaskDone(
