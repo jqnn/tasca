@@ -60,4 +60,13 @@ export const teamProjectsRouter = createTRPCRouter({
         },
       });
     }),
+
+  updateState: publicProcedure
+    .input(z.object({ id: z.number(), value: z.boolean() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.projectTask.update({
+        where: { id: input.id },
+        data: { status: input.value ? "COMPLETED" : "OPEN" },
+      });
+    }),
 });
