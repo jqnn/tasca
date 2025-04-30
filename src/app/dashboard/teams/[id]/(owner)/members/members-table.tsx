@@ -19,8 +19,10 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { beautifyTeamRole, showErrorToast, showToast } from "~/lib/utils";
+import { useTranslations } from "next-intl";
 
 export default function TeamMembersTable() {
+  const t = useTranslations();
   const team = useTeam();
   const { data, status } = api.teamMember.findAll.useQuery({
     id: team.team.id,
@@ -30,10 +32,16 @@ export default function TeamMembersTable() {
 
   const updateMutation = api.teamMember.updateRole.useMutation({
     onMutate: () => {
-      showToast("Lädt...", "Die Rolle des Benutzers wird aktualisert...");
+      showToast(
+        t("team.update-member-role.success.title"),
+        t("team.update-member-role.success.message"),
+      );
     },
     onSuccess: () => {
-      showToast("Erfolgreich", "Die Rolle des Benutzers wurde aktualisert.");
+      showToast(
+        t("team.update-member-role.success.title"),
+        t("team.update-member-role.success.message"),
+      );
     },
     onError: () => {
       showErrorToast();
@@ -56,13 +64,13 @@ export default function TeamMembersTable() {
   const columns: ColumnDef<TeamMember>[] = [
     {
       accessorKey: "userId",
-      header: () => <div className="text-center">Benutzer</div>,
+      header: () => <div className="text-center">{t("common.user")}</div>,
       cell: ({ row }) => {
         const { data: user, isLoading } = api.user.find.useQuery({
           id: row.original.userId,
         });
         if (isLoading || !user)
-          return <div className="text-center">Unbekannt</div>;
+          return <div className="text-center">{t("common.unknown")}</div>;
         return (
           <div className={"text-center"}>
             {user.displayName ?? user.userName}
@@ -72,7 +80,7 @@ export default function TeamMembersTable() {
     },
     {
       accessorKey: "role",
-      header: () => <div className="text-center">Rolle</div>,
+      header: () => <div className="text-center">{t("common.role")}</div>,
       cell: ({ row }) => {
         if (row.original.role == "OWNER") {
           return (
@@ -115,7 +123,7 @@ export default function TeamMembersTable() {
     },
     {
       accessorKey: "joinedAt",
-      header: () => <div className="text-center">Beigetreten am</div>,
+      header: () => <div className="text-center">{t("team.joinedAt")}</div>,
       cell: ({ row }) => (
         <div className="text-center">
           {row.original.joinedAt.toLocaleString()}
@@ -124,7 +132,9 @@ export default function TeamMembersTable() {
     },
     {
       accessorKey: "actions",
-      header: () => <div className={"text-center"}>Aktionen</div>,
+      header: () => (
+        <div className={"text-center"}>{t("common.table.actions")}</div>
+      ),
       cell: ({ row }) => {
         const original = row.original;
         const isDisabled = original.role == "OWNER";

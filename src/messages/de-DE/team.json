@@ -1,5 +1,8 @@
 {
   "personal": "persönliches Projekt",
+  "invite": "Einladen",
+  "sentAt": "Gesendet am",
+  "joinedAt": "Beigetreten am",
   "navigation": {
     "processes": "Prozesse",
     "projects": "Projekte",
@@ -45,6 +48,16 @@
     "success": {
       "title": "Bearbeiter",
       "message": "Der Bearbeiter der Aufgabe wurde aktualisiert."
+    }
+  },
+  "update-member-role": {
+    "loading": {
+      "title": "Rolle",
+      "message": "Die Rolle des Benutzers wird aktualisert..."
+    },
+    "success": {
+      "title": "Rolle",
+      "message": "Die Rolle des Benutzers wurde aktualisert."
     }
   }
 }

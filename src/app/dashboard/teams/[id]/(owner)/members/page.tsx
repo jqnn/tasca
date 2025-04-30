@@ -7,8 +7,10 @@ import TeamMembersTable from "~/app/dashboard/teams/[id]/(owner)/members/members
 import TeamInvitesTable from "~/app/dashboard/teams/[id]/(owner)/members/invites-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { ChildrenHeader, SiteTitle } from "~/components/ui/site-header";
+import { useTranslations } from "next-intl";
 
 export default function TeamMembersPage() {
+  const t = useTranslations();
   const team = useTeam();
   const [tab, setTab] = React.useState<string>("members");
   if (!team) {
@@ -19,19 +21,22 @@ export default function TeamMembersPage() {
     return notFound();
   }
 
+  const members = t("team.navigation.members");
+  const invites = t("common.sidebar.invites");
+
   return (
     <>
       <ChildrenHeader>
-        <SiteTitle title={tab == "members" ? "Mitglieder" : "Einladungen"} />
+        <SiteTitle title={tab == "members" ? members : invites} />
       </ChildrenHeader>
 
       <Tabs defaultValue={tab} className="w-full">
         <TabsList className="w-full">
           <TabsTrigger value="members" onClick={() => setTab("members")}>
-            Mitglieder
+            {members}
           </TabsTrigger>
           <TabsTrigger value="invites" onClick={() => setTab("invites")}>
-            Einladungen
+            {invites}
           </TabsTrigger>
         </TabsList>
         <TabsContent value="members">

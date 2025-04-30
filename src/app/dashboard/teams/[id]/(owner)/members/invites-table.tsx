@@ -40,12 +40,14 @@ export default function TeamInvitesTable() {
   }
 
   const columns: ColumnDef<TeamInvite>[] = [
-    centeredColumn("userId", "Benutzer", (value) => {
+    centeredColumn("userId", t("common.user"), (value) => {
       const { data: user, isLoading } = api.user.find.useQuery({ id: value });
-      if (isLoading || !user) return "Unbekannt";
+      if (isLoading || !user) return t("common.unknown");
       return user.displayName ?? user.userName;
     }),
-    centeredColumn("sentAt", "Gesendet am", (value) => value.toLocaleString()),
+    centeredColumn("sentAt", t("team.sentAt"), (value) =>
+      value.toLocaleString(),
+    ),
     TableActions(t("common.table.actions"), null, (value) =>
       setDeleteId(value),
     ),
@@ -55,7 +57,7 @@ export default function TeamInvitesTable() {
     <DataTable
       data={tableData}
       columns={columns}
-      buttonText={"Einladen"}
+      buttonText={t("team.invite")}
       onButtonClick={() => setShowModal(true)}
     >
       {deleteId && (
