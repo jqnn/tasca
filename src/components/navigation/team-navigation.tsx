@@ -41,14 +41,6 @@ export function TeamNavigationComponent({ teamId }: PageProps) {
   return (
     <NavigationMenu className={"ml-auto"}>
       <NavigationMenuList>
-        {/*        <NavigationMenuItem>
-          <NavigationMenuLink
-            href={`/dashboard/teams/${teamId}/`}
-            className={navigationMenuTriggerStyle()}
-          >
-            Übersicht
-          </NavigationMenuLink>
-        </NavigationMenuItem>*/}
         <NavigationMenuItem>
           <NavigationMenuLink
             href={`/dashboard/teams/${teamId}/processes`}
