@@ -10,8 +10,6 @@ import { SidebarComponent } from "~/components/navigation/sidebar/sidebar";
 
 export const metadata: Metadata = {
   title: "tasca | Dashboard",
-  description: "Task-Management",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
 export default async function RootLayout({
