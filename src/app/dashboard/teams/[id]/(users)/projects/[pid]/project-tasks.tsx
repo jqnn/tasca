@@ -47,7 +47,8 @@ export default function ProjectTasksTable({
         )}
       </Tooltip>
     )),
-    centeredColumn("createdById", "Erstellt von", (value) => {
+    centeredColumn("editorId", "Bearbeiter", (value) => {
+      if (value == null) return "Niemand";
       const { data: user, isLoading } = api.user.find.useQuery({ id: value });
       if (isLoading || !user) return "Unbekannt";
       return user.displayName ?? user.userName;
