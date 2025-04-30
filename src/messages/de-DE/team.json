@@ -13,14 +13,27 @@
     "mark-as-done": "Als Fertig markieren"
   },
   "mark-as-done": {
-    "loading": {
-      "title": "Beenden",
-      "message": "Das Element wird als Beendet markiert..."
+    "process": {
+      "loading": {
+        "title": "Beenden",
+        "message": "Der Prozess wird als Beendet markiert..."
+      },
+      "success": {
+        "title": "Beendet",
+        "message": "Der Prozess wurde als Beendet markiert."
+      },
+      "not-done": "Der Prozess muss erst beendet werden, bevor sie als Fertig markiert werden kann."
     },
-    "success": {
-      "title": "Beendet",
-      "message": "Das Element wurde als Beendet markiert."
-    },
-    "not-done": "Die Aufgabe muss erst beendet werden, bevor sie als Fertig markiert werden kann."
+    "project": {
+      "loading": {
+        "title": "Beenden",
+        "message": "Das Projekt wird als Beendet markiert..."
+      },
+      "success": {
+        "title": "Beendet",
+        "message": "Das Projekt wurde als Beendet markiert."
+      },
+      "not-done": "Das Projekt muss erst beendet werden, bevor sie als Fertig markiert werden kann."
+    }
   }
 }

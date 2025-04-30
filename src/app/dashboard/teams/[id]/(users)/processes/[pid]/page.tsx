@@ -48,21 +48,21 @@ export default function TaskPage({ params }: PageProps) {
 
   const handleDone = () => {
     if (!isTaskDone(instance)) {
-      showToast(t("common.error"), t("team.mark-as-done.not-done"));
+      showToast(t("common.error"), t("team.process.mark-as-done.not-done"));
       return;
     }
 
     showToast(
-      t("team.mark-as-done.loading.title"),
-      t("team.mark-as-done.loading.description"),
+      t("team.mark-as-done.process.loading.title"),
+      t("team.mark-as-done.process.loading.description"),
     );
     updateMutation.mutate(
       { id: instance.id, value: "COMPLETED" },
       {
         onSuccess: () => {
           showToast(
-            t("team.mark-as-done.success.title"),
-            t("team.mark-as-done.success.description"),
+            t("team.mark-as-done.process.success.title"),
+            t("team.mark-as-done.process.success.description"),
           );
           router.push(`/dashboard/teams/${instance.teamId}/processes`);
         },
