@@ -42,10 +42,7 @@ export default function InviteTeamMemberDialog({
       {
         onSuccess: (data) => {
           if (data) {
-            showErrorToast(
-              t,
-              "team.invite.already-joined",
-            );
+            showErrorToast(t, "team.invite.already-joined");
             return;
           }
 
@@ -57,15 +54,12 @@ export default function InviteTeamMemberDialog({
             {
               onSuccess: () => {
                 showToast(
-                  t("team.invite.sent.title")
-                  t("team.invite.sent.message")
+                  t("team.invite.sent.title"),
+                  t("team.invite.sent.message"),
                 );
               },
               onError: () => {
-                showErrorToast(
-                  t,
-                  "team.invite.already-invited",
-                );
+                showErrorToast(t, "team.invite.already-invited");
               },
             },
           );

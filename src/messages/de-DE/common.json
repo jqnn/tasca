@@ -15,15 +15,11 @@
   "createdAt": "Erstellt am",
   "unknown": "Unbekannt",
   "show-finished": "Fertige anzeigen",
-  "error": {
-    "text": "Fehler",
-    "title": "Unerwarteter Fehler",
-    "message": "Bitte versuche es später erneut oder kontaktiere einen Administrator."
-  },
+  "error": "Fehler",
   "table": {
     "no-results": "Keine Ergebnisse",
     "actions": "Aktionen",
-    "save-order":{
+    "save-order": {
       "text": "Reihenfolge speichern",
       "loading": {
         "title": "Reihenfolge",
