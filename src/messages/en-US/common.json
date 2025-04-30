@@ -16,6 +16,17 @@
   "unknown": "Unknown",
   "show-finished": "Show finished",
   "error": "Error",
+  "roles": {
+    "owner": "Owner",
+    "administrator": "Administrator",
+    "operator": "Operator",
+    "member": "Member",
+    "user": "User"
+  },
+  "statuses": {
+    "completed": "Completed",
+    "open": "Open"
+  },
   "table": {
     "no-results": "No results",
     "actions": "Actions",
@@ -42,11 +53,11 @@
   "mutation": {
     "loading": {
       "title": "Loading...",
-      "description": "The item is being processed..."
+      "description": "The item is being edited..."
     },
     "success": {
       "title": "Success",
-      "description": "The item was successfully processed."
+      "description": "The item was successfully edited."
     }
   },
   "dialog": {
