@@ -12,7 +12,7 @@ import {
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { showErrorToast } from "~/lib/utils";
-import { notFound, useRouter } from "next/navigation";
+import { notFound } from "next/navigation";
 import { useTeam } from "~/context/TeamProvider";
 import DialogInput from "~/components/dialogs/dialog-input";
 
@@ -60,7 +60,6 @@ export default function CreateProjectTaskDialog({
   };
 
   const team = useTeam();
-  const router = useRouter();
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
 
