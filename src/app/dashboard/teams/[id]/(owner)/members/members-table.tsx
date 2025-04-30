@@ -85,7 +85,7 @@ export default function TeamMembersTable() {
         if (row.original.role == "OWNER") {
           return (
             <div className={"text-center"}>
-              {beautifyTeamRole(row.original.role)}
+              {beautifyTeamRole(t, row.original.role)}
             </div>
           );
         }
@@ -111,7 +111,7 @@ export default function TeamMembersTable() {
                   if (role == "OWNER") return;
                   return (
                     <SelectItem key={role} value={role}>
-                      {beautifyTeamRole(role)}
+                      {beautifyTeamRole(t, role)}
                     </SelectItem>
                   );
                 })}

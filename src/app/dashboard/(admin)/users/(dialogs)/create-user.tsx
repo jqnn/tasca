@@ -137,7 +137,7 @@ export default function CreateUserDialog({
                   <SelectContent id={"role"}>
                     {Object.values(Role).map((role) => (
                       <SelectItem key={role} value={role}>
-                        {beautifyRole(role)}
+                        {beautifyRole(t, role)}
                       </SelectItem>
                     ))}
                   </SelectContent>

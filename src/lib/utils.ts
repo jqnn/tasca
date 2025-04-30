@@ -47,16 +47,13 @@ export function beautifyInstanceStatus(status: InstanceStatus) {
   return "Offen";
 }
 
-export function beautifyRole(role: Role) {
-  if (role == "OPERATOR") return "Operator";
-  if (role == "ADMINISTRATOR") return "Administrator";
-  return "Benutzer";
+export function beautifyRole(t: TranslationFunction, role: Role) {
+  return t(`common.roles.${role.trim().toLowerCase()}`)
 }
 
-export function beautifyTeamRole(role: TeamRole) {
-  if (role == "OWNER") return "Besitzer";
-  if (role == "ADMIN") return "Administrator";
-  return "Mitglied";
+
+export function beautifyTeamRole(t: TranslationFunction, role: TeamRole) {
+  return t(`common.roles.${role.trim().toLowerCase()}`)
 }
 
 export function isProjectDone(projectTasks: ProjectTask[]) {

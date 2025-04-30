@@ -16,6 +16,13 @@
   "unknown": "Unbekannt",
   "show-finished": "Fertige anzeigen",
   "error": "Fehler",
+  "roles": {
+    "owner": "Besitzer",
+    "administrator": "Administrator",
+    "operator": "Operator",
+    "member": "Mitglied",
+    "user": "Benutzer"
+  },
   "table": {
     "no-results": "Keine Ergebnisse",
     "actions": "Aktionen",
