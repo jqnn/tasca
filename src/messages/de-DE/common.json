@@ -6,9 +6,11 @@
   "user": "Benutzer",
   "description": "Beschreibung",
   "type": "Typ",
+  "role": "Rolle",
   "state": "Status",
   "owner": "Besitzer",
   "creator": "Ersteller",
+  "createdAt": "Erstellt am",
   "unknown": "Unbekannt",
   "table": {
     "no-results": "Keine Ergebnisse",

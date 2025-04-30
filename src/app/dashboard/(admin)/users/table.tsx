@@ -32,10 +32,10 @@ export default function UsersTable() {
   }
 
   const columns: ColumnDef<User>[] = [
-    centeredColumn("userName", "Benutzername"),
-    centeredColumn("displayName", "Anzeigename"),
-    centeredColumn("role", "Rolle", (value) => beautifyRole(value)),
-    centeredColumn("createdAt", "Erstellt am", (value) =>
+    centeredColumn("userName", t("user.userName")),
+    centeredColumn("displayName", t("user.displayName")),
+    centeredColumn("role", t("common.role"), (value) => beautifyRole(value)),
+    centeredColumn("createdAt", t("common.createdAt"), (value) =>
       value.toLocaleString(),
     ),
     TableActions(
