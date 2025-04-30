@@ -61,7 +61,7 @@ export function TeamNavigationComponent({ teamId }: PageProps) {
           </NavigationMenuLink>
         </NavigationMenuItem>
 
-        {(role == "OWNER" || role == "ADMIN") && (
+        {(role == "OWNER" || role == "ADMINISTRATOR") && (
           <NavigationMenuItem>
             <NavigationMenuLink
               href={`/dashboard/teams/${teamId}/templates`}
