@@ -234,7 +234,7 @@ export function SortableDataTable<TData extends HasId>({
               setUpdate(false);
             }}
           >
-            {t("common.table.save-order")}
+            {t("common.table.save-order.text")}
           </Button>
         </div>
       )}

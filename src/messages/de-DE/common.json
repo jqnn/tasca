@@ -4,6 +4,7 @@
   "delete": "Löschen",
   "cancel": "Abbrechen",
   "user": "Benutzer",
+  "name": "Name",
   "description": "Beschreibung",
   "type": "Typ",
   "role": "Rolle",
@@ -17,8 +18,10 @@
   "error": "Fehler",
   "table": {
     "no-results": "Keine Ergebnisse",
-    "save-order": "Reihenfolge speichern",
-    "actions": "Aktionen"
+    "actions": "Aktionen",
+    "save-order":{
+      "text": "Reihenfolge speichern"
+    }
   },
   "sidebar": {
     "teams": "Teams",
