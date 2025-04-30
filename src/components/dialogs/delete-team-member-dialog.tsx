@@ -14,9 +14,7 @@ import {
 import { showErrorToast, showToast } from "~/lib/utils";
 import { useTranslations } from "next-intl";
 import {
-  defaultDialogInformation,
   defaultMutationMessages,
-  type DialogInformation,
   type MutationMessages,
 } from "~/types/dialog-types";
 
@@ -35,7 +33,7 @@ export function DeleteDialog({
   data,
   onDelete,
   mutationMessages = defaultMutationMessages,
-  dialogMessages = defaultDialogInformation,
+  dialogMessages = "common.dialog",
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -48,7 +46,7 @@ export function DeleteDialog({
   data: MutationInput;
   onDelete?: () => void | null;
   mutationMessages?: MutationMessages;
-  dialogMessages?: DialogInformation;
+  dialogMessages?: string;
 }) {
   const t = useTranslations();
 
@@ -60,8 +58,8 @@ export function DeleteDialog({
     }
 
     showToast(
-      t(mutationMessages.loading.title),
-      t(mutationMessages.loading.message),
+      t(`${mutationMessages.loading}.title`),
+      t(`${mutationMessages.loading}.description`),
     );
     mutation.mutate(data, {
       onSuccess: () => {
@@ -73,8 +71,8 @@ export function DeleteDialog({
         onDelete();
         setOpen(false);
         showToast(
-          t(mutationMessages.success.title),
-          t(mutationMessages.success.message),
+          t(`${mutationMessages.success}.title`),
+          t(`${mutationMessages.success}.description`),
         );
       },
       onError: () => {
@@ -87,9 +85,9 @@ export function DeleteDialog({
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t(dialogMessages.title)}</AlertDialogTitle>
+          <AlertDialogTitle>{t(`${dialogMessages}.title`)}</AlertDialogTitle>
           <AlertDialogDescription>
-            {t(dialogMessages.description)}
+            {t(`${dialogMessages}.description`)}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
