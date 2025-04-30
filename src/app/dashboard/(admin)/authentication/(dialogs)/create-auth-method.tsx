@@ -22,6 +22,7 @@ import { api } from "~/trpc/react";
 import { showErrorToast } from "~/lib/utils";
 import DialogInput from "~/components/dialogs/dialog-input";
 import SecurityType = $Enums.SecurityType;
+import { useTranslations } from "next-intl";
 
 export default function CreateAuthenticationMethodDialog({
   open,
@@ -32,6 +33,8 @@ export default function CreateAuthenticationMethodDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (authMethod: AuthMethod) => void | null;
 }) {
+  const t = useTranslations()
+
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();
     existsMutation.mutate(
@@ -65,7 +68,7 @@ export default function CreateAuthenticationMethodDialog({
                 setOpen(false);
               },
               onError: () => {
-                showErrorToast();
+                showErrorToast(t);
               },
             },
           );

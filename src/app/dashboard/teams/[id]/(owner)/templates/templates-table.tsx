@@ -13,8 +13,10 @@ import TableActions from "~/components/table/table-actions";
 import Spinner from "~/components/ui/spinner";
 import { useTeam } from "~/context/TeamProvider";
 import { notFound } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function TeamTemplatesTable() {
+  const t = useTranslations()
   const team = useTeam();
   const { data, status } = api.template.findAll.useQuery({
     teamId: team.team.id,
@@ -39,21 +41,21 @@ export default function TeamTemplatesTable() {
   const columns: ColumnDef<Template>[] = [
     centeredColumn(
       "name",
-      "Name",
+      t("common.name"),
       null,
       `/dashboard/teams/${team.team.id}/templates/:id`,
     ),
-    centeredColumn("description", "Beschreibung"),
-    centeredColumn("createdById", "Ersteller", (value) => {
-      if (!value) return "Unbekannt";
+    centeredColumn("description", t("common.description")),
+    centeredColumn("createdById", t("common.creator"), (value) => {
+      if (!value) return t("common.unknown");
       const { data: user, isLoading } = api.user.find.useQuery({ id: value });
-      if (isLoading || !user) return "Unbekannt";
+      if (isLoading || !user) return t("common.unknown");
       return user.displayName ?? user.userName;
     }),
-    centeredColumn("createdAt", "Erstellt am", (value) =>
+    centeredColumn("createdAt", t("common.createdAt"), (value) =>
       value.toLocaleString(),
     ),
-    TableActions(null, (id) => setDeleteId(id)),
+    TableActions(t("common.table.actions"),null, (id) => setDeleteId(id)),
   ];
 
   return (

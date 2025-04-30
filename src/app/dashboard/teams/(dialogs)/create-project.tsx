@@ -15,6 +15,7 @@ import DialogInput from "~/components/dialogs/dialog-input";
 import { api } from "~/trpc/react";
 import { showErrorToast } from "~/lib/utils";
 import type { Team } from "@prisma/client";
+import { useTranslations } from "next-intl";
 
 export default function CreateTeamDialog({
   open,
@@ -25,6 +26,8 @@ export default function CreateTeamDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (team: Team) => void | null;
 }) {
+  const t = useTranslations()
+
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();
     createMutation.mutate(
@@ -36,7 +39,7 @@ export default function CreateTeamDialog({
       {
         onSuccess: (data) => {
           if (!data) {
-            showErrorToast();
+            showErrorToast(t);
             return;
           }
 
@@ -50,7 +53,7 @@ export default function CreateTeamDialog({
         },
 
         onError: () => {
-          showErrorToast();
+          showErrorToast(t);
         },
       },
     );

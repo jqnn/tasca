@@ -1,0 +1,67 @@
+{
+  "create": "Erstellen",
+  "add": "Hinzufügen",
+  "delete": "Löschen",
+  "cancel": "Abbrechen",
+  "user": "Benutzer",
+  "name": "Name",
+  "description": "Beschreibung",
+  "type": "Typ",
+  "role": "Rolle",
+  "state": "Status",
+  "owner": "Besitzer",
+  "team": "Team",
+  "creator": "Ersteller",
+  "createdAt": "Erstellt am",
+  "unknown": "Unbekannt",
+  "show-finished": "Fertige anzeigen",
+  "error": "Fehler",
+  "roles": {
+    "owner": "Besitzer",
+    "administrator": "Administrator",
+    "operator": "Operator",
+    "member": "Mitglied",
+    "user": "Benutzer"
+  },
+  "statuses": {
+    "completed": "Abgeschlossen",
+    "open": "Offen"
+  },
+  "table": {
+    "no-results": "Keine Ergebnisse",
+    "actions": "Aktionen",
+    "save-order": {
+      "text": "Reihenfolge speichern",
+      "loading": {
+        "title": "Reihenfolge",
+        "message": "Die Reihenfolge wird gespeichert..."
+      },
+      "success": {
+        "title": "Reihenfolge",
+        "message": "Die Reihenfolge wurde gespeichert."
+      }
+    }
+  },
+  "sidebar": {
+    "teams": "Teams",
+    "invites": "Einladungen",
+    "admin": "Administration",
+    "users": "Benutzer",
+    "authMethods": "Authentifizierungsmethoden",
+    "logout": "Abmelden"
+  },
+  "mutation": {
+    "loading": {
+      "title": "Lädt...",
+      "description": "Das Element wird bearbeitet..."
+    },
+    "success": {
+      "title": "Erfolgreich",
+      "description": "Das Element wurde erfolgreich bearbeitet."
+    }
+  },
+  "dialog": {
+    "title": "Bist du dir sicher?",
+    "description": "Diese Änderung kann nicht rückgängig gemacht werden."
+  }
+}

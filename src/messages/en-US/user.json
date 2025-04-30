@@ -1,0 +1,23 @@
+{
+  "userName": "Username",
+  "displayName": "Display Name",
+  "invite": {
+    "receivedAt": "Received on",
+    "reject": {
+      "title": "Reject",
+      "message": "Rejecting the invitation..."
+    },
+    "rejected": {
+      "title": "Rejected",
+      "message": "The invitation has been rejected."
+    },
+    "accept": {
+      "title": "Accept",
+      "message": "Accepting the invitation..."
+    },
+    "accepted": {
+      "title": "Accepted",
+      "message": "The invitation has been accepted."
+    }
+  }
+}

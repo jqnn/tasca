@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Card, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 import type { FieldType, InstanceStatus, Role } from "@prisma/client";
 import { beautifyInstanceStatus } from "~/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface PageProps {
   task: {
@@ -51,6 +52,7 @@ interface PageProps {
 }
 
 export function TaskCardComponent({ task }: PageProps) {
+  const t = useTranslations();
   const field = task.InstanceField.sort(
     (a, b) => a.field.order - b.field.order
   );
@@ -74,7 +76,7 @@ export function TaskCardComponent({ task }: PageProps) {
               Ersteller -{" "}
               {task.createdBy ? ((task.createdBy.displayName ?? task.createdBy.userName)) : "Unbekannt"}
             </p>
-            <p>Status - {beautifyInstanceStatus(task.status)}</p>
+            <p>Status - {beautifyInstanceStatus(t, task.status)}</p>
           </CardDescription>
         </CardHeader>
       </Card>

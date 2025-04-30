@@ -9,6 +9,7 @@ import type {
   Role,
   TeamRole,
 } from "@prisma/client";
+import type { TranslationFunction } from "~/types/translation-types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -34,29 +35,24 @@ export function showToast(title: string, description: string | null = null) {
   });
 }
 
-export function showErrorToast(message?: string) {
+export function showErrorToast(t: TranslationFunction, message?: string) {
   showToast(
-    "Unerwarteter Fehler",
-    message ??
-      "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
+    t("error.unexpected.title"),
+    message ? t("error.unexpected.message") : t("error.unexpected.message"),
   );
 }
 
-export function beautifyInstanceStatus(status: InstanceStatus) {
-  if (status == "COMPLETED") return "Abgeschlossen";
-  return "Offen";
+export function beautifyInstanceStatus(t: TranslationFunction, status: InstanceStatus) {
+  return t(`common.statuses.${status.trim().toLowerCase()}`)
 }
 
-export function beautifyRole(role: Role) {
-  if (role == "OPERATOR") return "Operator";
-  if (role == "ADMINISTRATOR") return "Administrator";
-  return "Benutzer";
+export function beautifyRole(t: TranslationFunction, role: Role) {
+  return t(`common.roles.${role.trim().toLowerCase()}`)
 }
 
-export function beautifyTeamRole(role: TeamRole) {
-  if (role == "OWNER") return "Besitzer";
-  if (role == "ADMIN") return "Administrator";
-  return "Mitglied";
+
+export function beautifyTeamRole(t: TranslationFunction, role: TeamRole) {
+  return t(`common.roles.${role.trim().toLowerCase()}`)
 }
 
 export function isProjectDone(projectTasks: ProjectTask[]) {

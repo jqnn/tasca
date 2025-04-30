@@ -6,6 +6,7 @@ import { showErrorToast } from "~/lib/utils";
 import type { InstanceTask, ProjectTask } from "@prisma/client";
 import { Checkbox } from "~/components/ui/checkbox";
 import type { CheckedState } from "@radix-ui/react-checkbox";
+import { useTranslations } from "next-intl";
 
 export function TaskCheck({
   instance,
@@ -14,6 +15,8 @@ export function TaskCheck({
   instance: InstanceTask;
   disabled: boolean;
 }) {
+  const t = useTranslations()
+
   const handleCheckedChange = (value: CheckedState) => {
     const checked = value as boolean;
 
@@ -25,7 +28,7 @@ export function TaskCheck({
 
   const updateMutation = api.instance.updateState.useMutation({
     onError: () => {
-      showErrorToast();
+      showErrorToast(t);
     },
     onSuccess: (data) => {
       instance.status = data.status;
@@ -44,6 +47,8 @@ export function TaskCheck({
 }
 
 export function ProjectTaskCheck({ task }: { task: ProjectTask }) {
+  const t = useTranslations()
+
   const handleCheckedChange = (value: CheckedState) => {
     const checked = value as boolean;
 
@@ -55,7 +60,7 @@ export function ProjectTaskCheck({ task }: { task: ProjectTask }) {
 
   const updateMutation = api.teamProjects.updateState.useMutation({
     onError: () => {
-      showErrorToast();
+      showErrorToast(t);
     },
     onSuccess: (data) => {
       task.status = data.status;

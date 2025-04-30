@@ -1,0 +1,76 @@
+{
+  "personal": "personal project",
+  "sentAt": "Sent on",
+  "joinedAt": "Joined on",
+  "navigation": {
+    "processes": "Processes",
+    "projects": "Projects",
+    "templates": "Templates",
+    "members": "Members"
+  },
+  "common": {
+    "process": "Process",
+    "task": "Task",
+    "editedAt": "Edited on",
+    "editor": "Editor",
+    "mark-as-done": "Mark as done"
+  },
+  "field": {
+    "label": "Label",
+    "placeHolder": "Placeholder"
+  },
+  "invite": {
+    "text": "Invite",
+    "no-selected": "No user has been selected.",
+    "already-invited": "This user has already been invited.",
+    "already-joined": "This user is already in this team.",
+    "sent": {
+      "title": "Invitation",
+      "message": "The invitation has been sent."
+    }
+  },
+  "mark-as-done": {
+    "process": {
+      "loading": {
+        "title": "Complete",
+        "message": "The process is being marked as completed..."
+      },
+      "success": {
+        "title": "Completed",
+        "message": "The process has been marked as completed."
+      },
+      "not-done": "The process must be completed before it can be marked as done."
+    },
+    "project": {
+      "loading": {
+        "title": "Complete",
+        "message": "The project is being marked as completed..."
+      },
+      "success": {
+        "title": "Completed",
+        "message": "The project has been marked as completed."
+      },
+      "not-done": "The project must be completed before it can be marked as done."
+    }
+  },
+  "update-editor": {
+    "loading": {
+      "title": "Editor",
+      "message": "The task's editor is being updated..."
+    },
+    "success": {
+      "title": "Editor",
+      "message": "The task's editor has been updated."
+    }
+  },
+  "update-member-role": {
+    "loading": {
+      "title": "Role",
+      "message": "The user's role is being updated..."
+    },
+    "success": {
+      "title": "Role",
+      "message": "The user's role has been updated."
+    }
+  }
+}

@@ -19,6 +19,7 @@ import {
 } from "~/components/table/table";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface DataTableProps<TData> {
   data: TData[];
@@ -37,6 +38,7 @@ export function DataTable<TData>({
   children,
   className,
 }: DataTableProps<TData>) {
+  const t = useTranslations();
   const table = useReactTable({
     data,
     columns,
@@ -48,7 +50,7 @@ export function DataTable<TData>({
       {onButtonClick && (
         <div className="flex items-center pb-4">
           <Button variant="outline" className="mr-auto" onClick={onButtonClick}>
-            {buttonText ?? "Hinzufügen"}
+            {buttonText ?? t("common.add")}
           </Button>
         </div>
       )}
@@ -88,7 +90,7 @@ export function DataTable<TData>({
             ) : (
               <TableRow>
                 <TableCell className={"text-center"} colSpan={columns.length}>
-                  Keine Ergebnisse
+                  {t("common.table.no-results")}
                 </TableCell>
               </TableRow>
             )}

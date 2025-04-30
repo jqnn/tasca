@@ -10,6 +10,7 @@ import {
   SidebarMenuItem,
 } from "~/components/ui/sidebar";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export function SidebarItems({
   items,
@@ -22,9 +23,11 @@ export function SidebarItems({
   }[];
   title?: string | null;
 }) {
+  const t = useTranslations();
+
   return (
     <SidebarGroup>
-      {title && <SidebarGroupLabel>{title}</SidebarGroupLabel>}
+      {title && <SidebarGroupLabel>{t(title)}</SidebarGroupLabel>}
 
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
@@ -33,7 +36,7 @@ export function SidebarItems({
               <SidebarMenuItem>
                 <SidebarMenuButton>
                   {item.icon && <item.icon />}
-                  <span>{item.title}</span>
+                  <span>{t(item.title)}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </Link>

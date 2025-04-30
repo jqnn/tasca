@@ -14,6 +14,7 @@ import {
 import ProjectTasksTable from "~/app/dashboard/teams/[id]/(users)/projects/[pid]/project-tasks";
 import { Button } from "~/components/ui/button";
 import { isProjectDone, showErrorToast, showToast } from "~/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface PageProps {
   params: Promise<{
@@ -22,6 +23,7 @@ interface PageProps {
 }
 
 export default function TaskPage({ params }: PageProps) {
+  const t = useTranslations()
   const team = useTeam();
   const router = useRouter();
   const actualParams = React.use(params);
@@ -70,7 +72,7 @@ export default function TaskPage({ params }: PageProps) {
           router.push(`/dashboard/teams/${project.teamId}/projects`);
         },
         onError: () => {
-          showErrorToast();
+          showErrorToast(t);
         },
       },
     );

@@ -13,8 +13,10 @@ import { centeredColumn } from "~/components/table/table";
 import TableActions from "~/components/table/table-actions";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import InviteTeamMemberDialog from "~/app/dashboard/teams/[id]/(owner)/members/(dialogs)/invite-team-member";
+import { useTranslations } from "next-intl";
 
 export default function TeamInvitesTable() {
+  const t = useTranslations();
   const team = useTeam();
   const { data, status } = api.teamInvites.findTeams.useQuery({
     id: team.team.id,
@@ -38,20 +40,24 @@ export default function TeamInvitesTable() {
   }
 
   const columns: ColumnDef<TeamInvite>[] = [
-    centeredColumn("userId", "Benutzer", (value) => {
+    centeredColumn("userId", t("common.user"), (value) => {
       const { data: user, isLoading } = api.user.find.useQuery({ id: value });
-      if (isLoading || !user) return "Unbekannt";
+      if (isLoading || !user) return t("common.unknown");
       return user.displayName ?? user.userName;
     }),
-    centeredColumn("sentAt", "Gesendet am", (value) => value.toLocaleString()),
-    TableActions(null, (value) => setDeleteId(value)),
+    centeredColumn("sentAt", t("team.sentAt"), (value) =>
+      value.toLocaleString(),
+    ),
+    TableActions(t("common.table.actions"), null, (value) =>
+      setDeleteId(value),
+    ),
   ];
 
   return (
     <DataTable
       data={tableData}
       columns={columns}
-      buttonText={"Einladen"}
+      buttonText={t("team.invite.text")}
       onButtonClick={() => setShowModal(true)}
     >
       {deleteId && (

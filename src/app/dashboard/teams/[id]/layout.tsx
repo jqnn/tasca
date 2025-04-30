@@ -12,6 +12,7 @@ import { TeamNavigationComponent } from "~/components/navigation/team-navigation
 import { notFound, redirect } from "next/navigation";
 import { api } from "~/trpc/server";
 import { auth } from "~/server/auth";
+import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "tasca | Dashboard",
@@ -28,6 +29,7 @@ export default async function RootLayout({
     id: string;
   }>;
 }) {
+  const t = await getTranslations();
   const session = await auth();
   if (!session) {
     redirect("/");
@@ -53,15 +55,17 @@ export default async function RootLayout({
   }
 
   const title = team.personal
-    ? (team.createdBy ? ((team.createdBy.displayName ?? team.createdBy.userName)) : "Unbekannt")
+    ? team.createdBy
+      ? (team.createdBy.displayName ?? team.createdBy.userName)
+      : t("common.unknown")
     : team.name;
 
-  const description = team.personal ? "persönliches Team" : team.description;
+  const description = team.personal ? t("team.personal") : team.description;
 
   return (
     <TeamProvider team={team} userRole={role}>
       <SiteHeader>
-        <SiteTitle title={`Team - ${title}`} />
+        <SiteTitle title={`${t("common.team")} - ${title}`} />
         {description && <SiteDescription description={description} />}
         <TeamNavigationComponent teamId={team.id} />
       </SiteHeader>

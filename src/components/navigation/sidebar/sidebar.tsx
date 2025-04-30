@@ -23,28 +23,29 @@ import {
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
+import { useTranslations } from "next-intl";
 
 const data = {
   navMain: [
     {
-      title: "Teams",
+      title: "common.sidebar.teams",
       url: "/dashboard/teams",
       icon: IconFolders,
     },
     {
-      title: "Einladungen",
+      title: "common.sidebar.invites",
       url: "/dashboard/invites",
       icon: IconMailOpened,
     },
   ],
   navAdmin: [
     {
-      title: "Benutzer",
+      title: "common.sidebar.users",
       url: "/dashboard/users",
       icon: IconUsers,
     },
     {
-      title: "Authentifizierungsmethoden",
+      title: "common.sidebar.authMethods",
       url: "/dashboard/authentication",
       icon: IconLock,
     },
@@ -54,6 +55,7 @@ const data = {
 export function SidebarComponent({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+  const t = useTranslations();
   const router = useRouter();
   const { data: session } = useSession();
   if (!session) {
@@ -86,7 +88,7 @@ export function SidebarComponent({
       <SidebarContent>
         <SidebarItems items={data.navMain} />
         {isAdmin && (
-          <SidebarItems title={"Administration"} items={data.navAdmin} />
+          <SidebarItems title={"common.sidebar.admin"} items={data.navAdmin} />
         )}
       </SidebarContent>
       <SidebarFooter>
