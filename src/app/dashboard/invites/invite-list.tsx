@@ -79,8 +79,10 @@ export default function TeamInvitesTable() {
           onDelete={() => {
             console.log("TODO");
           }}
-          loadingMessage={"Die Einladung wird abgelehnt..."}
-          successMessage={"Die Einladung wurde abgelehnt."}
+          mutationMessages={{
+            loading: "user.invite.reject",
+            success: "user.invite.rejected",
+          }}
         />
       )}
     </DataTable>
