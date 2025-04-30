@@ -10,6 +10,7 @@ import {
 } from "~/components/ui/card";
 import { beautifyInstanceStatus } from "~/lib/utils";
 import type { InstanceStatus } from "@prisma/client";
+import { useTranslations } from "next-intl";
 
 interface PageProps {
   project: {
@@ -23,6 +24,8 @@ interface PageProps {
 }
 
 export function ProjectCardComponent({ project }: PageProps) {
+  const t = useTranslations()
+
   return (
     <Link
       key={project.id}
@@ -33,7 +36,7 @@ export function ProjectCardComponent({ project }: PageProps) {
           <CardTitle>{project.name}</CardTitle>
           <CardDescription>
             {project.description && <p>Beschreibung - {project.description}</p>}
-            <p>Status - {beautifyInstanceStatus(project.status)}</p>
+            <p>Status - {beautifyInstanceStatus(t, project.status)}</p>
           </CardDescription>
         </CardHeader>
       </Card>
