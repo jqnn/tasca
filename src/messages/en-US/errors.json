@@ -2,5 +2,9 @@
   "404": {
     "message": "Oops! The page you are looking for could not be found.",
     "message-redirect": "You will be redirected shortly..."
+  },
+  "unexpected": {
+    "title": "Unexpected Error",
+    "message": "Please try again later or contact an administrator."
   }
 }

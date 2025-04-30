@@ -1,0 +1,56 @@
+{
+  "create": "Create",
+  "add": "Add",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "user": "User",
+  "name": "Name",
+  "description": "Description",
+  "type": "Type",
+  "role": "Role",
+  "state": "Status",
+  "owner": "Owner",
+  "team": "Team",
+  "creator": "Creator",
+  "createdAt": "Created on",
+  "unknown": "Unknown",
+  "show-finished": "Show finished",
+  "error": "Error",
+  "table": {
+    "no-results": "No results",
+    "actions": "Actions",
+    "save-order": {
+      "text": "Save order",
+      "loading": {
+        "title": "Order",
+        "message": "Saving the order..."
+      },
+      "success": {
+        "title": "Order",
+        "message": "The order was saved."
+      }
+    }
+  },
+  "sidebar": {
+    "teams": "Teams",
+    "invites": "Invitations",
+    "admin": "Administration",
+    "users": "Users",
+    "authMethods": "Authentication methods",
+    "logout": "Log out"
+  },
+  "mutation": {
+    "loading": {
+      "title": "Loading...",
+      "description": "The item is being processed..."
+    },
+    "success": {
+      "title": "Success",
+      "description": "The item was successfully processed."
+    }
+  },
+  "dialog": {
+    "title": "Are you sure?",
+    "description": "This change cannot be undone."
+  }
+}

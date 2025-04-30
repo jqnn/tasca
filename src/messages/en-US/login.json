@@ -1,7 +1,7 @@
 {
-  "title": "Login",
+  "title": "Sign In",
   "userName": "Username",
   "password": "Password",
-  "submit": "Login",
-  "error": "Incorrect username or password. Please check your entries and try again."
+  "submit": "Sign In",
+  "error": "The username or password is incorrect. Please check your entries and try again."
 }
