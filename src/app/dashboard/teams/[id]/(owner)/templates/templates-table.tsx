@@ -45,6 +45,7 @@ export default function TeamTemplatesTable() {
     ),
     centeredColumn("description", "Beschreibung"),
     centeredColumn("createdById", "Ersteller", (value) => {
+      if (!value) return "Unbekannt";
       const { data: user, isLoading } = api.user.find.useQuery({ id: value });
       if (isLoading || !user) return "Unbekannt";
       return user.displayName ?? user.userName;

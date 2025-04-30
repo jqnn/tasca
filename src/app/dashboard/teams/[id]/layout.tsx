@@ -53,7 +53,7 @@ export default async function RootLayout({
   }
 
   const title = team.personal
-    ? (team.createdBy.displayName ?? team.createdBy.userName)
+    ? (team.createdBy ? ((team.createdBy.displayName ?? team.createdBy.userName)) : "Unbekannt")
     : team.name;
 
   const description = team.personal ? "persönliches Team" : team.description;

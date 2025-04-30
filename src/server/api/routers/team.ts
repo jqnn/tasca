@@ -50,7 +50,7 @@ export const teamRouter = createTRPCRouter({
       if (!project) return null;
       const user = await ctx.db.teamMember.create({
         data: {
-          userId: project.createdById,
+          userId: project.createdById ?? 0,
           teamId: project.id,
           role: "OWNER",
         },
