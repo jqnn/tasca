@@ -49,7 +49,7 @@ export function SidebarUser({ session }: { session: Session | null }) {
             <Link href={"/logout"}>
               <DropdownMenuItem>
                 <IconLogout />
-                {t("common.sidebar.loogut")}
+                {t("common.sidebar.logout")}
               </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>
