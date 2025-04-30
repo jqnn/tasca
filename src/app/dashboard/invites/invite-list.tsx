@@ -13,8 +13,10 @@ import TableActions from "~/components/table/table-actions";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { useSession } from "next-auth/react";
 import { showErrorToast, showToast } from "~/lib/utils";
+import { useTranslations } from "next-intl";
 
 export default function TeamInvitesTable() {
+  const t = useTranslations();
   const router = useRouter();
   const { data: session } = useSession();
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
@@ -58,11 +60,11 @@ export default function TeamInvitesTable() {
     }),
     centeredColumn("sentAt", "Erhalten am", (value) => value.toLocaleString()),
     TableActions(
+      t("common.table.actions"),
       (value) => acceptMutation.mutate({ id: value }),
       (value) => setDeleteId(value),
     ),
   ];
-
   return (
     <DataTable data={data} columns={columns}>
       {deleteId && (

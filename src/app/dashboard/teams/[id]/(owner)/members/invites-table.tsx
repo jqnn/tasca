@@ -13,8 +13,10 @@ import { centeredColumn } from "~/components/table/table";
 import TableActions from "~/components/table/table-actions";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import InviteTeamMemberDialog from "~/app/dashboard/teams/[id]/(owner)/members/(dialogs)/invite-team-member";
+import { useTranslations } from "next-intl";
 
 export default function TeamInvitesTable() {
+  const t = useTranslations();
   const team = useTeam();
   const { data, status } = api.teamInvites.findTeams.useQuery({
     id: team.team.id,
@@ -44,7 +46,9 @@ export default function TeamInvitesTable() {
       return user.displayName ?? user.userName;
     }),
     centeredColumn("sentAt", "Gesendet am", (value) => value.toLocaleString()),
-    TableActions(null, (value) => setDeleteId(value)),
+    TableActions(t("common.table.actions"), null, (value) =>
+      setDeleteId(value),
+    ),
   ];
 
   return (

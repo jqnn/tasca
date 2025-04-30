@@ -11,8 +11,10 @@ import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { centeredColumn, centeredDataColumn } from "~/components/table/table";
 import TableActions from "~/components/table/table-actions";
 import Spinner from "~/components/ui/spinner";
+import { useTranslations } from "next-intl";
 
 export default function AuthenticationMethodsTable() {
+  const t = useTranslations();
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const { data, status } = api.authMethod.findAll.useQuery();
@@ -40,6 +42,7 @@ export default function AuthenticationMethodsTable() {
       return `${users}`;
     }),
     TableActions(
+      t("common.table.actions"),
       null,
       (id) => setDeleteId(id),
       (value) => value.description == "local",

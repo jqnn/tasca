@@ -12,6 +12,7 @@ import { centeredColumn } from "~/components/table/table";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import TableActions from "~/components/table/table-actions";
 import CreateTemplateTaskDialog from "~/app/dashboard/teams/[id]/(owner)/templates/[tid]/(dialogs)/create-template-task";
+import { useTranslations } from "next-intl";
 
 export default function TemplateTaskTable({
   templateId,
@@ -20,6 +21,7 @@ export default function TemplateTaskTable({
   templateId: number;
   tasks: TemplateTask[];
 }) {
+  const t = useTranslations()
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const [tableData, setTableData] = React.useState<TemplateTask[]>([]);
@@ -44,7 +46,7 @@ export default function TemplateTaskTable({
   const columns: ColumnDef<TemplateTask>[] = [
     centeredColumn("task", "Aufgabe"),
     centeredColumn("description", "Beschreibung"),
-    TableActions(null, (id) => setDeleteId(id)),
+    TableActions(t("common.table.actions"),null, (id) => setDeleteId(id)),
   ];
 
   return (

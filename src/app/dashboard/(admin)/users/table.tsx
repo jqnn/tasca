@@ -12,8 +12,10 @@ import { centeredColumn } from "~/components/table/table";
 import TableActions from "~/components/table/table-actions";
 import { beautifyRole } from "~/lib/utils";
 import Spinner from "~/components/ui/spinner";
+import { useTranslations } from "next-intl";
 
 export default function UsersTable() {
+  const t = useTranslations();
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
 
@@ -37,6 +39,7 @@ export default function UsersTable() {
       value.toLocaleString(),
     ),
     TableActions(
+      t("common.table.actions"),
       null,
       (id) => setDeleteId(id),
       (value) => value.userName == "admin",

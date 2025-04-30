@@ -13,8 +13,10 @@ import TableActions from "~/components/table/table-actions";
 import Spinner from "~/components/ui/spinner";
 import { useTeam } from "~/context/TeamProvider";
 import { notFound } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function TeamTemplatesTable() {
+  const t = useTranslations()
   const team = useTeam();
   const { data, status } = api.template.findAll.useQuery({
     teamId: team.team.id,
@@ -53,7 +55,7 @@ export default function TeamTemplatesTable() {
     centeredColumn("createdAt", "Erstellt am", (value) =>
       value.toLocaleString(),
     ),
-    TableActions(null, (id) => setDeleteId(id)),
+    TableActions(t("common.table.actions"),null, (id) => setDeleteId(id)),
   ];
 
   return (
