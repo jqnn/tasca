@@ -12,8 +12,7 @@ import {
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { showErrorToast } from "~/lib/utils";
-import { useSession } from "next-auth/react";
-import { notFound, useRouter } from "next/navigation";
+import { notFound } from "next/navigation";
 import { useTeam } from "~/context/TeamProvider";
 import DialogInput from "~/components/dialogs/dialog-input";
 
@@ -34,7 +33,6 @@ export default function CreateProjectTaskDialog({
     createMutation.mutate(
       {
         projectId: projectId,
-        userId: session?.user?.id ?? "0",
         task: name,
         description: description,
       },
@@ -62,15 +60,8 @@ export default function CreateProjectTaskDialog({
   };
 
   const team = useTeam();
-  const router = useRouter();
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
-
-  const { data: session } = useSession();
-  if (!session) {
-    router.push("/");
-    return;
-  }
 
   const createMutation = api.teamProjects.createTask.useMutation();
   if (!team) {

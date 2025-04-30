@@ -53,7 +53,6 @@ export const teamProjectsRouter = createTRPCRouter({
       z.object({
         task: z.string(),
         description: z.string(),
-        userId: z.string(),
         projectId: z.number(),
       }),
     )
@@ -62,7 +61,6 @@ export const teamProjectsRouter = createTRPCRouter({
         data: {
           task: input.task,
           description: input.description,
-          createdById: Number(input.userId),
           projectId: input.projectId,
         },
       });
@@ -85,4 +83,15 @@ export const teamProjectsRouter = createTRPCRouter({
         data: { status: input.value ? "COMPLETED" : "OPEN" },
       });
     }),
+
+  updateTaskEditor: publicProcedure
+    .input(z.object({ id: z.number(), editorId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.projectTask.update({
+        where: { id: input.id },
+        data: {
+          editorId: input.editorId,
+        }
+      })
+    })
 });

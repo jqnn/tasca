@@ -166,8 +166,8 @@ model ProjectTask {
   id          Int            @id @default(autoincrement())
   task        String
   description String?
-  createdById Int
-  createdBy   User           @relation(fields: [createdById], references: [id])
+  editorId    Int?
+  editor      User?          @relation(fields: [editorId], references: [id])
   status      InstanceStatus @default(OPEN)
   projectId   Int
   project     Project        @relation(fields: [projectId], references: [id])
