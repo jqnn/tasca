@@ -10,7 +10,8 @@
   "unknown": "Unbekannt",
   "table": {
     "no-results": "Keine Ergebnisse",
-    "save-order": "Reihenfolge speichern"
+    "save-order": "Reihenfolge speichern",
+    "actions": "Aktionen"
   },
   "sidebar": {
     "teams": "Teams",

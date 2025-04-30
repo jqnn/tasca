@@ -1,6 +1,7 @@
 import type { Row } from "@tanstack/react-table";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import * as React from "react";
+import { useTranslations } from "next-intl";
 
 interface RowData {
   id: number;
@@ -11,9 +12,11 @@ export default function TableActions<TData extends RowData>(
   onDeleteClick?: ((value: number) => void) | null,
   disabled?: ((value: TData) => boolean) | null,
 ) {
+  const t = useTranslations()
+
   return {
     accessorKey: "actions",
-    header: () => <div className={"text-center"}>Aktionen</div>,
+    header: () => <div className={"text-center"}>{t("common.table.actions")}</div>,
     cell: ({ row }: { row: Row<TData> }) => {
       const id = row.original.id ?? 0;
       const value = row.original;
