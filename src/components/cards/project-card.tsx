@@ -15,7 +15,7 @@ interface PageProps {
   project: {
     name: string;
     id: number;
-    createdById: number;
+    createdById: number | null;
     teamId: number;
     description: string | null;
     status: InstanceStatus;

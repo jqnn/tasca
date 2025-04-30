@@ -98,14 +98,14 @@ export function isTaskDone(
     })[];
     template: {
       createdAt: Date;
-      createdById: number;
+      createdById: number | null;
       description: string | null;
       id: number;
       name: string;
     };
   } & {
     createdAt: Date;
-    createdById: number;
+    createdById: number | null;
     id: number;
     status: InstanceStatus;
     templateId: number;

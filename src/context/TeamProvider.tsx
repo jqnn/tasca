@@ -18,9 +18,9 @@ type TeamData = {
     password: string | null;
     role: Role;
     userName: string;
-  };
+  } | null;
   createdAt: Date;
-  createdById: number;
+  createdById: number | null;
   description: string | null;
   id: number;
   name: string;
