@@ -176,7 +176,7 @@ model ProjectTask {
 
 enum TeamRole {
   OWNER
-  ADMIN
+  ADMINISTRATOR
   MEMBER
 }
 
