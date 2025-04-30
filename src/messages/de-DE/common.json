@@ -8,6 +8,14 @@
   "owner": "Besitzer",
   "creator": "Ersteller",
   "unknown": "Unbekannt",
+  "sidebar": {
+    "teams": "Teams",
+    "invites": "Einladungen",
+    "admin": "Administration",
+    "users": "Benutzer",
+    "authMethods": "Authentifizierungsmethoden",
+    "logout": "Abmelden"
+  },
   "mutation": {
     "loading": {
       "title": "Lädt...",
