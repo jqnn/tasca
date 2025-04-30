@@ -16,12 +16,14 @@ import { Button } from "~/components/ui/button";
 import { IconLogout, IconTrash } from "@tabler/icons-react";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { DeleteDialog as DeleteMemberDialog } from "~/components/dialogs/delete-team-member-dialog";
+import { useTranslations } from "next-intl";
 
 interface PageProps {
   teamId: number;
 }
 
 export function TeamNavigationComponent({ teamId }: PageProps) {
+  const t = useTranslations()
   const router = useRouter();
   const [showModal, setShowModal] = React.useState(false);
   const { data: session } = useSession();
@@ -46,7 +48,7 @@ export function TeamNavigationComponent({ teamId }: PageProps) {
             href={`/dashboard/teams/${teamId}/processes`}
             className={navigationMenuTriggerStyle()}
           >
-            Prozesse
+            {t("team.navigation.processes")}
           </NavigationMenuLink>
         </NavigationMenuItem>
 
@@ -55,7 +57,7 @@ export function TeamNavigationComponent({ teamId }: PageProps) {
             href={`/dashboard/teams/${teamId}/projects`}
             className={navigationMenuTriggerStyle()}
           >
-            Projekte
+            {t("team.navigation.projects")}
           </NavigationMenuLink>
         </NavigationMenuItem>
 
@@ -65,7 +67,7 @@ export function TeamNavigationComponent({ teamId }: PageProps) {
               href={`/dashboard/teams/${teamId}/templates`}
               className={navigationMenuTriggerStyle()}
             >
-              Vorlagen
+              {t("team.navigation.templates")}
             </NavigationMenuLink>
           </NavigationMenuItem>
         )}
@@ -76,7 +78,7 @@ export function TeamNavigationComponent({ teamId }: PageProps) {
               href={`/dashboard/teams/${teamId}/members`}
               className={navigationMenuTriggerStyle()}
             >
-              Mitglieder
+              {t("team.navigation.members")}
             </NavigationMenuLink>
           </NavigationMenuItem>
         )}
