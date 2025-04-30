@@ -67,7 +67,7 @@ export default function TaskPage({ params }: PageProps) {
           router.push(`/dashboard/teams/${instance.teamId}/processes`);
         },
         onError: () => {
-          showErrorToast();
+          showErrorToast(t);
         },
       },
     );

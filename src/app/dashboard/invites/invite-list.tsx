@@ -26,7 +26,7 @@ export default function TeamInvitesTable() {
     },
     onSuccess: (data) => {
       if (!data) {
-        showErrorToast();
+        showErrorToast(t);
         return;
       }
 
@@ -37,7 +37,7 @@ export default function TeamInvitesTable() {
       router.push(`/dashboard/teams/${data.id}`);
     },
     onError: () => {
-      showErrorToast();
+      showErrorToast(t);
     },
   });
   const deleteMutation = api.teamInvites.delete.useMutation();

@@ -15,6 +15,7 @@ import { showErrorToast } from "~/lib/utils";
 import { notFound } from "next/navigation";
 import { useTeam } from "~/context/TeamProvider";
 import DialogInput from "~/components/dialogs/dialog-input";
+import { useTranslations } from "next-intl";
 
 export default function CreateProjectTaskDialog({
   open,
@@ -27,6 +28,8 @@ export default function CreateProjectTaskDialog({
   onCreate?: (projectTask: ProjectTask) => void | null;
   projectId: number;
 }) {
+  const t = useTranslations()
+
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();
 
@@ -39,7 +42,7 @@ export default function CreateProjectTaskDialog({
       {
         onSuccess: (data) => {
           if (!data) {
-            showErrorToast();
+            showErrorToast(t);
             return;
           }
 
@@ -53,7 +56,7 @@ export default function CreateProjectTaskDialog({
         },
 
         onError: () => {
-          showErrorToast();
+          showErrorToast(t);
         },
       },
     );

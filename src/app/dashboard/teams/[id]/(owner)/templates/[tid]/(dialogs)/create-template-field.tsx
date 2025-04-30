@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { showErrorToast } from "~/lib/utils";
+import { useTranslations } from "next-intl";
 
 export default function CreateTemplateFieldDialog({
   templateId,
@@ -35,6 +36,8 @@ export default function CreateTemplateFieldDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (template: TemplateField) => void | null;
 }) {
+  const t = useTranslations()
+
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();
     createMutation.mutate(
@@ -55,7 +58,7 @@ export default function CreateTemplateFieldDialog({
           onCreate(data);
           setOpen(false);
         },
-        onError: () => showErrorToast(),
+        onError: () => showErrorToast(t),
       },
     );
   };

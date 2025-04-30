@@ -21,6 +21,7 @@ import {
 import { api } from "~/trpc/react";
 import { beautifyRole, showErrorToast, showToast } from "~/lib/utils";
 import DialogInput from "~/components/dialogs/dialog-input";
+import { useTranslations } from "next-intl";
 
 export default function CreateUserDialog({
   open,
@@ -31,11 +32,13 @@ export default function CreateUserDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (user: User) => void | null;
 }) {
+  const t = useTranslations()
+
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();
 
     if (authMethod == null) {
-      showErrorToast();
+      showErrorToast(t);
       return;
     }
 
@@ -62,7 +65,7 @@ export default function CreateUserDialog({
             {
               onSuccess: (data) => {
                 if (!data) {
-                  showErrorToast();
+                  showErrorToast(t);
                   return;
                 }
 
@@ -75,7 +78,7 @@ export default function CreateUserDialog({
                 setOpen(false);
               },
               onError: () => {
-                showErrorToast();
+                showErrorToast(t);
               },
             },
           );

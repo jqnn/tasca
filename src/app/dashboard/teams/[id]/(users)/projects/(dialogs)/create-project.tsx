@@ -16,6 +16,7 @@ import { useSession } from "next-auth/react";
 import { notFound, useRouter } from "next/navigation";
 import { useTeam } from "~/context/TeamProvider";
 import DialogInput from "~/components/dialogs/dialog-input";
+import { useTranslations } from "next-intl";
 
 export default function CreateProjectDialog({
   open,
@@ -26,6 +27,8 @@ export default function CreateProjectDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (project: Project) => void | null;
 }) {
+  const t = useTranslations()
+
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();
 
@@ -39,7 +42,7 @@ export default function CreateProjectDialog({
       {
         onSuccess: (data) => {
           if (!data) {
-            showErrorToast();
+            showErrorToast(t);
             return;
           }
 
@@ -53,7 +56,7 @@ export default function CreateProjectDialog({
         },
 
         onError: () => {
-          showErrorToast();
+          showErrorToast(t);
         },
       },
     );

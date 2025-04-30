@@ -30,7 +30,7 @@ export default function TemplateFieldsTable({
   const updateOrderMutation = api.templateField.updateOrder.useMutation({
     onMutate: () => {
       showToast(
-        t("common.table.save-order.loading.title"),
+        t("common.table.save-ordFFer.loading.title"),
         t("common.table.save-order.loading.message"),
       );
     },

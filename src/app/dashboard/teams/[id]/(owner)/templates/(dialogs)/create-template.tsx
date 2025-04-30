@@ -16,6 +16,7 @@ import { useSession } from "next-auth/react";
 import DialogInput from "~/components/dialogs/dialog-input";
 import { useTeam } from "~/context/TeamProvider";
 import { notFound } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function CreateTemplateDialog({
   open,
@@ -26,6 +27,8 @@ export default function CreateTemplateDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (template: Template) => void | null;
 }) {
+  const t = useTranslations()
+
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();
 
@@ -47,7 +50,7 @@ export default function CreateTemplateDialog({
           setOpen(false);
         },
         onError: () => {
-          showErrorToast();
+          showErrorToast(t);
         },
       },
     );

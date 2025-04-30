@@ -53,7 +53,7 @@ export default function ProjectTasksTable({
       );
     },
     onError: () => {
-      showErrorToast();
+      showErrorToast(t);
     },
   });
 

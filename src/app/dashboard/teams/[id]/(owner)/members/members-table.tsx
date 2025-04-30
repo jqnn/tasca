@@ -44,7 +44,7 @@ export default function TeamMembersTable() {
       );
     },
     onError: () => {
-      showErrorToast();
+      showErrorToast(t);
     },
   });
   const removeMutation = api.teamMember.remove.useMutation();
