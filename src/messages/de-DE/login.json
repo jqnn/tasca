@@ -1,3 +1,7 @@
 {
-  "title": "Anmelden"
+  "title": "Anmelden",
+  "userName": "Benutzername",
+  "password": "Passwort",
+  "submit": "Anmelden",
+  "error": "Der Benutzername oder das Passwort ist inkorrekt. Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut."
 }

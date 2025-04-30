@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 export function LoginForm({ className, ...props }: ComponentProps<"div">) {
-  const t = useTranslations();
+  const t = useTranslations("login");
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -33,9 +33,7 @@ export function LoginForm({ className, ...props }: ComponentProps<"div">) {
     });
 
     if (res?.error) {
-      setError(
-        "Der Benutzername oder das Passwort ist inkorrekt. Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut.",
-      );
+      setError(t("error"));
       return;
     }
 
@@ -46,7 +44,7 @@ export function LoginForm({ className, ...props }: ComponentProps<"div">) {
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>{t("login.title")}</CardTitle>
+          <CardTitle>{t("title")}</CardTitle>
           <CardDescription className={"text-red-500"}>
             {error && error}
           </CardDescription>
@@ -55,7 +53,7 @@ export function LoginForm({ className, ...props }: ComponentProps<"div">) {
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
-                <Label htmlFor="username">Benutzername</Label>
+                <Label htmlFor="username">{t("userName")}</Label>
                 <Input
                   id="username"
                   type="text"
@@ -65,7 +63,7 @@ export function LoginForm({ className, ...props }: ComponentProps<"div">) {
               </div>
               <div className="grid gap-3">
                 <div className="flex items-center">
-                  <Label htmlFor="password">Passwort</Label>
+                  <Label htmlFor="password">{t("password")}</Label>
                 </div>
                 <Input
                   id="password"
@@ -76,7 +74,7 @@ export function LoginForm({ className, ...props }: ComponentProps<"div">) {
               </div>
               <div className="flex flex-col gap-3">
                 <Button type="submit" className="w-full">
-                  Anmelden
+                  {t("submit")}
                 </Button>
               </div>
             </div>
