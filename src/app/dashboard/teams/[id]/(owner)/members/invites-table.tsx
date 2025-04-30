@@ -57,7 +57,7 @@ export default function TeamInvitesTable() {
     <DataTable
       data={tableData}
       columns={columns}
-      buttonText={t("team.invite")}
+      buttonText={t("team.invite.text")}
       onButtonClick={() => setShowModal(true)}
     >
       {deleteId && (

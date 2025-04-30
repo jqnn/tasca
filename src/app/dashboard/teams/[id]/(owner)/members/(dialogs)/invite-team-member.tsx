@@ -30,7 +30,7 @@ export default function InviteTeamMemberDialog({
     e.preventDefault();
 
     if (!userId) {
-      showErrorToast(t, "Es wurde kein Benutzer ausgewählt.");
+      showErrorToast(t, "team.invite.no-selected");
       return;
     }
 
@@ -44,7 +44,7 @@ export default function InviteTeamMemberDialog({
           if (data) {
             showErrorToast(
               t,
-              "Dieser Benutzer ist bereits ein Mitglied des Teams.",
+              "team.invite.already-joined",
             );
             return;
           }
@@ -56,12 +56,15 @@ export default function InviteTeamMemberDialog({
             },
             {
               onSuccess: () => {
-                showToast("Erfolgreich", "Die Einladung wurde versendet.");
+                showToast(
+                  t("team.invite.sent.title")
+                  t("team.invite.sent.message")
+                );
               },
               onError: () => {
                 showErrorToast(
                   t,
-                  "Dieser Benutzer hat bereits eine Einladung erhalten.",
+                  "team.invite.already-invited",
                 );
               },
             },

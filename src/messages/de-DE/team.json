@@ -1,6 +1,5 @@
 {
   "personal": "persönliches Projekt",
-  "invite": "Einladen",
   "sentAt": "Gesendet am",
   "joinedAt": "Beigetreten am",
   "navigation": {
@@ -19,6 +18,16 @@
   "field": {
     "label": "Bezeichnung",
     "placeHolder": "Platzhalter"
+  },
+  "invite": {
+    "text": "Einladen",
+    "no-selected": "Es wurde kein Benutzer ausgewählt.",
+    "already-invited": "Dieser Benutzer wurde bereits eingeladen.",
+    "already-joined": "Dieser Benutzer ist bereits in diesem Team.",
+    "sent": {
+      "title": "Einladung",
+      "message": "Die Einladung wurde versendet."
+    }
   },
   "mark-as-done": {
     "process": {
