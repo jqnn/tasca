@@ -15,12 +15,24 @@
   "createdAt": "Erstellt am",
   "unknown": "Unbekannt",
   "show-finished": "Fertige anzeigen",
-  "error": "Fehler",
+  "error": {
+    "text": "Fehler",
+    "title": "Unerwarteter Fehler",
+    "message": "Bitte versuche es später erneut oder kontaktiere einen Administrator."
+  },
   "table": {
     "no-results": "Keine Ergebnisse",
     "actions": "Aktionen",
     "save-order":{
-      "text": "Reihenfolge speichern"
+      "text": "Reihenfolge speichern",
+      "loading": {
+        "title": "Reihenfolge",
+        "message": "Die Reihenfolge wird gespeichert..."
+      },
+      "success": {
+        "title": "Reihenfolge",
+        "message": "Die Reihenfolge wurde gespeichert."
+      }
     }
   },
   "sidebar": {

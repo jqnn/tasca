@@ -16,6 +16,10 @@
     "editor": "Bearbeiter",
     "mark-as-done": "Als Fertig markieren"
   },
+  "field": {
+    "label": "Bezeichnung",
+    "placeHolder": "Platzhalter"
+  },
   "mark-as-done": {
     "process": {
       "loading": {
