@@ -23,6 +23,10 @@
     "member": "Mitglied",
     "user": "Benutzer"
   },
+  "statuses": {
+    "completed": "Abgeschlossen",
+    "open": "Offen"
+  },
   "table": {
     "no-results": "Keine Ergebnisse",
     "actions": "Aktionen",

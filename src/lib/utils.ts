@@ -42,9 +42,8 @@ export function showErrorToast(t: TranslationFunction, message?: string) {
   );
 }
 
-export function beautifyInstanceStatus(status: InstanceStatus) {
-  if (status == "COMPLETED") return "Abgeschlossen";
-  return "Offen";
+export function beautifyInstanceStatus(t: TranslationFunction, status: InstanceStatus) {
+  return t(`common.statuses.${status.trim().toLowerCase()}`)
 }
 
 export function beautifyRole(t: TranslationFunction, role: Role) {
