@@ -22,7 +22,7 @@ export default function TeamInvitesTable() {
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const acceptMutation = api.teamInvites.accept.useMutation({
     onMutate: () => {
-      showToast("Lädt...", "Die Einladung wird angenommen...");
+      showToast(t("user.invite.accept.title"), t("user.invite.accept.message"));
     },
     onSuccess: (data) => {
       if (!data) {
@@ -30,7 +30,10 @@ export default function TeamInvitesTable() {
         return;
       }
 
-      showToast("Erfolgreich", "Die Einladung wurde angenommen.");
+      showToast(
+        t("user.invite.accepted.title"),
+        t("user.invite.accepted.message"),
+      );
       router.push(`/dashboard/teams/${data.id}`);
     },
     onError: () => {
@@ -53,12 +56,14 @@ export default function TeamInvitesTable() {
   }
 
   const columns: ColumnDef<TeamInvite>[] = [
-    centeredColumn("teamId", "Team", (value) => {
+    centeredColumn("teamId", t("common.team"), (value) => {
       const { data: team, isLoading } = api.team.find.useQuery({ id: value });
-      if (isLoading || !team) return "Unbekannt";
+      if (isLoading || !team) return t("common.unknown");
       return team.name;
     }),
-    centeredColumn("sentAt", "Erhalten am", (value) => value.toLocaleString()),
+    centeredColumn("sentAt", t("user.invite.receivedAt"), (value) =>
+      value.toLocaleString(),
+    ),
     TableActions(
       t("common.table.actions"),
       (value) => acceptMutation.mutate({ id: value }),

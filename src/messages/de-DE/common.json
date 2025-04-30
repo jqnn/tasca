@@ -9,6 +9,7 @@
   "role": "Rolle",
   "state": "Status",
   "owner": "Besitzer",
+  "team": "Team",
   "creator": "Ersteller",
   "createdAt": "Erstellt am",
   "unknown": "Unbekannt",

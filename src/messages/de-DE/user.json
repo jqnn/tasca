@@ -1,4 +1,23 @@
 {
   "userName": "Benutzername",
-  "displayName": "Anzeigename"
+  "displayName": "Anzeigename",
+  "invite": {
+    "receivedAt": "Erhalten am",
+    "reject": {
+      "title": "Ablehnen",
+      "message": "Die Einladung wird abgelehnt..."
+    },
+    "rejected": {
+      "title": "Abgelehnt",
+      "message": "Die Einladung wurde abgelehnt."
+    },
+    "accept": {
+      "title": "Annehmen",
+      "message": "Die Einladung wird angenommen..."
+    },
+    "accepted": {
+      "title": "Angenommen",
+      "message": "Die Einladung wurde angenommen."
+    }
+  }
 }
