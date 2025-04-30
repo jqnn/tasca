@@ -7,6 +7,8 @@ import type { ReactNode } from "react";
 import { Toaster } from "~/components/ui/sonner";
 import { HydrateClient } from "~/trpc/server";
 import { TooltipProvider } from "~/components/ui/tooltip";
+import { getLocale } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
 
 export const metadata: Metadata = {
   title: "tasca",
@@ -53,24 +55,22 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  return (
-    <html lang="de">
-      {/*
-          <head>
-            <script src="https://unpkg.com/react-scan/dist/auto.global.js" />
-          </head>
-      */}
+  const locale = await getLocale();
 
+  return (
+    <html lang={locale}>
       <body className="dark">
-        <TRPCReactProvider>
-          <TooltipProvider>
-            <HydrateClient>{children}</HydrateClient>
-          </TooltipProvider>
-        </TRPCReactProvider>
-        <Toaster />
+        <NextIntlClientProvider>
+          <TRPCReactProvider>
+            <TooltipProvider>
+              <HydrateClient>{children}</HydrateClient>
+            </TooltipProvider>
+          </TRPCReactProvider>
+          <Toaster />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

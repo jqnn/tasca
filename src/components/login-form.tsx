@@ -14,8 +14,10 @@ import { Label } from "~/components/ui/label";
 import { type ComponentProps, type FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export function LoginForm({ className, ...props }: ComponentProps<"div">) {
+  const t = useTranslations();
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -44,7 +46,7 @@ export function LoginForm({ className, ...props }: ComponentProps<"div">) {
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Anmelden</CardTitle>
+          <CardTitle>{t("login.title")}</CardTitle>
           <CardDescription className={"text-red-500"}>
             {error && error}
           </CardDescription>
