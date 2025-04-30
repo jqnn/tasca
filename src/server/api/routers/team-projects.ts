@@ -83,4 +83,15 @@ export const teamProjectsRouter = createTRPCRouter({
         data: { status: input.value ? "COMPLETED" : "OPEN" },
       });
     }),
+
+  updateTaskEditor: publicProcedure
+    .input(z.object({ id: z.number(), editorId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.projectTask.update({
+        where: { id: input.id },
+        data: {
+          editorId: input.editorId,
+        }
+      })
+    })
 });
