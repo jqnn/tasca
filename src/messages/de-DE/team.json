@@ -10,6 +10,7 @@
     "process": "Prozess",
     "task": "Aufgabe",
     "editedAt": "Bearbeitet am",
+    "editor": "Bearbeiter",
     "mark-as-done": "Als Fertig markieren"
   },
   "mark-as-done": {
@@ -34,6 +35,16 @@
         "message": "Das Projekt wurde als Beendet markiert."
       },
       "not-done": "Das Projekt muss erst beendet werden, bevor sie als Fertig markiert werden kann."
+    }
+  },
+  "update-editor": {
+    "loading": {
+      "title": "Bearbeiter",
+      "message": "Der Bearbeiter der Aufgabe wird aktualisiert..."
+    },
+    "success": {
+      "title": "Bearbeiter",
+      "message": "Der Bearbeiter der Aufgabe wurde aktualisiert."
     }
   }
 }

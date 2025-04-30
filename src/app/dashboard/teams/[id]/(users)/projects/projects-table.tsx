@@ -11,8 +11,10 @@ import { ProjectCardComponent } from "~/components/cards/project-card";
 import CreateProjectDialog from "~/app/dashboard/teams/[id]/(users)/projects/(dialogs)/create-project";
 import { Switch } from "~/components/ui/switch";
 import { Label } from "~/components/ui/label";
+import { useTranslations } from "next-intl";
 
 export function TeamProjectsTable() {
+  const t = useTranslations();
   const team = useTeam();
   const [showModal, setShowModal] = React.useState(false);
   const [showComplete, setShowComplete] = React.useState(false);
@@ -41,7 +43,7 @@ export function TeamProjectsTable() {
           className="mr-auto"
           onClick={() => setShowModal(true)}
         >
-          Erstellen
+          {t("common.create")}
         </Button>
 
         <div className="flex items-center space-x-2">
@@ -50,7 +52,7 @@ export function TeamProjectsTable() {
             onCheckedChange={setShowComplete}
             id="completed"
           />
-          <Label htmlFor="completed">Fertige anzeigen</Label>
+          <Label htmlFor="completed">{t("common.show-finished")}</Label>
         </div>
       </div>
 

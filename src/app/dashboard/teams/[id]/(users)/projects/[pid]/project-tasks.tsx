@@ -23,6 +23,7 @@ import {
 import { api } from "~/trpc/react";
 import Spinner from "~/components/ui/spinner";
 import { showErrorToast, showToast } from "~/lib/utils";
+import { useTranslations } from "next-intl";
 
 export default function ProjectTasksTable({
   project,
@@ -31,6 +32,7 @@ export default function ProjectTasksTable({
   project: Project;
   tasks: ProjectTask[];
 }) {
+  const t = useTranslations();
   const [tableData, setTableData] = React.useState<ProjectTask[]>([]);
   const [showModal, setShowModal] = React.useState(false);
   const { data, status } = api.teamMember.findAll.useQuery({
@@ -39,10 +41,16 @@ export default function ProjectTasksTable({
 
   const updateMutation = api.teamProjects.updateTaskEditor.useMutation({
     onMutate: () => {
-      showToast("Lädt...", "Der Bearbeiter der Aufgabe wird aktualisert...");
+      showToast(
+        t("team.update-editor.loading.title"),
+        t("team.update-editor.loading.message"),
+      );
     },
     onSuccess: () => {
-      showToast("Erfolgreich", "Der Bearbeiter der Aufgabe wurde aktualisert.");
+      showToast(
+        t("team.update-editor.success.title"),
+        t("team.update-editor.success.message"),
+      );
     },
     onError: () => {
       showErrorToast();
@@ -65,7 +73,7 @@ export default function ProjectTasksTable({
         return <ProjectTaskCheck task={row.original} />;
       },
     },
-    centeredDataColumn("Aufgabe", (value) => (
+    centeredDataColumn(t("team.common.task"), (value) => (
       <Tooltip>
         <TooltipTrigger>{value.task}</TooltipTrigger>
         {value.description && (
@@ -77,16 +85,18 @@ export default function ProjectTasksTable({
     )),
     {
       accessorKey: "editorId",
-      header: () => <div className="text-center">Bearbeiter</div>,
+      header: () => (
+        <div className="text-center">{t("team.common.editor")}</div>
+      ),
       cell: ({ row }) => {
         if (row.original.status == "COMPLETED") {
           if (row.original.editorId == null)
-            return <div className={"text-center"}>Unbekannt</div>;
+            return <div className={"text-center"}>{t("common.unknown")}</div>;
           const { data: user, isLoading } = api.user.find.useQuery({
             id: row.original.editorId,
           });
           if (isLoading || !user)
-            return <div className={"text-center"}>Unbekannt</div>;
+            return <div className={"text-center"}>{t("common.unknown")}</div>;
           return (
             <div className={"text-center"}>
               {user.displayName ?? user.userName}
@@ -121,7 +131,7 @@ export default function ProjectTasksTable({
         );
       },
     },
-    centeredColumn("updatedAt", "Bearbeitet am", (value) =>
+    centeredColumn("updatedAt", t("team.common.editedAt"), (value) =>
       value.toLocaleString(),
     ),
   ];
