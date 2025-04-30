@@ -12,6 +12,7 @@ import {
   TooltipTrigger,
 } from "~/components/ui/tooltip";
 import { TaskCheck } from "~/components/instance/task-check";
+import { useTranslations } from "next-intl";
 
 type InstanceType = {
   task: {
@@ -38,6 +39,7 @@ export default function ProcessTasksTable({
   instances,
   disabled,
 }: TasksTableProps) {
+  const t = useTranslations()
   const [tableData, setTableData] = React.useState<InstanceType[]>([]);
 
   React.useEffect(() => {
@@ -52,7 +54,7 @@ export default function ProcessTasksTable({
         return <TaskCheck instance={row.original} disabled={disabled} />;
       },
     },
-    centeredColumn("task", "Aufgabe", (value) => (
+    centeredColumn("task", t("team.common.task"), (value) => (
       <Tooltip>
         <TooltipTrigger>{value.task}</TooltipTrigger>
         {value.description && (
@@ -62,7 +64,7 @@ export default function ProcessTasksTable({
         )}
       </Tooltip>
     )),
-    centeredColumn("updatedAt", "Bearbeitet am", (value) =>
+    centeredColumn("updatedAt", t("team.common.editedAt"), (value) =>
       value.toLocaleString(),
     ),
   ];

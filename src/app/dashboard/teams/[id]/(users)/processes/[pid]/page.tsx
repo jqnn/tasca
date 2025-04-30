@@ -10,6 +10,7 @@ import { isTaskDone, showErrorToast, showToast } from "~/lib/utils";
 import ProcessTasksTable from "~/app/dashboard/teams/[id]/(users)/processes/[pid]/process-tasks";
 import ProcessFieldsContainer from "~/app/dashboard/teams/[id]/(users)/processes/[pid]/process-fields";
 import { useTeam } from "~/context/TeamProvider";
+import { useTranslations } from "next-intl";
 
 interface PageProps {
   params: Promise<{
@@ -18,6 +19,7 @@ interface PageProps {
 }
 
 export default function TaskPage({ params }: PageProps) {
+  const t = useTranslations();
   const team = useTeam();
   const router = useRouter();
   const actualParams = React.use(params);
@@ -46,21 +48,21 @@ export default function TaskPage({ params }: PageProps) {
 
   const handleDone = () => {
     if (!isTaskDone(instance)) {
-      showToast(
-        "Fehler",
-        "Die Aufgabe muss erst beendet werden, bevor sie als Fertig markiert werden kann.",
-      );
+      showToast(t("common.error"), t("team.mark-as-done.not-done"));
       return;
     }
 
-    showToast("Lädt...", "Die Aufgabe wird aktualisert...");
+    showToast(
+      t("team.mark-as-done.loading.title"),
+      t("team.mark-as-done.loading.description"),
+    );
     updateMutation.mutate(
       { id: instance.id, value: "COMPLETED" },
       {
         onSuccess: () => {
           showToast(
-            "Erfolgreich",
-            "Die Aufgabe wurde erfolgreich aktualisiert.",
+            t("team.mark-as-done.success.title"),
+            t("team.mark-as-done.success.description"),
           );
           router.push(`/dashboard/teams/${instance.teamId}/processes`);
         },
@@ -74,7 +76,7 @@ export default function TaskPage({ params }: PageProps) {
   return (
     <>
       <h1 className={"mr-auto mb-4 font-bold"}>
-        Prozess - {instance.template.name}
+        {t("team.common.process")} - {instance.template.name}
       </h1>
 
       <ProcessFieldsContainer
@@ -89,7 +91,7 @@ export default function TaskPage({ params }: PageProps) {
       {instance.status == "OPEN" && (
         <div className={"mt-4"}>
           <Button variant={"default"} onClick={handleDone}>
-            Als Fertig markieren
+            {t("team.common.mark-as-done")}
           </Button>
         </div>
       )}

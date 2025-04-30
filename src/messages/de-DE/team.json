@@ -5,5 +5,22 @@
     "projects": "Projekte",
     "templates": "Vorlagen",
     "members": "Mitglieder"
+  },
+  "common": {
+    "process": "Prozess",
+    "task": "Aufgabe",
+    "editedAt": "Bearbeitet am",
+    "mark-as-done": "Als Fertig markieren"
+  },
+  "mark-as-done": {
+    "loading": {
+      "title": "Beenden",
+      "message": "Das Element wird als Beendet markiert..."
+    },
+    "success": {
+      "title": "Beendet",
+      "message": "Das Element wurde als Beendet markiert."
+    },
+    "not-done": "Die Aufgabe muss erst beendet werden, bevor sie als Fertig markiert werden kann."
   }
 }
