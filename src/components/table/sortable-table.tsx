@@ -35,6 +35,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface HasId {
   id?: string | number;
@@ -59,6 +60,7 @@ export function SortableDataTable<TData extends HasId>({
   onSaveButtonClick,
   getRowId,
 }: DataTableProps<TData>): React.JSX.Element {
+  const t = useTranslations();
   const [items, setItems] = useState<TData[]>(data);
   const [updated, setUpdate] = useState<boolean>(false);
 
@@ -152,7 +154,7 @@ export function SortableDataTable<TData extends HasId>({
       {onButtonClick && (
         <div className="flex items-center pb-4">
           <Button variant="outline" className="mr-auto" onClick={onButtonClick}>
-            {buttonText ?? "Hinzufügen"}
+            {buttonText ?? t("common.add")}
           </Button>
         </div>
       )}
@@ -212,7 +214,7 @@ export function SortableDataTable<TData extends HasId>({
                       className="text-center"
                       colSpan={columns.length + 1}
                     >
-                      Keine Ergebnisse
+                      {t("common.table.no-results")}
                     </TableCell>
                   </TableRow>
                 )}
@@ -232,7 +234,7 @@ export function SortableDataTable<TData extends HasId>({
               setUpdate(false);
             }}
           >
-            Reihenfolge speichern
+            {t("common.table.save-order")}
           </Button>
         </div>
       )}

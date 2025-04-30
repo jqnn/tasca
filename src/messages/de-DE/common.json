@@ -8,6 +8,10 @@
   "owner": "Besitzer",
   "creator": "Ersteller",
   "unknown": "Unbekannt",
+  "table": {
+    "no-results": "Keine Ergebnisse",
+    "save-order": "Reihenfolge speichern"
+  },
   "sidebar": {
     "teams": "Teams",
     "invites": "Einladungen",
