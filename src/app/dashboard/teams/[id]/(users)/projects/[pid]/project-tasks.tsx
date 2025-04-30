@@ -3,7 +3,7 @@
 import * as React from "react";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import { type Project, type ProjectTask, TeamRole } from "@prisma/client";
+import { type Project, type ProjectTask } from "@prisma/client";
 import { DataTable } from "~/components/table/data-table";
 import { centeredColumn, centeredDataColumn } from "~/components/table/table";
 import { ProjectTaskCheck } from "~/components/instance/task-check";
@@ -79,6 +79,21 @@ export default function ProjectTasksTable({
       accessorKey: "editorId",
       header: () => <div className="text-center">Bearbeiter</div>,
       cell: ({ row }) => {
+        if (row.original.status == "COMPLETED") {
+          if (row.original.editorId == null)
+            return <div className={"text-center"}>Unbekannt</div>;
+          const { data: user, isLoading } = api.user.find.useQuery({
+            id: row.original.editorId,
+          });
+          if (isLoading || !user)
+            return <div className={"text-center"}>Unbekannt</div>;
+          return (
+            <div className={"text-center"}>
+              {user.displayName ?? user.userName}
+            </div>
+          );
+        }
+
         return (
           <div className={"flex flex-row justify-center gap-2"}>
             <Select
