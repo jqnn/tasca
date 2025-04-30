@@ -3,8 +3,10 @@ import { auth } from "~/server/auth";
 import { redirect } from "next/navigation";
 import AuthenticationMethodsTable from "~/app/dashboard/(admin)/authentication/table";
 import * as React from "react";
+import { getTranslations } from "next-intl/server";
 
 export default async function AuthenticationMethods() {
+  const t = await getTranslations()
   const session = await auth();
   if (!session) {
     redirect("/");
@@ -13,7 +15,7 @@ export default async function AuthenticationMethods() {
   return (
     <>
       <SiteHeader>
-        <SiteTitle title={"Authentifizierungsmethoden"} />
+        <SiteTitle title={t("common.sidebar.authMethods")} />
       </SiteHeader>
 
       <main className="flex shrink-0 items-center gap-2 transition-[width,height] ease-linear">
