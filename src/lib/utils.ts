@@ -9,6 +9,7 @@ import type {
   Role,
   TeamRole,
 } from "@prisma/client";
+import type { TranslationFunction } from "~/types/translation-types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -34,11 +35,10 @@ export function showToast(title: string, description: string | null = null) {
   });
 }
 
-export function showErrorToast(message?: string) {
+export function showErrorToast(t: TranslationFunction, message?: string) {
   showToast(
-    "Unerwarteter Fehler",
-    message ??
-      "Bitte versuche es später erneut oder kontaktiere einen Administrator.",
+    t("common.error.title"),
+    message ? t("common.error.message") : t("common.error.message"),
   );
 }
 
