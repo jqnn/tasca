@@ -13,6 +13,7 @@
   "creator": "Ersteller",
   "createdAt": "Erstellt am",
   "unknown": "Unbekannt",
+  "show-finished": "Fertige anzeigen",
   "table": {
     "no-results": "Keine Ergebnisse",
     "save-order": "Reihenfolge speichern",
