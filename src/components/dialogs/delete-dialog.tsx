@@ -1,3 +1,5 @@
+"use client";
+
 import type { UseTRPCMutationResult } from "@trpc/react-query/shared";
 import {
   AlertDialog,
@@ -10,6 +12,13 @@ import {
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import { showErrorToast, showToast } from "~/lib/utils";
+import { useTranslations } from "next-intl";
+import {
+  defaultDialogInformation,
+  defaultMutationMessages,
+  type DialogInformation,
+  type MutationMessages,
+} from "~/types/dialog-types";
 
 type MutationInput = {
   id: number;
@@ -24,8 +33,8 @@ export function DeleteDialog({
   mutation,
   data,
   onDelete,
-  loadingMessage,
-  successMessage,
+  mutationMessages = defaultMutationMessages,
+  dialogMessages = defaultDialogInformation,
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -37,9 +46,11 @@ export function DeleteDialog({
   >;
   data: MutationInput;
   onDelete?: () => void | null;
-  loadingMessage?: string | null;
-  successMessage?: string | null;
+  mutationMessages?: MutationMessages;
+  dialogMessages?: DialogInformation;
 }) {
+  const t = useTranslations();
+
   const handleConfirm = () => {
     if (!data) {
       showErrorToast();
@@ -47,7 +58,10 @@ export function DeleteDialog({
       return;
     }
 
-    showToast("Lädt...", loadingMessage ?? "Das Element wird gelöscht...");
+    showToast(
+      t(mutationMessages.loading.title),
+      t(mutationMessages.loading.message),
+    );
     mutation.mutate(data, {
       onSuccess: () => {
         if (!onDelete) {
@@ -58,8 +72,8 @@ export function DeleteDialog({
         onDelete();
         setOpen(false);
         showToast(
-          "Erfolgreich",
-          successMessage ?? "Das Element wurde erfolgreich gelöscht.",
+          t(mutationMessages.success.title),
+          t(mutationMessages.success.message),
         );
       },
       onError: () => {
@@ -72,18 +86,18 @@ export function DeleteDialog({
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Bist du Dir sicher?</AlertDialogTitle>
+          <AlertDialogTitle>{t(dialogMessages.title)}</AlertDialogTitle>
           <AlertDialogDescription>
-            Diese Aktion kann nicht rückgängig gemacht werden.
+            {t(dialogMessages.description)}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+          <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
           <AlertDialogAction
             disabled={mutation.isPending}
             onClick={handleConfirm}
           >
-            Löschen
+            {t("common.delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
