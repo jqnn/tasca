@@ -14,7 +14,7 @@ import { api } from "~/trpc/server";
 import { auth } from "~/server/auth";
 
 export const metadata: Metadata = {
-  title: "Tasca | Dashboard",
+  title: "tasca | Dashboard",
   description: "Task-Management",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };

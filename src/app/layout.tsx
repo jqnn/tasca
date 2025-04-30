@@ -9,7 +9,7 @@ import { HydrateClient } from "~/trpc/server";
 import { TooltipProvider } from "~/components/ui/tooltip";
 
 export const metadata: Metadata = {
-  title: "Tasca",
+  title: "tasca",
   description: "Task-Management",
   icons: {
     icon: [

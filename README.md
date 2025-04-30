@@ -1,10 +1,10 @@
-# Tasca
+# tasca
 
 ## 🇩🇪 | Deutsch
 
 ### Einführung
 
-Tasca ist ein Tool zur Erstellung und Abarbeitung von Vorlagen (Templates). Nutzer können eigene Templates mit
+tasca ist ein Tool zur Erstellung und Abarbeitung von Vorlagen (Templates). Nutzer können eigene Templates mit
 definierten Schritten erstellen, die dann nacheinander abgearbeitet werden müssen. Dies eignet sich hervorragend für
 Aufgaben wie das Einrichten von PCs, das Durchführen von Wartungsprozessen oder das Verwalten von wiederkehrenden
 Aufgaben.
@@ -36,7 +36,7 @@ Erstelle eine ```.env``` Datei im Projektverzeichnis und füge die folgenden Var
 
 ## 🇬🇧 | Englisch
 
-Tasca is a tool for creating and completing templates. Users can create their own templates with defined steps, which
+tasca is a tool for creating and completing templates. Users can create their own templates with defined steps, which
 must then be completed one by one. This is perfect for tasks like setting up PCs, performing maintenance processes, or
 managing recurring tasks.
 

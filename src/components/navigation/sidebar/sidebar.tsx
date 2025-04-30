@@ -77,7 +77,7 @@ export function SidebarComponent({
             >
               <a className="hover:cursor-pointer">
                 <IconPuzzle className="!size-5" />
-                <span className="text-base font-semibold">Tasca</span>
+                <span className="text-base font-semibold">tasca</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
