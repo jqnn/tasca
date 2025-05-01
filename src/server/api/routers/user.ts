@@ -88,4 +88,13 @@ export const userRouter = createTRPCRouter({
           return user.role;
         });
     }),
+
+  updateRole: publicProcedure
+    .input(z.object({ id: z.number(), role: z.nativeEnum(Role) }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.user.update({
+        where: { id: input.id },
+        data: { role: input.role },
+      });
+    }),
 });

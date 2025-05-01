@@ -4,15 +4,22 @@ import * as React from "react";
 import { type ColumnDef } from "@tanstack/react-table";
 
 import { api } from "~/trpc/react";
-import type { User } from "@prisma/client";
+import { Role, type User } from "@prisma/client";
 import { DataTable } from "~/components/table/data-table";
 import CreateUserDialog from "~/app/dashboard/(admin)/users/(dialogs)/create-user";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
-import { centeredColumn } from "~/components/table/table";
+import { centeredColumn, centeredDataColumn } from "~/components/table/table";
 import TableActions from "~/components/table/table-actions";
-import { beautifyRole } from "~/lib/utils";
+import { beautifyRole, showErrorToast, showToast } from "~/lib/utils";
 import Spinner from "~/components/ui/spinner";
 import { useTranslations } from "next-intl";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 
 export default function UsersTable() {
   const t = useTranslations();
@@ -21,6 +28,24 @@ export default function UsersTable() {
 
   const { data, status } = api.user.findAll.useQuery();
   const [tableData, setTableData] = React.useState<User[]>([]);
+
+  const updateMutation = api.user.updateRole.useMutation({
+    onMutate: () => {
+      showToast(
+        t("user.update.role.loading.title"),
+        t("user.update.role.loading.message"),
+      );
+    },
+    onSuccess: () => {
+      showToast(
+        t("user.update.role.success.title"),
+        t("user.update.role.success.message"),
+      );
+    },
+    onError: () => {
+      showErrorToast(t);
+    },
+  })
   const deleteMutation = api.user.delete.useMutation();
 
   React.useEffect(() => {
@@ -34,7 +59,39 @@ export default function UsersTable() {
   const columns: ColumnDef<User>[] = [
     centeredColumn("userName", t("user.userName")),
     centeredColumn("displayName", t("user.displayName")),
-    centeredColumn("role", t("common.role"), (value) => beautifyRole(t, value)),
+    centeredDataColumn(t("common.role"), (user) => {
+      if (user.userName == "admin") {
+        return beautifyRole(t, user.role);
+      }
+
+      return (
+        <div className={"flex flex-row justify-center gap-2"}>
+          <Select
+            defaultValue={user.role}
+            onValueChange={(value) => {
+              updateMutation.mutate({
+                id: user.id,
+                role: value as Role,
+              });
+              user.role = value as Role;
+            }}
+          >
+            <SelectTrigger className="w-1/2">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(Role).map((role) => {
+                return (
+                  <SelectItem key={role} value={role}>
+                    {beautifyRole(t, role)}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+        </div>
+      );
+    }),
     centeredColumn("createdAt", t("common.createdAt"), (value) =>
       value.toLocaleString(),
     ),

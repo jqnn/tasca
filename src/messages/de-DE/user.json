@@ -19,5 +19,17 @@
       "title": "Angenommen",
       "message": "Die Einladung wurde angenommen."
     }
+  },
+  "update": {
+    "role": {
+      "loading": {
+        "title": "Aktualiseren",
+        "message": "Die Rolle des Benutzers wird aktualisiert..."
+      },
+      "success": {
+        "title": "Aktualisiert",
+        "message": "Die Rolle des Benutzers wurde aktualisiert."
+      }
+    }
   }
 }

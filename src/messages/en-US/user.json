@@ -19,5 +19,17 @@
       "title": "Accepted",
       "message": "The invitation has been accepted."
     }
+  },
+  "update": {
+    "role": {
+      "loading": {
+        "title": "Updating",
+        "message": "The user's role is being updated..."
+      },
+      "success": {
+        "title": "Updated",
+        "message": "The user's role has been updated."
+      }
+    }
   }
 }
