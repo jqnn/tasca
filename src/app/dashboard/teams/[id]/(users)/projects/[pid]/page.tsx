@@ -53,21 +53,21 @@ export default function TaskPage({ params }: PageProps) {
 
   const handleDone = () => {
     if (!isProjectDone(project.ProjectTask)) {
-      showToast(
-        "Fehler",
-        "Das Projekt muss erst beendet werden, bevor es als Fertig markiert werden kann.",
-      );
+      showToast(t("common.error"), t("team.project.mark-as-done.not-done"));
       return;
     }
 
-    showToast("Lädt...", "Das Projekt wird aktualisert...");
+    showToast(
+      t("team.mark-as-done.project.loading.title"),
+      t("team.mark-as-done.project.loading.message"),
+    );
     updateMutation.mutate(
       { id: project.id, value: "COMPLETED" },
       {
         onSuccess: () => {
           showToast(
-            "Erfolgreich",
-            "Das Projekt wurde erfolgreich aktualisiert.",
+            t("team.mark-as-done.project.success.title"),
+            t("team.mark-as-done.project.success.message"),
           );
           router.push(`/dashboard/teams/${project.teamId}/projects`);
         },
@@ -81,7 +81,7 @@ export default function TaskPage({ params }: PageProps) {
   return (
     <div className={"w-full"}>
       <ChildrenHeader>
-        <SiteTitle title={"Project - " + project.name} />
+        <SiteTitle title={`${t("team.")} - ${project.name}`} />
         {project.description && (
           <SiteDescription description={project.description} />
         )}
@@ -92,7 +92,7 @@ export default function TaskPage({ params }: PageProps) {
       {project.status == "OPEN" && (
         <div className={"mt-4"}>
           <Button variant={"default"} onClick={handleDone}>
-            Als Fertig markieren
+            {t("team.common.mark-as-done")}
           </Button>
         </div>
       )}

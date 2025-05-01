@@ -10,6 +10,7 @@
   },
   "common": {
     "process": "Prozess",
+    "project": "Projekt",
     "task": "Aufgabe",
     "editedAt": "Bearbeitet am",
     "editor": "Bearbeiter",
