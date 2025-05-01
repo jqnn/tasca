@@ -11,6 +11,7 @@ import ProcessTasksTable from "~/app/dashboard/teams/[id]/(users)/processes/[pid
 import ProcessFieldsContainer from "~/app/dashboard/teams/[id]/(users)/processes/[pid]/process-fields";
 import { useTeam } from "~/context/TeamProvider";
 import { useTranslations } from "next-intl";
+import SignaturePad from "~/components/instance/signature-pad";
 
 interface PageProps {
   params: Promise<{
@@ -87,6 +88,10 @@ export default function TaskPage({ params }: PageProps) {
         instances={instance.InstanceTask}
         disabled={instance.status == "COMPLETED"}
       />
+
+      {instance.template.needsSignature && (
+        <SignaturePad t={t} />
+      )}
 
       {instance.status == "OPEN" && (
         <div className={"mt-4"}>
