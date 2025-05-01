@@ -33,8 +33,8 @@ export default function TeamMembersTable() {
   const updateMutation = api.teamMember.updateRole.useMutation({
     onMutate: () => {
       showToast(
-        t("team.update-member-role.success.title"),
-        t("team.update-member-role.success.message"),
+        t("team.update-member-role.loading.title"),
+        t("team.update-member-role.loading.message"),
       );
     },
     onSuccess: () => {
