@@ -62,7 +62,7 @@ export default function TaskPage({ params }: PageProps) {
 
     showToast(
       t("team.mark-as-done.process.loading.title"),
-      t("team.mark-as-done.process.loading.description"),
+      t("team.mark-as-done.process.loading.message"),
     );
     updateMutation.mutate(
       { id: instance.id, value: "COMPLETED" },
@@ -70,7 +70,7 @@ export default function TaskPage({ params }: PageProps) {
         onSuccess: () => {
           showToast(
             t("team.mark-as-done.process.success.title"),
-            t("team.mark-as-done.process.success.description"),
+            t("team.mark-as-done.process.success.message"),
           );
           router.push(`/dashboard/teams/${instance.teamId}/processes`);
         },
@@ -111,6 +111,7 @@ export default function TaskPage({ params }: PageProps) {
               value: value,
             });
           }}
+          disabled={instance.status == "COMPLETED"}
         />
       )}
 
