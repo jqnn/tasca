@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { Button } from "~/components/ui/button";
 import { useTheme } from "next-themes";
 import type { TranslationFunction } from "~/types/translation-types";
+import { useTranslations } from "next-intl";
 
 type PageProps = {
   defaultValue?: string | null;
@@ -19,6 +20,7 @@ export default function SignaturePad({ defaultValue, action, t }: PageProps) {
 
   useEffect(() => {
     if (defaultValue && sigCanvasRef.current) {
+      sigCanvasRef.current.clear();
       sigCanvasRef.current.fromDataURL(defaultValue);
     }
   }, [defaultValue]);
@@ -31,7 +33,7 @@ export default function SignaturePad({ defaultValue, action, t }: PageProps) {
     if (!action) return;
 
     const dataUrl = sigCanvasRef.current
-      ?.getTrimmedCanvas()
+      ?.getCanvas()
       .toDataURL("image/png");
     action(dataUrl);
   };
