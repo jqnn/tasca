@@ -31,7 +31,7 @@ export default function SignaturePad({ action, t }: PageProps) {
 
   return (
     <div className={"mt-8 flex w-full flex-col"}>
-      <h1>{t("common.signature")}</h1>
+      <h1 className={"font-semibold"}>{t("common.signature")}</h1>
       <SignatureCanvas
         ref={sigCanvasRef}
         penColor={penColor}
