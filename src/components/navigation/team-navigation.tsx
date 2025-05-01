@@ -23,7 +23,7 @@ interface PageProps {
 }
 
 export function TeamNavigationComponent({ teamId }: PageProps) {
-  const t = useTranslations()
+  const t = useTranslations();
   const router = useRouter();
   const [showModal, setShowModal] = React.useState(false);
   const { data: session } = useSession();

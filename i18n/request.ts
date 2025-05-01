@@ -8,9 +8,12 @@ export const defaultLocale = "en-US";
 
 export default getRequestConfig(async () => {
   const preferredLanguage = (await headers()).get("accept-language");
-  const userLocale = preferredLanguage ? preferredLanguage.split(",")[0] : "en-US";
-  const findLocale = locales.find((value) => value == userLocale) ?? defaultLocale;
-  const locale = String(findLocale)
+  const userLocale = preferredLanguage
+    ? preferredLanguage.split(",")[0]
+    : "en-US";
+  const findLocale =
+    locales.find((value) => value == userLocale) ?? defaultLocale;
+  const locale = String(findLocale);
 
   return {
     locale,

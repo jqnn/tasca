@@ -29,7 +29,7 @@ export const templateRouter = createTRPCRouter({
         name: z.string(),
         description: z.string().nullable(),
         userId: z.string(),
-        signature: z.boolean()
+        signature: z.boolean(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

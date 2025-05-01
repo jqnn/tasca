@@ -17,7 +17,7 @@ export default function FieldInput({
   field: TemplateField;
   disabled: boolean;
 }) {
-  const t = useTranslations()
+  const t = useTranslations();
 
   const handleBlur = () => {
     updateMutation.mutate({

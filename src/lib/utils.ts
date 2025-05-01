@@ -42,17 +42,19 @@ export function showErrorToast(t: TranslationFunction, message?: string) {
   );
 }
 
-export function beautifyInstanceStatus(t: TranslationFunction, status: InstanceStatus) {
-  return t(`common.statuses.${status.trim().toLowerCase()}`)
+export function beautifyInstanceStatus(
+  t: TranslationFunction,
+  status: InstanceStatus,
+) {
+  return t(`common.statuses.${status.trim().toLowerCase()}`);
 }
 
 export function beautifyRole(t: TranslationFunction, role: Role) {
-  return t(`common.roles.${role.trim().toLowerCase()}`)
+  return t(`common.roles.${role.trim().toLowerCase()}`);
 }
 
-
 export function beautifyTeamRole(t: TranslationFunction, role: TeamRole) {
-  return t(`common.roles.${role.trim().toLowerCase()}`)
+  return t(`common.roles.${role.trim().toLowerCase()}`);
 }
 
 export function isProjectDone(projectTasks: ProjectTask[]) {

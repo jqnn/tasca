@@ -91,7 +91,7 @@ export const teamProjectsRouter = createTRPCRouter({
         where: { id: input.id },
         data: {
           editorId: input.editorId,
-        }
-      })
-    })
+        },
+      });
+    }),
 });

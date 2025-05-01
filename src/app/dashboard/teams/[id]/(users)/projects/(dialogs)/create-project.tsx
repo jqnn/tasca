@@ -27,7 +27,7 @@ export default function CreateProjectDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (project: Project) => void | null;
 }) {
-  const t = useTranslations()
+  const t = useTranslations();
 
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();

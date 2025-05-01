@@ -6,7 +6,7 @@ import * as React from "react";
 import { getTranslations } from "next-intl/server";
 
 export default async function AuthenticationMethods() {
-  const t = await getTranslations()
+  const t = await getTranslations();
   const session = await auth();
   if (!session) {
     redirect("/");

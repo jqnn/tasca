@@ -39,7 +39,7 @@ export default function ProcessTasksTable({
   instances,
   disabled,
 }: TasksTableProps) {
-  const t = useTranslations()
+  const t = useTranslations();
   const [tableData, setTableData] = React.useState<InstanceType[]>([]);
 
   React.useEffect(() => {

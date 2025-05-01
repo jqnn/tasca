@@ -23,7 +23,7 @@ interface PageProps {
 }
 
 export default function TaskPage({ params }: PageProps) {
-  const t = useTranslations()
+  const t = useTranslations();
   const team = useTeam();
   const router = useRouter();
   const actualParams = React.use(params);

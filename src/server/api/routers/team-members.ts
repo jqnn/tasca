@@ -9,8 +9,8 @@ export const teamMemberRouter = createTRPCRouter({
       return ctx.db.teamMember.findMany({
         where: { teamId: Number(input.id) },
         include: {
-          user: true
-        }
+          user: true,
+        },
       });
     }),
 

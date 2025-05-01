@@ -4,7 +4,7 @@ import { TeamList } from "~/app/dashboard/teams/team-list";
 import { useTranslations } from "next-intl";
 
 export default function Tasks() {
-  const t = useTranslations()
+  const t = useTranslations();
 
   return (
     <>

@@ -9,16 +9,22 @@ import {
 import { Button } from "~/components/ui/button";
 import type { FormEvent } from "react";
 import * as React from "react";
-import { Role, type Template } from "@prisma/client";
+import { type Template } from "@prisma/client";
 import { api } from "~/trpc/react";
-import { beautifyRole, showErrorToast } from "~/lib/utils";
+import { showErrorToast } from "~/lib/utils";
 import { useSession } from "next-auth/react";
 import DialogInput from "~/components/dialogs/dialog-input";
 import { useTeam } from "~/context/TeamProvider";
 import { notFound } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Label } from "~/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 
 export default function CreateTemplateDialog({
   open,
@@ -29,7 +35,7 @@ export default function CreateTemplateDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (template: Template) => void | null;
 }) {
-  const t = useTranslations()
+  const t = useTranslations();
 
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();
@@ -40,7 +46,7 @@ export default function CreateTemplateDialog({
         name: name,
         description: description,
         userId: session?.user?.id ?? "0",
-        signature: signature
+        signature: signature,
       },
       {
         onSuccess: (data) => {

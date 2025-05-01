@@ -15,7 +15,7 @@ export function TaskCheck({
   instance: InstanceTask;
   disabled: boolean;
 }) {
-  const t = useTranslations()
+  const t = useTranslations();
 
   const handleCheckedChange = (value: CheckedState) => {
     const checked = value as boolean;
@@ -47,7 +47,7 @@ export function TaskCheck({
 }
 
 export function ProjectTaskCheck({ task }: { task: ProjectTask }) {
-  const t = useTranslations()
+  const t = useTranslations();
 
   const handleCheckedChange = (value: CheckedState) => {
     const checked = value as boolean;
