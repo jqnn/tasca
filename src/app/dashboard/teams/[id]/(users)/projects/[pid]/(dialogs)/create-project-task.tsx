@@ -28,7 +28,7 @@ export default function CreateProjectTaskDialog({
   onCreate?: (projectTask: ProjectTask) => void | null;
   projectId: number;
 }) {
-  const t = useTranslations()
+  const t = useTranslations();
 
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();

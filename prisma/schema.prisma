@@ -51,6 +51,7 @@ model Template {
   createdAt        DateTime           @default(now())
   teamId           Int
   team             Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  needsSignature   Boolean            @default(false)
   TemplateTask     TemplateTask[]
   TemplateField    TemplateField[]
   TemplateInstance InstanceTemplate[]
@@ -90,6 +91,7 @@ model InstanceTemplate {
   team          Team            @relation(fields: [teamId], references: [id], onDelete: Cascade)
   InstanceField InstanceField[]
   InstanceTask  InstanceTask[]
+  Signature     Signature?
 }
 
 model InstanceField {
@@ -109,6 +111,13 @@ model InstanceTask {
   taskId     Int
   task       TemplateTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   instanceId Int
+  instance   InstanceTemplate @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+}
+
+model Signature {
+  id         Int              @id @default(autoincrement())
+  signature  String?          @db.LongText
+  instanceId Int              @unique
   instance   InstanceTemplate @relation(fields: [instanceId], references: [id], onDelete: Cascade)
 }
 

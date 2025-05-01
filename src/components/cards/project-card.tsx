@@ -24,7 +24,7 @@ interface PageProps {
 }
 
 export function ProjectCardComponent({ project }: PageProps) {
-  const t = useTranslations()
+  const t = useTranslations();
 
   return (
     <Link

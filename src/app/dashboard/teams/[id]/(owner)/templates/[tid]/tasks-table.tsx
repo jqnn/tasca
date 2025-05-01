@@ -21,7 +21,7 @@ export default function TemplateTaskTable({
   templateId: number;
   tasks: TemplateTask[];
 }) {
-  const t = useTranslations()
+  const t = useTranslations();
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const [tableData, setTableData] = React.useState<TemplateTask[]>([]);
@@ -46,7 +46,7 @@ export default function TemplateTaskTable({
   const columns: ColumnDef<TemplateTask>[] = [
     centeredColumn("task", "Aufgabe"),
     centeredColumn("description", "Beschreibung"),
-    TableActions(t("common.table.actions"),null, (id) => setDeleteId(id)),
+    TableActions(t("common.table.actions"), null, (id) => setDeleteId(id)),
   ];
 
   return (

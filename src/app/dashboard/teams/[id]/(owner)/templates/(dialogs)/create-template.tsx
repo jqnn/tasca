@@ -17,6 +17,14 @@ import DialogInput from "~/components/dialogs/dialog-input";
 import { useTeam } from "~/context/TeamProvider";
 import { notFound } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { Label } from "~/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 
 export default function CreateTemplateDialog({
   open,
@@ -27,7 +35,7 @@ export default function CreateTemplateDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (template: Template) => void | null;
 }) {
-  const t = useTranslations()
+  const t = useTranslations();
 
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();
@@ -38,6 +46,7 @@ export default function CreateTemplateDialog({
         name: name,
         description: description,
         userId: session?.user?.id ?? "0",
+        signature: signature,
       },
       {
         onSuccess: (data) => {
@@ -59,6 +68,7 @@ export default function CreateTemplateDialog({
   const team = useTeam();
   const [name, setName] = React.useState<string>("");
   const [description, setDescription] = React.useState<string | null>(null);
+  const [signature, setSignature] = React.useState<boolean>(false);
   const { data: session } = useSession();
   if (session == null) return;
 
@@ -89,6 +99,26 @@ export default function CreateTemplateDialog({
               label={"Beschreibung"}
               setValue={setDescription}
             />
+
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="role" className="text-right">
+                Unterschrift
+              </Label>
+              <div className={"col-span-3"}>
+                <Select
+                  required={true}
+                  onValueChange={(value) => setSignature(value == "true")}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Wird eine Unterschrift benötigt?" />
+                  </SelectTrigger>
+                  <SelectContent id={"role"}>
+                    <SelectItem value={"true"}>Ja</SelectItem>
+                    <SelectItem value={"false"}>Nein</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
           </div>
 
           <DialogFooter>

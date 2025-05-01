@@ -45,7 +45,7 @@ export default function UsersTable() {
     onError: () => {
       showErrorToast(t);
     },
-  })
+  });
   const deleteMutation = api.user.delete.useMutation();
 
   React.useEffect(() => {

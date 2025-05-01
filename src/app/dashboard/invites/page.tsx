@@ -4,7 +4,7 @@ import InviteList from "~/app/dashboard/invites/invite-list";
 import { useTranslations } from "next-intl";
 
 export default function Tasks() {
-  const t = useTranslations()
+  const t = useTranslations();
 
   return (
     <>

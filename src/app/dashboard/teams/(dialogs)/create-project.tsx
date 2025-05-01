@@ -26,7 +26,7 @@ export default function CreateTeamDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (team: Team) => void | null;
 }) {
-  const t = useTranslations()
+  const t = useTranslations();
 
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();

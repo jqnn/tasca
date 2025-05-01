@@ -35,7 +35,7 @@ export default function CreateTaskByTemplateDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (template: InstanceTemplate) => void | null;
 }) {
-  const t = useTranslations()
+  const t = useTranslations();
 
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();

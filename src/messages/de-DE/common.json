@@ -16,6 +16,7 @@
   "unknown": "Unbekannt",
   "show-finished": "Fertige anzeigen",
   "error": "Fehler",
+  "save": "Speichern",
   "roles": {
     "owner": "Besitzer",
     "administrator": "Administrator",

@@ -2,7 +2,12 @@
 
 import React from "react";
 import Link from "next/link";
-import { Card, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import type { Role, TeamRole } from "@prisma/client";
 
 interface PageProps {
@@ -34,7 +39,9 @@ interface PageProps {
 
 export function TeamCardComponent({ team }: PageProps) {
   const title = team.personal
-    ? (team.createdBy ? ((team.createdBy.displayName ?? team.createdBy.userName)) : "Unbekannt")
+    ? team.createdBy
+      ? (team.createdBy.displayName ?? team.createdBy.userName)
+      : "Unbekannt"
     : team.name;
 
   const description = team.personal ? (
@@ -51,7 +58,8 @@ export function TeamCardComponent({ team }: PageProps) {
       )}
       <p>
         Besitzer -&nbsp;
-        {team.createdBy && (team.createdBy.displayName ?? team.createdBy.userName)}
+        {team.createdBy &&
+          (team.createdBy.displayName ?? team.createdBy.userName)}
       </p>
     </>
   );

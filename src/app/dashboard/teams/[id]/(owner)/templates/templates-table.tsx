@@ -16,7 +16,7 @@ import { notFound } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 export default function TeamTemplatesTable() {
-  const t = useTranslations()
+  const t = useTranslations();
   const team = useTeam();
   const { data, status } = api.template.findAll.useQuery({
     teamId: team.team.id,
@@ -55,7 +55,7 @@ export default function TeamTemplatesTable() {
     centeredColumn("createdAt", t("common.createdAt"), (value) =>
       value.toLocaleString(),
     ),
-    TableActions(t("common.table.actions"),null, (id) => setDeleteId(id)),
+    TableActions(t("common.table.actions"), null, (id) => setDeleteId(id)),
   ];
 
   return (

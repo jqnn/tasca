@@ -7,7 +7,10 @@ export type TranslationFunction = {
   ): string;
   rich<TargetKey extends string>(
     key: TargetKey,
-    ...args: TranslateArgs<any /* Fülle hier den korrekten Typ ein */, any /* Fülle hier den korrekten Typ ein */>
+    ...args: TranslateArgs<
+      any /* Fülle hier den korrekten Typ ein */,
+      any /* Fülle hier den korrekten Typ ein */
+    >
   ): React.ReactNode;
 };
 
@@ -21,4 +24,4 @@ type NestedValueOf<T, K extends string> = K extends keyof T
       : never
     : never;
 
-type TranslateArgs<Value, ArgTypes> = any[]
+type TranslateArgs<Value, ArgTypes> = any[];

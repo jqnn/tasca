@@ -36,7 +36,7 @@ export default function CreateTemplateFieldDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (template: TemplateField) => void | null;
 }) {
-  const t = useTranslations()
+  const t = useTranslations();
 
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();

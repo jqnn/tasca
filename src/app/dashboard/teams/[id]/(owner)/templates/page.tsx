@@ -8,7 +8,7 @@ import { ChildrenHeader, SiteTitle } from "~/components/ui/site-header";
 import { useTranslations } from "next-intl";
 
 export default function TeamTemplatesPage() {
-  const t = useTranslations()
+  const t = useTranslations();
   const team = useTeam();
   if (!team) {
     return notFound();

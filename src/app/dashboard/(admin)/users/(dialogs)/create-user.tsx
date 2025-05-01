@@ -32,7 +32,7 @@ export default function CreateUserDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (user: User) => void | null;
 }) {
-  const t = useTranslations()
+  const t = useTranslations();
 
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();

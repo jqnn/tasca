@@ -11,7 +11,7 @@ import { TeamCardComponent } from "~/components/cards/team-card";
 import { useTranslations } from "next-intl";
 
 export function TeamList() {
-  const t = useTranslations()
+  const t = useTranslations();
   const [showCreating, setShowCreating] = React.useState(false);
 
   const router = useRouter();

@@ -21,8 +21,8 @@ import {
 import { api } from "~/trpc/react";
 import { showErrorToast } from "~/lib/utils";
 import DialogInput from "~/components/dialogs/dialog-input";
-import SecurityType = $Enums.SecurityType;
 import { useTranslations } from "next-intl";
+import SecurityType = $Enums.SecurityType;
 
 export default function CreateAuthenticationMethodDialog({
   open,
@@ -33,7 +33,7 @@ export default function CreateAuthenticationMethodDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (authMethod: AuthMethod) => void | null;
 }) {
-  const t = useTranslations()
+  const t = useTranslations();
 
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();

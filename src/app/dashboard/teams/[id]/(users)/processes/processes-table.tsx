@@ -14,7 +14,7 @@ import { useTeam } from "~/context/TeamProvider";
 import { useTranslations } from "next-intl";
 
 export function TeamProcessesTable() {
-  const t = useTranslations()
+  const t = useTranslations();
   const team = useTeam();
   const [showModal, setShowModal] = React.useState(false);
   const [showComplete, setShowComplete] = React.useState(false);

@@ -11,6 +11,7 @@ import ProcessTasksTable from "~/app/dashboard/teams/[id]/(users)/processes/[pid
 import ProcessFieldsContainer from "~/app/dashboard/teams/[id]/(users)/processes/[pid]/process-fields";
 import { useTeam } from "~/context/TeamProvider";
 import { useTranslations } from "next-intl";
+import SignaturePad from "~/components/instance/signature-pad";
 
 interface PageProps {
   params: Promise<{
@@ -34,6 +35,13 @@ export default function TaskPage({ params }: PageProps) {
   }
 
   const updateMutation = api.instance.updateInstanceState.useMutation();
+  const updateSignatureMutation = api.instance.updateSignature.useMutation({
+    onMutate: () =>
+      showToast(t("signature.updating.title"), t("signature.updating.message")),
+    onSuccess: () =>
+      showToast(t("signature.updated.title"), t("signature.updated.message")),
+    onError: () => showErrorToast(t),
+  });
   const { data: instance, status } = api.instance.find.useQuery({
     id: Number(actualParams.pid),
   });
@@ -54,7 +62,7 @@ export default function TaskPage({ params }: PageProps) {
 
     showToast(
       t("team.mark-as-done.process.loading.title"),
-      t("team.mark-as-done.process.loading.description"),
+      t("team.mark-as-done.process.loading.message"),
     );
     updateMutation.mutate(
       { id: instance.id, value: "COMPLETED" },
@@ -62,7 +70,7 @@ export default function TaskPage({ params }: PageProps) {
         onSuccess: () => {
           showToast(
             t("team.mark-as-done.process.success.title"),
-            t("team.mark-as-done.process.success.description"),
+            t("team.mark-as-done.process.success.message"),
           );
           router.push(`/dashboard/teams/${instance.teamId}/processes`);
         },
@@ -87,6 +95,25 @@ export default function TaskPage({ params }: PageProps) {
         instances={instance.InstanceTask}
         disabled={instance.status == "COMPLETED"}
       />
+
+      {instance.template.needsSignature && (
+        <SignaturePad
+          t={t}
+          defaultValue={
+            instance.Signature ? instance.Signature.signature : null
+          }
+          action={(value) => {
+            if (instance.Signature == null) return;
+            if (!value) return;
+
+            updateSignatureMutation.mutate({
+              id: instance.Signature.id,
+              value: value,
+            });
+          }}
+          disabled={instance.status == "COMPLETED"}
+        />
+      )}
 
       {instance.status == "OPEN" && (
         <div className={"mt-4"}>
