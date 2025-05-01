@@ -16,7 +16,7 @@ async function reset() {
 }
 
 async function main() {
-  if(process.env.DEMO) {
+  if(process.env.DEMO == "true") {
     await reset()
   }
 
