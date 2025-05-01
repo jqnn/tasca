@@ -116,7 +116,7 @@ model InstanceTask {
 
 model Signature {
   id         Int              @id @default(autoincrement())
-  signature  String
+  signature  String?
   instanceId Int
   instance   InstanceTemplate @relation(fields: [instanceId], references: [id], onDelete: Cascade)
 }
