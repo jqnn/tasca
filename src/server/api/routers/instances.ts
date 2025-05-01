@@ -92,6 +92,14 @@ export const instanceRouter = createTRPCRouter({
         });
       }
 
+      if (template.needsSignature) {
+        await ctx.db.signature.create({
+          data: {
+            instanceId: instance.id,
+          },
+        });
+      }
+
       return instance;
     }),
 
@@ -119,6 +127,15 @@ export const instanceRouter = createTRPCRouter({
       return ctx.db.instanceTask.update({
         where: { id: input.id },
         data: { status: input.value ? "COMPLETED" : "OPEN" },
+      });
+    }),
+
+  updateSignature: publicProcedure
+    .input(z.object({ id: z.number(), value: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.signature.update({
+        where: { id: input.id },
+        data: { signature: input.value },
       });
     }),
 });
