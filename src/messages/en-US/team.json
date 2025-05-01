@@ -6,7 +6,15 @@
     "processes": "Processes",
     "projects": "Projects",
     "templates": "Templates",
-    "members": "Members"
+    "members": "Members",
+    "delete": {
+      "title": "Delete",
+      "message": "The team is being deleted..."
+    },
+    "deleted": {
+      "title": "Deleted",
+      "message": "The team has been deleted."
+    }
   },
   "common": {
     "process": "Process",

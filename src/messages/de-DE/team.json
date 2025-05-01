@@ -6,7 +6,15 @@
     "processes": "Prozesse",
     "projects": "Projekte",
     "templates": "Vorlagen",
-    "members": "Mitglieder"
+    "members": "Mitglieder",
+    "delete": {
+      "title": "Löschen",
+      "message": "Das Team wird gelöscht..."
+    },
+    "deleted": {
+      "title": "Gelöscht",
+      "message": "Das Team wurde gelöscht."
+    }
   },
   "common": {
     "process": "Prozess",
