@@ -1,0 +1,10 @@
+{
+  "updating": {
+    "title": "Updating",
+    "message": "The signature is being updated..."
+  },
+  "updated": {
+    "title": "Updated",
+    "message": "The signature has been updated."
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "updating": {
+    "title": "Aktualisieren",
+    "message": "Die Unterschrift wird aktualisiert..."
+  },
+  "updated": {
+    "title": "Aktualisiert",
+    "message": "Die Unterschrift wurde aktualisiert."
+  }
+}
