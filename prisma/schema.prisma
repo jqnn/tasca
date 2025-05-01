@@ -51,6 +51,7 @@ model Template {
   createdAt        DateTime           @default(now())
   teamId           Int
   team             Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  needsSignature   Boolean            @default(false)
   TemplateTask     TemplateTask[]
   TemplateField    TemplateField[]
   TemplateInstance InstanceTemplate[]
