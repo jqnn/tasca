@@ -9,6 +9,7 @@ import { HydrateClient } from "~/trpc/server";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { getLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
+import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
   title: "tasca",
@@ -61,16 +62,18 @@ export default async function RootLayout({
   const locale = await getLocale();
 
   return (
-    <html lang={locale}>
-      <body className="dark">
-        <NextIntlClientProvider>
-          <TRPCReactProvider>
-            <TooltipProvider>
-              <HydrateClient>{children}</HydrateClient>
-            </TooltipProvider>
-          </TRPCReactProvider>
-          <Toaster />
-        </NextIntlClientProvider>
+    <html lang={locale} suppressHydrationWarning>
+      <body>
+        <ThemeProvider attribute={"class"} defaultTheme={"system"} enableSystem>
+          <NextIntlClientProvider>
+            <TRPCReactProvider>
+              <TooltipProvider>
+                <HydrateClient>{children}</HydrateClient>
+              </TooltipProvider>
+            </TRPCReactProvider>
+            <Toaster />
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
