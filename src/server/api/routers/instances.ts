@@ -33,6 +33,7 @@ export const instanceRouter = createTRPCRouter({
         where: { id: input.id },
         include: {
           template: true,
+          Signature: true,
           InstanceField: {
             include: {
               field: true,
