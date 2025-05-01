@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { Button } from "~/components/ui/button";
 import { useTheme } from "next-themes";
 import type { TranslationFunction } from "~/types/translation-types";
-import { useTranslations } from "next-intl";
 
 type PageProps = {
   defaultValue?: string | null;
@@ -32,15 +31,13 @@ export default function SignaturePad({ defaultValue, action, t }: PageProps) {
   const save = () => {
     if (!action) return;
 
-    const dataUrl = sigCanvasRef.current
-      ?.getCanvas()
-      .toDataURL("image/png");
+    const dataUrl = sigCanvasRef.current?.getCanvas().toDataURL("image/png");
     action(dataUrl);
   };
 
   return (
     <div className={"mt-8 flex w-full flex-col"}>
-      <h1 className={"font-semibold"}>{t("common.signature")}</h1>
+      <h1 className={"font-semibold"}>{t("signature.text")}</h1>
       <SignatureCanvas
         ref={sigCanvasRef}
         penColor={penColor}
@@ -51,7 +48,7 @@ export default function SignaturePad({ defaultValue, action, t }: PageProps) {
       />
       <div className="mt-2 ml-auto space-x-2">
         <Button onClick={clear} variant={"destructive"}>
-          {t("common.clear")}
+          {t("signature.clear")}
         </Button>
         <Button onClick={save} variant={"default"}>
           {t("common.save")}

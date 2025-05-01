@@ -1,4 +1,6 @@
 {
+  "text": "Signature",
+  "clear": "Clear",
   "updating": {
     "title": "Updating",
     "message": "The signature is being updated..."
