@@ -55,7 +55,6 @@ const data = {
 export function SidebarComponent({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
-  const t = useTranslations();
   const router = useRouter();
   const { data: session } = useSession();
   if (!session) {
