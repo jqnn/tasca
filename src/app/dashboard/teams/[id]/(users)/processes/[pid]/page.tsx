@@ -90,7 +90,12 @@ export default function TaskPage({ params }: PageProps) {
       />
 
       {instance.template.needsSignature && (
-        <SignaturePad t={t} />
+        <SignaturePad
+          t={t}
+          defaultValue={
+            instance.Signature ? instance.Signature.signature : null
+          }
+        />
       )}
 
       {instance.status == "OPEN" && (
