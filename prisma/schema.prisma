@@ -91,6 +91,7 @@ model InstanceTemplate {
   team          Team            @relation(fields: [teamId], references: [id], onDelete: Cascade)
   InstanceField InstanceField[]
   InstanceTask  InstanceTask[]
+  Signature     Signature[]
 }
 
 model InstanceField {
@@ -109,6 +110,13 @@ model InstanceTask {
   status     InstanceStatus   @default(OPEN)
   taskId     Int
   task       TemplateTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  instanceId Int
+  instance   InstanceTemplate @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+}
+
+model Signature {
+  id         Int              @id @default(autoincrement())
+  signature  String
   instanceId Int
   instance   InstanceTemplate @relation(fields: [instanceId], references: [id], onDelete: Cascade)
 }
