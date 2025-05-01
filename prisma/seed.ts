@@ -5,7 +5,21 @@ import { sha256 } from "js-sha256";
 
 const prisma = new PrismaClient();
 
+async function reset() {
+  console.log("[RESET] Resetting database");
+  console.log("[RESET] Delete all users...");
+  await prisma.user.deleteMany();
+  console.log("[RESET] Delete all auth methods...");
+  await prisma.authMethod.deleteMany();
+  console.log("[RESET] Delete all teams...");
+  await prisma.team.deleteMany();
+}
+
 async function main() {
+  if(process.env.DEMO) {
+    await reset()
+  }
+
   console.log("[SEED] Starting seeding...");
   const exists = await prisma.authMethod.findFirst({
     where: { description: "local" },
