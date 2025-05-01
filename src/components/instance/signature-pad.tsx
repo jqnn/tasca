@@ -1,20 +1,27 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { Button } from "~/components/ui/button";
 import { useTheme } from "next-themes";
 import type { TranslationFunction } from "~/types/translation-types";
 
 type PageProps = {
+  defaultValue?: string | null;
   action?: (value: string | undefined) => void;
-  t: TranslationFunction
+  t: TranslationFunction;
 };
 
-export default function SignaturePad({ action, t }: PageProps) {
+export default function SignaturePad({ defaultValue, action, t }: PageProps) {
   const theme = useTheme();
   const sigCanvasRef = useRef<SignatureCanvas>(null);
   const penColor = theme.systemTheme == "dark" ? "white" : "black";
+
+  useEffect(() => {
+    if (defaultValue && sigCanvasRef.current) {
+      sigCanvasRef.current.fromDataURL(defaultValue);
+    }
+  }, [defaultValue]);
 
   const clear = () => {
     sigCanvasRef.current?.clear();
