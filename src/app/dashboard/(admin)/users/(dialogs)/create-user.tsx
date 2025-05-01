@@ -113,6 +113,7 @@ export default function CreateUserDialog({
               label={"Benutzername"}
               required={true}
               setValue={setUserName}
+              min={4}
             />
 
             <DialogInput
@@ -120,6 +121,7 @@ export default function CreateUserDialog({
               label={"Anzeigename"}
               required={true}
               setValue={setDisplayName}
+              min={4}
             />
 
             <div className="grid grid-cols-4 items-center gap-4">
@@ -182,6 +184,7 @@ export default function CreateUserDialog({
                 required={true}
                 setValue={setPassword}
                 type={"password"}
+                min={8}
               />
             )}
           </div>
