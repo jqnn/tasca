@@ -28,12 +28,6 @@ jobs:
             org.opencontainers.image.source=${{ github.repositoryUrl }}
             org.opencontainers.image.version=${{ inputs.tag }}
 
-      - name: Debug Generated Metadata Tags
-        run: |
-          echo "Generated tags: ${{ steps.meta.outputs.tags }}"
-          echo "Generated labels: ${{ steps.meta.outputs.labels }}"
-
-
   build-docker-image-per-platform:
     needs: generate-metadata
     runs-on: ${{ matrix.platform == 'linux/amd64' && 'ubuntu-latest' || 'self-hosted' }}
@@ -72,8 +66,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          # Wir pushen hier nur die einzelne Plattform-Architektur
-          push: ${{ github.event_name != 'pull_request' }} # Push only on non-PR events
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/${{ github.repository }}:${{ inputs.tag }}-${{ matrix.platform == 'linux/amd64' && 'amd64' || 'arm64' }}
           labels: ${{ needs.generate-metadata.outputs.labels }}
           platforms: ${{ matrix.platform }}
@@ -81,9 +74,8 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
 
   create-and-push-manifest:
-    needs: [build-docker-image-per-platform, generate-metadata] # Abhängigkeit zu beiden vorherigen Jobs
+    needs: [build-docker-image-per-platform, generate-metadata]
     runs-on: ubuntu-latest
-    # Nur auf non-PR Events ausführen, da wir das Manifest pushen
     if: github.event_name != 'pull_request'
 
     permissions:
@@ -101,28 +93,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Debug Received Metadata Tags in Manifest Job
-        run: |
-          echo "Received tags in manifest job: ${{ needs.generate-metadata.outputs.tags }}"
-
       - name: Create and Push Manifest
         run: |
-          # Holt die generierten Tags vom generate-metadata Job
-          GENERATED_TAGS="${{ needs.generate-metadata.outputs.tags }}"
-
-          # Erstellt das imagetools create Kommando dynamisch basierend auf den Plattformen
-          IMAGETOOLS_COMMAND="docker buildx imagetools create"
-          if [[ "${{ matrix.platform == 'linux/amd64' }}" == "true" ]]; then
-            IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND ghcr.io/${{ github.repository }}:${{ inputs.tag }}-amd64"
-          fi
-          if [[ "${{ matrix.platform == 'linux/arm64' }}" == "true" ]]; then
-            IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND ghcr.io/${{ github.repository }}:${{ inputs.tag }}-arm64"
-          fi
-
-          # Fügt die generierten Tags und --push hinzu
-          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND -t $GENERATED_TAGS --push"
-
-          echo "Executing command: $IMAGETOOLS_COMMAND"
-
-          # Führt den Befehl aus
-          eval $IMAGETOOLS_COMMAND
+          docker buildx imagetools create \
+            ghcr.io/${{ github.repository }}:${{ inputs.tag }}-amd64 \
+            ghcr.io/${{ github.repository }}:${{ inputs.tag }}-arm64 \
+            ${{ needs.generate-metadata.outputs.tags }} \
+            --push
