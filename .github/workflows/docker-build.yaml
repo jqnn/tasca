@@ -120,9 +120,6 @@ jobs:
             fi
           done
 
-          # Fügt das --push Flag hinzu
-          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND --push"
-
           echo "Executing command: $IMAGETOOLS_COMMAND"
 
           # Führt den Befehl aus
