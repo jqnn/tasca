@@ -9,7 +9,27 @@ on:
         description: "The Docker Image tag."
 
 jobs:
+  generate-metadata:
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+      labels: ${{ steps.meta.outputs.labels }}
+    steps:
+      - name: Generate Docker Metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,${{ inputs.tag }}
+            type=sha,format=short
+            type=ref,event=branch
+          labels: |
+            org.opencontainers.image.source=${{ github.repositoryUrl }}
+            org.opencontainers.image.version=${{ inputs.tag }}
+
   build-docker-image:
+    needs: generate-metadata 
     runs-on: ${{ matrix.platform == 'linux/amd64' && 'ubuntu-latest' || 'self-hosted' }}
     strategy:
       matrix:
@@ -36,19 +56,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate Docker Metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=raw,${{ inputs.tag }}
-            type=sha,format=short
-            type=ref,event=branch
-          labels: |
-            org.opencontainers.image.source=${{ github.repositoryUrl }}
-            org.opencontainers.image.version=${{ inputs.tag }}
-
       - name: Cache node modules
         uses: actions/cache@v4
         with:
@@ -62,8 +69,8 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ needs.generate-metadata.outputs.tags }}
+          labels: ${{ needs.generate-metadata.outputs.labels }}
           platforms: ${{ matrix.platform }}
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
           cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
