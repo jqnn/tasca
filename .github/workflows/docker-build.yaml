@@ -95,22 +95,35 @@ jobs:
 
       - name: Create and Push Manifest
         run: |
+          GENERATED_TAGS="${{ needs.generate-metadata.outputs.tags }}"
           REPO="${{ github.repository }}"
           INPUT_TAG="${{ inputs.tag }}"
-          GENERATED_TAGS_MULTILINE="${{ needs.generate-metadata.outputs.tags }}"
 
+          # Erstellt das imagetools create Kommando
           IMAGETOOLS_COMMAND="docker buildx imagetools create"
+
+          # Fügt die Source Images hinzu
           IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND ghcr.io/$REPO:$INPUT_TAG-amd64"
           IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND ghcr.io/$REPO:$INPUT_TAG-arm64"
 
-          echo "$GENERATED_TAGS_MULTILINE" | while IFS= read -r tag; do
+          # Fügt die Ziel-Tags hinzu, jedes als separates -t Argument
+          # Die Tags aus den Metadaten sind oft durch Kommas oder Zeilenumbrüche getrennt.
+          # Wir müssen sie so verarbeiten, dass jedes Tag ein eigenes -t bekommt.
+
+          # Annahme: Tags sind durch Zeilenumbrüche getrennt (basierend auf Debug-Output)
+          IFS=$'\n' read -r -a tags_array <<< "$GENERATED_TAGS"
+          for tag in "${tags_array[@]}"; do
+            # Entferne führende/nachfolgende Leerzeichen
             tag=$(echo "$tag" | xargs)
-            if [ -n "$tag" ]; then
+            if [ -n "$tag" ]; then # Stelle sicher, dass der Tag nicht leer ist
               IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND -t $tag"
             fi
           done
 
-          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND"
+          # Fügt das --push Flag hinzu
+          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND --push"
 
           echo "Executing command: $IMAGETOOLS_COMMAND"
-          eval "$IMAGETOOLS_COMMAND"
+
+          # Führt den Befehl aus
+          eval "$IMAGETOOLS_COMMAND" # Anführungszeichen um eval, um Leerzeichen in Tags zu handhaben (weniger wahrscheinlich hier)
