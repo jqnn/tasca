@@ -95,7 +95,22 @@ jobs:
 
       - name: Create and Push Manifest
         run: |
-          docker buildx imagetools create \
-            ghcr.io/${{ github.repository }}:${{ inputs.tag }}-amd64 \
-            ghcr.io/${{ github.repository }}:${{ inputs.tag }}-arm64 \
-            -t ${{ needs.generate-metadata.outputs.tags }}
+          REPO="${{ github.repository }}"
+          INPUT_TAG="${{ inputs.tag }}"
+          GENERATED_TAGS_MULTILINE="${{ needs.generate-metadata.outputs.tags }}"
+
+          IMAGETOOLS_COMMAND="docker buildx imagetools create"
+          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND ghcr.io/$REPO:$INPUT_TAG-amd64"
+          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND ghcr.io/$REPO:$INPUT_TAG-arm64"
+
+          echo "$GENERATED_TAGS_MULTILINE" | while IFS= read -r tag; do
+            tag=$(echo "$tag" | xargs)
+            if [ -n "$tag" ]; then
+              IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND -t $tag"
+            fi
+          done
+
+          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND --push"
+
+          echo "Executing command: $IMAGETOOLS_COMMAND"
+          eval "$IMAGETOOLS_COMMAND"
