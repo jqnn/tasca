@@ -110,7 +110,7 @@ jobs:
             fi
           done
 
-          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND --push"
+          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND"
 
           echo "Executing command: $IMAGETOOLS_COMMAND"
           eval "$IMAGETOOLS_COMMAND"
