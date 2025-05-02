@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-docker-image:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform == 'linux/amd64' && 'ubuntu-latest' || 'self-hosted' }}
     strategy:
       matrix:
         platform: [ linux/amd64, linux/arm64 ]
