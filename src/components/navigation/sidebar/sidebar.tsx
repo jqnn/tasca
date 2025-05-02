@@ -23,7 +23,6 @@ import {
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
-import { useTranslations } from "next-intl";
 
 const data = {
   navMain: [
