@@ -74,7 +74,7 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
 
   create-and-push-manifest:
-    needs: [build-docker-image-per-platform, generate-metadata]
+    needs: [ build-docker-image-per-platform, generate-metadata ]
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request'
 
@@ -98,5 +98,4 @@ jobs:
           docker buildx imagetools create \
             ghcr.io/${{ github.repository }}:${{ inputs.tag }}-amd64 \
             ghcr.io/${{ github.repository }}:${{ inputs.tag }}-arm64 \
-            ${{ needs.generate-metadata.outputs.tags }} \
-            --push
+            -t ${{ needs.generate-metadata.outputs.tags }}
