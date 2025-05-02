@@ -15,9 +15,32 @@ async function reset() {
   await prisma.team.deleteMany();
 }
 
+async function createDemoUser(localAuthMethodId: number) {
+  console.log("[SEED] Demo account doesn't exist, creating now...");
+  const demoPassword = process.env.DEMO_PASSWORD;
+  if (!demoPassword) {
+    console.error(
+      "[SEED] Can't create demo account, set env variable DEMO_PASSWORD first.",
+    );
+    return;
+  }
+
+  const hashedPassword = hashPassword(demoPassword);
+  await prisma.user.create({
+    data: {
+      userName: "demo",
+      displayName: "Demo",
+      password: hashedPassword,
+      authMethodId: localAuthMethodId,
+      role: "USER",
+    },
+  });
+  console.log("[SEED] Created demo account.");
+}
+
 async function main() {
-  if(process.env.DEMO == "true") {
-    await reset()
+  if (process.env.DEMO == "true") {
+    await reset();
   }
 
   console.log("[SEED] Starting seeding...");
@@ -49,6 +72,11 @@ async function main() {
       data: { password: hashPassword(adminPassword) },
     });
     console.log("[SEED] Updated admin password.");
+
+    if (process.env.DEMO == "true") {
+      await createDemoUser(exists.id);
+    }
+
     return;
   }
 
