@@ -4,10 +4,13 @@
  */
 import "./src/env.js";
 
+const basePath = process.env.BASE_PATH || '';
+
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
   output: "standalone",
+  basePath
 };
 
 export default config;
