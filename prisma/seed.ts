@@ -16,8 +16,29 @@ async function reset() {
 }
 
 async function createDemoUser(localAuthMethodId: number) {
-  console.log("[SEED] Demo account doesn't exist, creating now...");
+  if (process.env.DEMO != "true") {
+    return;
+  }
+
   const demoPassword = process.env.DEMO_PASSWORD;
+  const user = await prisma.user.findFirst({
+    where: { userName: "demo" },
+  });
+
+  if (user) {
+    if (!demoPassword) return;
+
+    console.log("[SEED] Updating demo password.");
+    await prisma.user.update({
+      where: { userName: "demo" },
+      data: { password: hashPassword(demoPassword) },
+    });
+    console.log("[SEED] Updated demo password.");
+
+    return;
+  }
+
+  console.log("[SEED] Demo account doesn't exist, creating now...");
   if (!demoPassword) {
     console.error(
       "[SEED] Can't create demo account, set env variable DEMO_PASSWORD first.",
@@ -50,33 +71,9 @@ async function main() {
 
   if (exists) {
     console.log("[SEED] Default auth method already exists.");
-    const adminPassword = process.env.ADMIN_PASSWORD;
 
-    console.log("[SEED] Searching default admin account...");
-    const user = await prisma.user.findFirst({
-      where: { userName: "admin" },
-    });
-
-    if (!user) {
-      await createAdminUser(exists.id);
-      return;
-    }
-
-    if (!adminPassword) {
-      return;
-    }
-
-    console.log("[SEED] Updating admin password.");
-    await prisma.user.update({
-      where: { userName: "admin" },
-      data: { password: hashPassword(adminPassword) },
-    });
-    console.log("[SEED] Updated admin password.");
-
-    if (process.env.DEMO == "true") {
-      await createDemoUser(exists.id);
-    }
-
+    await createAdminUser(exists.id);
+    await createDemoUser(exists.id);
     return;
   }
 
@@ -90,11 +87,30 @@ async function main() {
   console.log("[SEED] Created local auth method.");
 
   await createAdminUser(local.id);
+  await createDemoUser(local.id);
 }
 
 async function createAdminUser(localAuthMethodId: number) {
-  console.log("[SEED] Default admin account doesn't exist, creating now...");
   const adminPassword = process.env.ADMIN_PASSWORD;
+  const user = await prisma.user.findFirst({
+    where: { userName: "admin" },
+  });
+
+  if (user) {
+    if (!adminPassword) {
+      return;
+    }
+
+    console.log("[SEED] Updating admin password.");
+    await prisma.user.update({
+      where: { userName: "admin" },
+      data: { password: hashPassword(adminPassword) },
+    });
+    console.log("[SEED] Updated admin password.");
+    return;
+  }
+
+  console.log("[SEED] Default admin account doesn't exist, creating now...");
   if (!adminPassword) {
     console.error(
       "[SEED] Can't create admin account, set env variable ADMIN_PASSWORD first.",
