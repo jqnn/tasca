@@ -5,13 +5,10 @@
 import "./src/env.js";
 import createNextIntlPlugin from "next-intl/plugin";
 
-const basePath = process.env.BASE_PATH || '';
-
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
   output: "standalone",
-  basePath
 };
 
 const withNextIntl = createNextIntlPlugin();
