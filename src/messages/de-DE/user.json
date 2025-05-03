@@ -1,0 +1,35 @@
+{
+  "userName": "Benutzername",
+  "displayName": "Anzeigename",
+  "invite": {
+    "receivedAt": "Erhalten am",
+    "reject": {
+      "title": "Ablehnen",
+      "message": "Die Einladung wird abgelehnt..."
+    },
+    "rejected": {
+      "title": "Abgelehnt",
+      "message": "Die Einladung wurde abgelehnt."
+    },
+    "accept": {
+      "title": "Annehmen",
+      "message": "Die Einladung wird angenommen..."
+    },
+    "accepted": {
+      "title": "Angenommen",
+      "message": "Die Einladung wurde angenommen."
+    }
+  },
+  "update": {
+    "role": {
+      "loading": {
+        "title": "Aktualiseren",
+        "message": "Die Rolle des Benutzers wird aktualisiert..."
+      },
+      "success": {
+        "title": "Aktualisiert",
+        "message": "Die Rolle des Benutzers wurde aktualisiert."
+      }
+    }
+  }
+}

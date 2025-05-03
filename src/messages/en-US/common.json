@@ -1,0 +1,67 @@
+{
+  "create": "Create",
+  "add": "Add",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "user": "User",
+  "name": "Name",
+  "description": "Description",
+  "type": "Type",
+  "role": "Role",
+  "state": "Status",
+  "owner": "Owner",
+  "team": "Team",
+  "creator": "Creator",
+  "createdAt": "Created on",
+  "unknown": "Unknown",
+  "show-finished": "Show finished",
+  "error": "Error",
+  "roles": {
+    "owner": "Owner",
+    "administrator": "Administrator",
+    "operator": "Operator",
+    "member": "Member",
+    "user": "User"
+  },
+  "statuses": {
+    "completed": "Completed",
+    "open": "Open"
+  },
+  "table": {
+    "no-results": "No results",
+    "actions": "Actions",
+    "save-order": {
+      "text": "Save order",
+      "loading": {
+        "title": "Order",
+        "message": "Saving the order..."
+      },
+      "success": {
+        "title": "Order",
+        "message": "The order was saved."
+      }
+    }
+  },
+  "sidebar": {
+    "teams": "Teams",
+    "invites": "Invitations",
+    "admin": "Administration",
+    "users": "Users",
+    "authMethods": "Authentication methods",
+    "logout": "Log out"
+  },
+  "mutation": {
+    "loading": {
+      "title": "Loading...",
+      "description": "The item is being edited..."
+    },
+    "success": {
+      "title": "Success",
+      "description": "The item was successfully edited."
+    }
+  },
+  "dialog": {
+    "title": "Are you sure?",
+    "description": "This change cannot be undone."
+  }
+}

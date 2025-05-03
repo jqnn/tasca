@@ -16,9 +16,11 @@ import {
   useSidebar,
 } from "~/components/ui/sidebar";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export function SidebarUser({ session }: { session: Session | null }) {
   const { isMobile } = useSidebar();
+  const t = useTranslations();
   if (!(session && session.user)) return;
 
   return (
@@ -47,7 +49,7 @@ export function SidebarUser({ session }: { session: Session | null }) {
             <Link href={"/logout"}>
               <DropdownMenuItem>
                 <IconLogout />
-                Abmelden
+                {t("common.sidebar.logout")}
               </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>

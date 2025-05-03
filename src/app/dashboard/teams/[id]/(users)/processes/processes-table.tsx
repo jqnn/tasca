@@ -11,8 +11,10 @@ import CreateTaskByTemplateDialog from "~/app/dashboard/teams/[id]/(users)/proce
 import Spinner from "~/components/ui/spinner";
 import { TaskCardComponent } from "~/components/cards/task-card";
 import { useTeam } from "~/context/TeamProvider";
+import { useTranslations } from "next-intl";
 
 export function TeamProcessesTable() {
+  const t = useTranslations();
   const team = useTeam();
   const [showModal, setShowModal] = React.useState(false);
   const [showComplete, setShowComplete] = React.useState(false);
@@ -41,7 +43,7 @@ export function TeamProcessesTable() {
           className="mr-auto"
           onClick={() => setShowModal(true)}
         >
-          Erstellen
+          {t("common.create")}
         </Button>
 
         <div className="flex items-center space-x-2">
@@ -50,7 +52,7 @@ export function TeamProcessesTable() {
             onCheckedChange={setShowComplete}
             id="completed"
           />
-          <Label htmlFor="completed">Fertige anzeigen</Label>
+          <Label htmlFor="completed">{t("common.show-finished")}</Label>
         </div>
       </div>
 

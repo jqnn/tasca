@@ -12,6 +12,7 @@ import TableActions from "~/components/table/table-actions";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { showErrorToast, showToast } from "~/lib/utils";
 import CreateTemplateFieldDialog from "~/app/dashboard/teams/[id]/(owner)/templates/[tid]/(dialogs)/create-template-field";
+import { useTranslations } from "next-intl";
 
 export default function TemplateFieldsTable({
   templateId,
@@ -20,6 +21,7 @@ export default function TemplateFieldsTable({
   templateId: number;
   fields: TemplateField[];
 }) {
+  const t = useTranslations();
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const [tableData, setTableData] = React.useState<TemplateField[]>([]);
@@ -27,13 +29,19 @@ export default function TemplateFieldsTable({
   const deleteMutation = api.templateField.delete.useMutation();
   const updateOrderMutation = api.templateField.updateOrder.useMutation({
     onMutate: () => {
-      showToast("Lädt", "Die Reihenfolge wird aktualisiert...");
+      showToast(
+        t("common.table.save-ordFFer.loading.title"),
+        t("common.table.save-order.loading.message"),
+      );
     },
     onSuccess: () => {
-      showToast("Erledigt", "Die Reihenfolge wurde aktualisiert.");
+      showToast(
+        t("common.table.save-order.success.title"),
+        t("common.table.save-order.success.message"),
+      );
     },
     onError: () => {
-      showErrorToast();
+      showErrorToast(t);
     },
   });
 
@@ -42,10 +50,10 @@ export default function TemplateFieldsTable({
   }, [fields]);
 
   const columns: ColumnDef<TemplateField>[] = [
-    centeredColumn("label", "Bezeichnung"),
-    centeredColumn("placeHolder", "Platzhalter"),
-    centeredColumn("fieldType", "Typ"),
-    TableActions(null, (id) => setDeleteId(id)),
+    centeredColumn("label", t("team.field.label")),
+    centeredColumn("placeHolder", t("team.field.placeHolder")),
+    centeredColumn("fieldType", "common.type"),
+    TableActions(t("common.table.actions"), null, (id) => setDeleteId(id)),
   ];
 
   return (

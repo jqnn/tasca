@@ -15,6 +15,7 @@ import Spinner from "~/components/ui/spinner";
 import { useTeam } from "~/context/TeamProvider";
 import { notFound } from "next/navigation";
 import { showErrorToast, showToast } from "~/lib/utils";
+import { useTranslations } from "next-intl";
 
 export default function InviteTeamMemberDialog({
   open,
@@ -23,11 +24,13 @@ export default function InviteTeamMemberDialog({
   open: boolean;
   setOpen: (open: boolean) => void;
 }) {
+  const t = useTranslations();
+
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();
 
     if (!userId) {
-      showErrorToast("Es wurde kein Benutzer ausgewählt.");
+      showErrorToast(t, "team.invite.no-selected");
       return;
     }
 
@@ -39,9 +42,7 @@ export default function InviteTeamMemberDialog({
       {
         onSuccess: (data) => {
           if (data) {
-            showErrorToast(
-              "Dieser Benutzer ist bereits ein Mitglied des Teams.",
-            );
+            showErrorToast(t, "team.invite.already-joined");
             return;
           }
 
@@ -52,18 +53,19 @@ export default function InviteTeamMemberDialog({
             },
             {
               onSuccess: () => {
-                showToast("Erfolgreich", "Die Einladung wurde versendet.");
+                showToast(
+                  t("team.invite.sent.title"),
+                  t("team.invite.sent.message"),
+                );
               },
               onError: () => {
-                showErrorToast(
-                  "Dieser Benutzer hat bereits eine Einladung erhalten.",
-                );
+                showErrorToast(t, "team.invite.already-invited");
               },
             },
           );
         },
         onError: () => {
-          showErrorToast();
+          showErrorToast(t);
         },
       },
     );

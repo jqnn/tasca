@@ -27,24 +27,24 @@ import { api } from "~/trpc/react";
 const data = {
   navMain: [
     {
-      title: "Teams",
+      title: "common.sidebar.teams",
       url: "/dashboard/teams",
       icon: IconFolders,
     },
     {
-      title: "Einladungen",
+      title: "common.sidebar.invites",
       url: "/dashboard/invites",
       icon: IconMailOpened,
     },
   ],
   navAdmin: [
     {
-      title: "Benutzer",
+      title: "common.sidebar.users",
       url: "/dashboard/users",
       icon: IconUsers,
     },
     {
-      title: "Authentifizierungsmethoden",
+      title: "common.sidebar.authMethods",
       url: "/dashboard/authentication",
       icon: IconLock,
     },
@@ -77,7 +77,7 @@ export function SidebarComponent({
             >
               <a className="hover:cursor-pointer">
                 <IconPuzzle className="!size-5" />
-                <span className="text-base font-semibold">Tasca</span>
+                <span className="text-base font-semibold">tasca</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -86,7 +86,7 @@ export function SidebarComponent({
       <SidebarContent>
         <SidebarItems items={data.navMain} />
         {isAdmin && (
-          <SidebarItems title={"Administration"} items={data.navAdmin} />
+          <SidebarItems title={"common.sidebar.admin"} items={data.navAdmin} />
         )}
       </SidebarContent>
       <SidebarFooter>

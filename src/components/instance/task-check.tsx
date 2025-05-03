@@ -3,43 +3,75 @@
 import * as React from "react";
 import { api } from "~/trpc/react";
 import { showErrorToast } from "~/lib/utils";
-import type { InstanceTask } from "@prisma/client";
+import type { InstanceTask, ProjectTask } from "@prisma/client";
 import { Checkbox } from "~/components/ui/checkbox";
+import type { CheckedState } from "@radix-ui/react-checkbox";
+import { useTranslations } from "next-intl";
 
-export default function TaskCheck({
+export function TaskCheck({
   instance,
   disabled,
 }: {
   instance: InstanceTask;
   disabled: boolean;
 }) {
-  const handleBlur = () => {
+  const t = useTranslations();
+
+  const handleCheckedChange = (value: CheckedState) => {
+    const checked = value as boolean;
+
     updateMutation.mutate({
       id: instance.id,
-      value: value,
+      value: checked,
     });
   };
 
   const updateMutation = api.instance.updateState.useMutation({
     onError: () => {
-      showErrorToast();
+      showErrorToast(t);
     },
     onSuccess: (data) => {
       instance.status = data.status;
     },
   });
 
-  const [value, setValue] = React.useState<boolean>(
-    instance.status == "COMPLETED",
+  return (
+    <div className={"flex justify-center"}>
+      <Checkbox
+        checked={instance.status == "COMPLETED"}
+        disabled={disabled}
+        onCheckedChange={handleCheckedChange}
+      />
+    </div>
   );
+}
+
+export function ProjectTaskCheck({ task }: { task: ProjectTask }) {
+  const t = useTranslations();
+
+  const handleCheckedChange = (value: CheckedState) => {
+    const checked = value as boolean;
+
+    updateMutation.mutate({
+      id: task.id,
+      value: checked,
+    });
+  };
+
+  const updateMutation = api.teamProjects.updateState.useMutation({
+    onError: () => {
+      showErrorToast(t);
+    },
+    onSuccess: (data) => {
+      task.status = data.status;
+    },
+  });
 
   return (
     <div className={"flex justify-center"}>
       <Checkbox
-        checked={value}
-        disabled={disabled}
-        onCheckedChange={(e) => setValue(e as boolean)}
-        onBlur={handleBlur}
+        checked={task.status == "COMPLETED"}
+        onCheckedChange={handleCheckedChange}
       />
     </div>
   );

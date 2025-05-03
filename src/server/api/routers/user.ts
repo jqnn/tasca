@@ -57,7 +57,7 @@ export const userRouter = createTRPCRouter({
       if (!team) return null;
       const teamMember = await ctx.db.teamMember.create({
         data: {
-          userId: team.createdById,
+          userId: team.createdById ?? 0,
           teamId: team.id,
           role: "OWNER",
         },
@@ -87,5 +87,14 @@ export const userRouter = createTRPCRouter({
           if (!user) return "USER";
           return user.role;
         });
+    }),
+
+  updateRole: publicProcedure
+    .input(z.object({ id: z.number(), role: z.nativeEnum(Role) }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.user.update({
+        where: { id: input.id },
+        data: { role: input.role },
+      });
     }),
 });

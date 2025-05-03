@@ -10,6 +10,8 @@ import { isTaskDone, showErrorToast, showToast } from "~/lib/utils";
 import ProcessTasksTable from "~/app/dashboard/teams/[id]/(users)/processes/[pid]/process-tasks";
 import ProcessFieldsContainer from "~/app/dashboard/teams/[id]/(users)/processes/[pid]/process-fields";
 import { useTeam } from "~/context/TeamProvider";
+import { useTranslations } from "next-intl";
+import SignaturePad from "~/components/instance/signature-pad";
 
 interface PageProps {
   params: Promise<{
@@ -18,6 +20,7 @@ interface PageProps {
 }
 
 export default function TaskPage({ params }: PageProps) {
+  const t = useTranslations();
   const team = useTeam();
   const router = useRouter();
   const actualParams = React.use(params);
@@ -32,6 +35,13 @@ export default function TaskPage({ params }: PageProps) {
   }
 
   const updateMutation = api.instance.updateInstanceState.useMutation();
+  const updateSignatureMutation = api.instance.updateSignature.useMutation({
+    onMutate: () =>
+      showToast(t("signature.updating.title"), t("signature.updating.message")),
+    onSuccess: () =>
+      showToast(t("signature.updated.title"), t("signature.updated.message")),
+    onError: () => showErrorToast(t),
+  });
   const { data: instance, status } = api.instance.find.useQuery({
     id: Number(actualParams.pid),
   });
@@ -46,26 +56,26 @@ export default function TaskPage({ params }: PageProps) {
 
   const handleDone = () => {
     if (!isTaskDone(instance)) {
-      showToast(
-        "Fehler",
-        "Die Aufgabe muss erst beendet werden, bevor sie als Fertig markiert werden kann.",
-      );
+      showToast(t("common.error"), t("team.process.mark-as-done.not-done"));
       return;
     }
 
-    showToast("Lädt...", "Die Aufgabe wird aktualisert...");
+    showToast(
+      t("team.mark-as-done.process.loading.title"),
+      t("team.mark-as-done.process.loading.message"),
+    );
     updateMutation.mutate(
       { id: instance.id, value: "COMPLETED" },
       {
         onSuccess: () => {
           showToast(
-            "Erfolgreich",
-            "Die Aufgabe wurde erfolgreich aktualisiert.",
+            t("team.mark-as-done.process.success.title"),
+            t("team.mark-as-done.process.success.message"),
           );
-          router.push("/dashboard/tasks");
+          router.push(`/dashboard/teams/${instance.teamId}/processes`);
         },
         onError: () => {
-          showErrorToast();
+          showErrorToast(t);
         },
       },
     );
@@ -74,7 +84,7 @@ export default function TaskPage({ params }: PageProps) {
   return (
     <>
       <h1 className={"mr-auto mb-4 font-bold"}>
-        Prozess - {instance.template.name}
+        {t("team.common.process")} - {instance.template.name}
       </h1>
 
       <ProcessFieldsContainer
@@ -86,10 +96,29 @@ export default function TaskPage({ params }: PageProps) {
         disabled={instance.status == "COMPLETED"}
       />
 
+      {instance.template.needsSignature && (
+        <SignaturePad
+          t={t}
+          defaultValue={
+            instance.Signature ? instance.Signature.signature : null
+          }
+          action={(value) => {
+            if (instance.Signature == null) return;
+            if (!value) return;
+
+            updateSignatureMutation.mutate({
+              id: instance.Signature.id,
+              value: value,
+            });
+          }}
+          disabled={instance.status == "COMPLETED"}
+        />
+      )}
+
       {instance.status == "OPEN" && (
         <div className={"mt-4"}>
           <Button variant={"default"} onClick={handleDone}>
-            Als Fertig markieren
+            {t("team.common.mark-as-done")}
           </Button>
         </div>
       )}

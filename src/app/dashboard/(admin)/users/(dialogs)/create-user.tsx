@@ -21,6 +21,7 @@ import {
 import { api } from "~/trpc/react";
 import { beautifyRole, showErrorToast, showToast } from "~/lib/utils";
 import DialogInput from "~/components/dialogs/dialog-input";
+import { useTranslations } from "next-intl";
 
 export default function CreateUserDialog({
   open,
@@ -31,11 +32,13 @@ export default function CreateUserDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (user: User) => void | null;
 }) {
+  const t = useTranslations();
+
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();
 
     if (authMethod == null) {
-      showErrorToast();
+      showErrorToast(t);
       return;
     }
 
@@ -62,7 +65,7 @@ export default function CreateUserDialog({
             {
               onSuccess: (data) => {
                 if (!data) {
-                  showErrorToast();
+                  showErrorToast(t);
                   return;
                 }
 
@@ -75,7 +78,7 @@ export default function CreateUserDialog({
                 setOpen(false);
               },
               onError: () => {
-                showErrorToast();
+                showErrorToast(t);
               },
             },
           );
@@ -110,6 +113,7 @@ export default function CreateUserDialog({
               label={"Benutzername"}
               required={true}
               setValue={setUserName}
+              min={4}
             />
 
             <DialogInput
@@ -117,6 +121,7 @@ export default function CreateUserDialog({
               label={"Anzeigename"}
               required={true}
               setValue={setDisplayName}
+              min={4}
             />
 
             <div className="grid grid-cols-4 items-center gap-4">
@@ -134,7 +139,7 @@ export default function CreateUserDialog({
                   <SelectContent id={"role"}>
                     {Object.values(Role).map((role) => (
                       <SelectItem key={role} value={role}>
-                        {beautifyRole(role)}
+                        {beautifyRole(t, role)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -179,6 +184,7 @@ export default function CreateUserDialog({
                 required={true}
                 setValue={setPassword}
                 type={"password"}
+                min={8}
               />
             )}
           </div>

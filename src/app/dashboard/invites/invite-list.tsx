@@ -13,26 +13,31 @@ import TableActions from "~/components/table/table-actions";
 import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { useSession } from "next-auth/react";
 import { showErrorToast, showToast } from "~/lib/utils";
+import { useTranslations } from "next-intl";
 
 export default function TeamInvitesTable() {
+  const t = useTranslations();
   const router = useRouter();
   const { data: session } = useSession();
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const acceptMutation = api.teamInvites.accept.useMutation({
     onMutate: () => {
-      showToast("Lädt...", "Die Einladung wird angenommen...");
+      showToast(t("user.invite.accept.title"), t("user.invite.accept.message"));
     },
     onSuccess: (data) => {
       if (!data) {
-        showErrorToast();
+        showErrorToast(t);
         return;
       }
 
-      showToast("Erfolgreich", "Die Einladung wurde angenommen.");
+      showToast(
+        t("user.invite.accepted.title"),
+        t("user.invite.accepted.message"),
+      );
       router.push(`/dashboard/teams/${data.id}`);
     },
     onError: () => {
-      showErrorToast();
+      showErrorToast(t);
     },
   });
   const deleteMutation = api.teamInvites.delete.useMutation();
@@ -51,18 +56,20 @@ export default function TeamInvitesTable() {
   }
 
   const columns: ColumnDef<TeamInvite>[] = [
-    centeredColumn("teamId", "Team", (value) => {
+    centeredColumn("teamId", t("common.team"), (value) => {
       const { data: team, isLoading } = api.team.find.useQuery({ id: value });
-      if (isLoading || !team) return "Unbekannt";
+      if (isLoading || !team) return t("common.unknown");
       return team.name;
     }),
-    centeredColumn("sentAt", "Gesendet am", (value) => value.toLocaleString()),
+    centeredColumn("sentAt", t("user.invite.receivedAt"), (value) =>
+      value.toLocaleString(),
+    ),
     TableActions(
+      t("common.table.actions"),
       (value) => acceptMutation.mutate({ id: value }),
       (value) => setDeleteId(value),
     ),
   ];
-
   return (
     <DataTable data={data} columns={columns}>
       {deleteId && (
@@ -77,8 +84,10 @@ export default function TeamInvitesTable() {
           onDelete={() => {
             console.log("TODO");
           }}
-          loadingMessage={"Die Einladung wird abgelehnt..."}
-          successMessage={"Die Einladung wurde abgelehnt."}
+          mutationMessages={{
+            loading: "user.invite.reject",
+            success: "user.invite.rejected",
+          }}
         />
       )}
     </DataTable>

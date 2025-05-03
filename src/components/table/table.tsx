@@ -149,7 +149,7 @@ function centeredColumn<TData extends RowData, TKey extends keyof TData>(
 
 function centeredDataColumn<TData extends RowData>(
   headerText: string,
-  formatter?: (value: TData) => string,
+  formatter?: ((value: TData) => string | ReactNode) | null,
   href?: string | null,
 ): ColumnDef<TData> {
   return {

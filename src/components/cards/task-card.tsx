@@ -10,6 +10,7 @@ import {
 } from "~/components/ui/card";
 import type { FieldType, InstanceStatus, Role } from "@prisma/client";
 import { beautifyInstanceStatus } from "~/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface PageProps {
   task: {
@@ -37,17 +38,17 @@ interface PageProps {
       password: string | null;
       role: Role;
       userName: string;
-    };
+    } | null;
     template: {
       createdAt: Date;
-      createdById: number;
+      createdById: number | null;
       description: string | null;
       id: number;
       name: string;
     };
   } & {
     createdAt: Date;
-    createdById: number;
+    createdById: number | null;
     id: number;
     status: InstanceStatus;
     templateId: number;
@@ -56,6 +57,7 @@ interface PageProps {
 }
 
 export function TaskCardComponent({ task }: PageProps) {
+  const t = useTranslations();
   const field = task.InstanceField.sort(
     (a, b) => a.field.order - b.field.order,
   );
@@ -77,9 +79,11 @@ export function TaskCardComponent({ task }: PageProps) {
           <CardDescription>
             <p>
               Ersteller -{" "}
-              {task.createdBy.displayName ?? task.createdBy.userName}
+              {task.createdBy
+                ? (task.createdBy.displayName ?? task.createdBy.userName)
+                : "Unbekannt"}
             </p>
-            <p>Status - {beautifyInstanceStatus(task.status)}</p>
+            <p>Status - {beautifyInstanceStatus(t, task.status)}</p>
           </CardDescription>
         </CardHeader>
       </Card>

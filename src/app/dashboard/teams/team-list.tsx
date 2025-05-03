@@ -8,8 +8,10 @@ import Spinner from "~/components/ui/spinner";
 import { Button } from "~/components/ui/button";
 import CreateTeamDialog from "~/app/dashboard/teams/(dialogs)/create-project";
 import { TeamCardComponent } from "~/components/cards/team-card";
+import { useTranslations } from "next-intl";
 
 export function TeamList() {
+  const t = useTranslations();
   const [showCreating, setShowCreating] = React.useState(false);
 
   const router = useRouter();
@@ -39,7 +41,7 @@ export function TeamList() {
             className="mr-auto"
             onClick={() => setShowCreating(true)}
           >
-            Erstellen
+            {t("common.create")}
           </Button>
         </div>
       )}
@@ -57,7 +59,7 @@ export function TeamList() {
           open={showCreating}
           setOpen={setShowCreating}
           onCreate={(team) => {
-            router.push(`/dashboard/teams/${team.id}`);
+            router.push(`/dashboard/teams/${team.id}/processes`);
           }}
         />
       )}

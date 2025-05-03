@@ -3,6 +3,7 @@
  * for Docker builds.
  */
 import "./src/env.js";
+import createNextIntlPlugin from "next-intl/plugin";
 
 const basePath = process.env.BASE_PATH || '';
 
@@ -13,4 +14,5 @@ const config = {
   basePath
 };
 
-export default config;
+const withNextIntl = createNextIntlPlugin();
+export default withNextIntl(config);

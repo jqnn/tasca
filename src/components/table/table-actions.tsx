@@ -7,13 +7,14 @@ interface RowData {
 }
 
 export default function TableActions<TData extends RowData>(
+  title: string,
   onEditClick?: ((value: number) => void) | null,
   onDeleteClick?: ((value: number) => void) | null,
   disabled?: ((value: TData) => boolean) | null,
 ) {
   return {
     accessorKey: "actions",
-    header: () => <div className={"text-center"}>Aktionen</div>,
+    header: () => <div className={"text-center"}>{title}</div>,
     cell: ({ row }: { row: Row<TData> }) => {
       const id = row.original.id ?? 0;
       const value = row.original;

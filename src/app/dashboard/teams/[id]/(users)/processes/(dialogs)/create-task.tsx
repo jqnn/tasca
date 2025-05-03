@@ -24,6 +24,7 @@ import { useSession } from "next-auth/react";
 import { notFound, useRouter } from "next/navigation";
 import { useTeam } from "~/context/TeamProvider";
 import Spinner from "~/components/ui/spinner";
+import { useTranslations } from "next-intl";
 
 export default function CreateTaskByTemplateDialog({
   open,
@@ -34,10 +35,12 @@ export default function CreateTaskByTemplateDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (template: InstanceTemplate) => void | null;
 }) {
+  const t = useTranslations();
+
   const handleConfirm = (e: FormEvent) => {
     e.preventDefault();
     if (template == null) {
-      showErrorToast();
+      showErrorToast(t);
       return;
     }
 
@@ -50,7 +53,7 @@ export default function CreateTaskByTemplateDialog({
       {
         onSuccess: (data) => {
           if (!data) {
-            showErrorToast();
+            showErrorToast(t);
             return;
           }
 
@@ -64,7 +67,7 @@ export default function CreateTaskByTemplateDialog({
         },
 
         onError: () => {
-          showErrorToast();
+          showErrorToast(t);
         },
       },
     );
