@@ -6,6 +6,7 @@ import * as React from "react";
 import type { InstanceField, TemplateField } from "@prisma/client";
 import { api } from "~/trpc/react";
 import { showErrorToast } from "~/lib/utils";
+import { useTranslations } from "next-intl";
 
 export default function FieldInput({
   instance,
@@ -16,6 +17,8 @@ export default function FieldInput({
   field: TemplateField;
   disabled: boolean;
 }) {
+  const t = useTranslations();
+
   const handleBlur = () => {
     updateMutation.mutate({
       id: instance.id,
@@ -25,7 +28,7 @@ export default function FieldInput({
 
   const updateMutation = api.instance.updateValue.useMutation({
     onError: () => {
-      showErrorToast();
+      showErrorToast(t);
     },
     onSuccess: () => {
       instance.value = value;

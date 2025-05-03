@@ -4,34 +4,26 @@ import { InstanceStatus } from "@prisma/client";
 
 export const instanceRouter = createTRPCRouter({
   findAll: publicProcedure
-    .input(z.object({ completed: z.boolean() }))
+    .input(z.object({ teamId: z.number(), completed: z.boolean() }))
     .query(async ({ ctx, input }) => {
-      if (input.completed) {
-        return ctx.db.instanceTemplate.findMany({
-          include: {
-            template: true,
-            createdBy: true,
-            InstanceField: {
-              include: {
-                field: true,
-              },
+      const { teamId } = input;
+
+      const where = input.completed
+        ? { teamId }
+        : { AND: [{ teamId }, { status: "OPEN" as const }] };
+
+      return ctx.db.instanceTemplate.findMany({
+        where,
+        include: {
+          template: true,
+          createdBy: true,
+          InstanceField: {
+            include: {
+              field: true,
             },
           },
-        });
-      } else {
-        return ctx.db.instanceTemplate.findMany({
-          where: { status: "OPEN" },
-          include: {
-            template: true,
-            createdBy: true,
-            InstanceField: {
-              include: {
-                field: true,
-              },
-            },
-          },
-        });
-      }
+        },
+      });
     }),
 
   find: publicProcedure
@@ -41,6 +33,7 @@ export const instanceRouter = createTRPCRouter({
         where: { id: input.id },
         include: {
           template: true,
+          Signature: true,
           InstanceField: {
             include: {
               field: true,
@@ -56,7 +49,13 @@ export const instanceRouter = createTRPCRouter({
     }),
 
   create: publicProcedure
-    .input(z.object({ templateId: z.number(), userId: z.string() }))
+    .input(
+      z.object({
+        teamId: z.number(),
+        templateId: z.number(),
+        userId: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const template = await ctx.db.template.findUnique({
         where: { id: input.templateId },
@@ -69,6 +68,7 @@ export const instanceRouter = createTRPCRouter({
       if (!template) return null;
       const instance = await ctx.db.instanceTemplate.create({
         data: {
+          teamId: input.teamId,
           templateId: input.templateId,
           createdById: Number(input.userId),
         },
@@ -93,6 +93,14 @@ export const instanceRouter = createTRPCRouter({
         });
       }
 
+      if (template.needsSignature) {
+        await ctx.db.signature.create({
+          data: {
+            instanceId: instance.id,
+          },
+        });
+      }
+
       return instance;
     }),
 
@@ -101,7 +109,7 @@ export const instanceRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return ctx.db.instanceTemplate.update({
         where: { id: input.id },
-        data: { status: input.value },
+        data: { status: input.value, closedAt: new Date() },
       });
     }),
 
@@ -120,6 +128,15 @@ export const instanceRouter = createTRPCRouter({
       return ctx.db.instanceTask.update({
         where: { id: input.id },
         data: { status: input.value ? "COMPLETED" : "OPEN" },
+      });
+    }),
+
+  updateSignature: publicProcedure
+    .input(z.object({ id: z.number(), value: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.signature.update({
+        where: { id: input.id },
+        data: { signature: input.value },
       });
     }),
 });

@@ -11,8 +11,10 @@ import { DeleteDialog } from "~/components/dialogs/delete-dialog";
 import { centeredColumn, centeredDataColumn } from "~/components/table/table";
 import TableActions from "~/components/table/table-actions";
 import Spinner from "~/components/ui/spinner";
+import { useTranslations } from "next-intl";
 
 export default function AuthenticationMethodsTable() {
+  const t = useTranslations();
   const [createOpen, setCreateOpen] = React.useState<boolean>(false);
   const [deleteId, setDeleteId] = React.useState<number | null>(null);
   const { data, status } = api.authMethod.findAll.useQuery();
@@ -30,16 +32,17 @@ export default function AuthenticationMethodsTable() {
   }
 
   const columns: ColumnDef<AuthMethod>[] = [
-    centeredColumn("description", "Beschreibung"),
-    centeredColumn("type", "Typ"),
-    centeredDataColumn("Benutzer", (id) => {
-      const { data: users, isLoading } = api.user.countAuthMethodUsers.useQuery(
-        { id: id },
-      );
+    centeredColumn("description", t("common.description")),
+    centeredColumn("type", t("common.type")),
+    centeredDataColumn(t("common.user"), (method) => {
+      const { data: users, isLoading } = api.authMethod.countUsers.useQuery({
+        id: method.id,
+      });
       if (isLoading || !users) return "0";
       return `${users}`;
     }),
     TableActions(
+      t("common.table.actions"),
       null,
       (id) => setDeleteId(id),
       (value) => value.description == "local",
@@ -52,7 +55,6 @@ export default function AuthenticationMethodsTable() {
       columns={columns}
       onButtonClick={() => setCreateOpen(true)}
     >
-
       {createOpen && (
         <CreateAuthenticationMethodDialog
           open={createOpen}

@@ -1,0 +1,85 @@
+{
+  "personal": "persönliches Projekt",
+  "sentAt": "Gesendet am",
+  "joinedAt": "Beigetreten am",
+  "navigation": {
+    "processes": "Prozesse",
+    "projects": "Projekte",
+    "templates": "Vorlagen",
+    "members": "Mitglieder",
+    "delete": {
+      "title": "Löschen",
+      "message": "Das Team wird gelöscht..."
+    },
+    "deleted": {
+      "title": "Gelöscht",
+      "message": "Das Team wurde gelöscht."
+    }
+  },
+  "common": {
+    "process": "Prozess",
+    "project": "Projekt",
+    "task": "Aufgabe",
+    "editedAt": "Bearbeitet am",
+    "editor": "Bearbeiter",
+    "mark-as-done": "Als Fertig markieren"
+  },
+  "field": {
+    "label": "Bezeichnung",
+    "placeHolder": "Platzhalter"
+  },
+  "invite": {
+    "text": "Einladen",
+    "no-selected": "Es wurde kein Benutzer ausgewählt.",
+    "already-invited": "Dieser Benutzer wurde bereits eingeladen.",
+    "already-joined": "Dieser Benutzer ist bereits in diesem Team.",
+    "sent": {
+      "title": "Einladung",
+      "message": "Die Einladung wurde versendet."
+    }
+  },
+  "mark-as-done": {
+    "process": {
+      "loading": {
+        "title": "Beenden",
+        "message": "Der Prozess wird als Beendet markiert..."
+      },
+      "success": {
+        "title": "Beendet",
+        "message": "Der Prozess wurde als Beendet markiert."
+      },
+      "not-done": "Der Prozess muss erst beendet werden, bevor sie als Fertig markiert werden kann."
+    },
+    "project": {
+      "loading": {
+        "title": "Beenden",
+        "message": "Das Projekt wird als Beendet markiert..."
+      },
+      "success": {
+        "title": "Beendet",
+        "message": "Das Projekt wurde als Beendet markiert."
+      },
+      "not-done": "Das Projekt muss erst beendet werden, bevor sie als Fertig markiert werden kann."
+    }
+  },
+  "update-editor": {
+    "loading": {
+      "title": "Bearbeiter",
+      "message": "Der Bearbeiter der Aufgabe wird aktualisiert..."
+    },
+    "success": {
+      "title": "Bearbeiter",
+      "message": "Der Bearbeiter der Aufgabe wurde aktualisiert."
+    }
+  },
+  "update-member-role": {
+    "loading": {
+      "title": "Rolle",
+      "message": "Die Rolle des Benutzers wird aktualisert..."
+    },
+    "success": {
+      "title": "Rolle",
+      "message": "Die Rolle des Benutzers wurde aktualisert."
+    }
+  }
+}

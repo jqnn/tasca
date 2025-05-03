@@ -1,0 +1,7 @@
+{
+  "title": "Sign In",
+  "userName": "Username",
+  "password": "Password",
+  "submit": "Sign In",
+  "error": "The username or password is incorrect. Please check your entries and try again."
+}

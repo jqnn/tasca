@@ -1,6 +1,6 @@
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = ["native", "linux-arm64-openssl-1.1.x", "linux-arm64-openssl-3.0.x"]
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-arm64-openssl-1.1.x", "linux-arm64-openssl-3.0.x", "linux-musl"]
 }
 
 datasource db {
@@ -14,11 +14,16 @@ model User {
   displayName      String?
   password         String?
   authMethodId     Int
-  authMethod       AuthMethod         @relation(fields: [authMethodId], references: [id])
+  authMethod       AuthMethod         @relation(fields: [authMethodId], references: [id], onDelete: Restrict)
   role             Role               @default(USER)
   createdAt        DateTime           @default(now())
   Template         Template[]
   TemplateInstance InstanceTemplate[]
+  Team             Team[]
+  TeamMember       TeamMember[]
+  TeamInvites      TeamInvite[]
+  Project          Project[]
+  ProjectTask      ProjectTask[]
 }
 
 model AuthMethod {
@@ -41,9 +46,12 @@ model Template {
   id               Int                @id @default(autoincrement())
   name             String
   description      String?
-  createdById      Int
-  createdBy        User               @relation(fields: [createdById], references: [id])
+  createdById      Int?
+  createdBy        User?              @relation(fields: [createdById], references: [id], onDelete: SetNull)
   createdAt        DateTime           @default(now())
+  teamId           Int
+  team             Team               @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  needsSignature   Boolean            @default(false)
   TemplateTask     TemplateTask[]
   TemplateField    TemplateField[]
   TemplateInstance InstanceTemplate[]
@@ -75,11 +83,15 @@ model InstanceTemplate {
   templateId    Int
   template      Template        @relation(fields: [templateId], references: [id], onDelete: Cascade)
   createdAt     DateTime        @default(now())
-  createdById   Int
-  createdBy     User            @relation(fields: [createdById], references: [id])
+  closedAt      DateTime?
+  createdById   Int?
+  createdBy     User?           @relation(fields: [createdById], references: [id], onDelete: SetNull)
   status        InstanceStatus  @default(OPEN)
+  teamId        Int
+  team          Team            @relation(fields: [teamId], references: [id], onDelete: Cascade)
   InstanceField InstanceField[]
   InstanceTask  InstanceTask[]
+  Signature     Signature?
 }
 
 model InstanceField {
@@ -100,6 +112,81 @@ model InstanceTask {
   task       TemplateTask     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   instanceId Int
   instance   InstanceTemplate @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+}
+
+model Signature {
+  id         Int              @id @default(autoincrement())
+  signature  String?          @db.LongText
+  instanceId Int              @unique
+  instance   InstanceTemplate @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+}
+
+model Team {
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String?
+  createdAt        DateTime           @default(now())
+  createdById      Int?
+  createdBy        User?              @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  personal         Boolean            @default(false)
+  TeamMember       TeamMember[]
+  TeamInvites      TeamInvite[]
+  Template         Template[]
+  InstanceTemplate InstanceTemplate[]
+  Project          Project[]
+}
+
+model TeamMember {
+  userId   Int
+  teamId   Int
+  joinedAt DateTime @default(now())
+  role     TeamRole @default(MEMBER)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@id([userId, teamId])
+}
+
+model TeamInvite {
+  id     Int      @id @default(autoincrement())
+  userId Int
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamId Int
+  team   Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  sentAt DateTime @default(now())
+
+  @@unique([userId, teamId])
+}
+
+model Project {
+  id          Int            @id @default(autoincrement())
+  name        String
+  description String?
+  createdById Int?
+  createdBy   User?          @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  teamId      Int
+  team        Team           @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  status      InstanceStatus @default(OPEN)
+  ProjectTask ProjectTask[]
+}
+
+model ProjectTask {
+  id          Int            @id @default(autoincrement())
+  task        String
+  description String?
+  editorId    Int?
+  editor      User?          @relation(fields: [editorId], references: [id], onDelete: SetNull)
+  status      InstanceStatus @default(OPEN)
+  projectId   Int
+  project     Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  updatedAt   DateTime       @default(now())
+}
+
+enum TeamRole {
+  OWNER
+  ADMINISTRATOR
+  MEMBER
 }
 
 enum Role {

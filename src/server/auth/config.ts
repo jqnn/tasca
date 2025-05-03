@@ -71,7 +71,7 @@ export const authConfig = {
   pages: {
     signIn: "/",
     error: "/",
-    newUser: "/dashboard",
+    newUser: "/dashboard/teams",
     signOut: "/logout",
   },
   secret: process.env.NEXTAUTH_SECRET,

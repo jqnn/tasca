@@ -1,0 +1,35 @@
+{
+  "userName": "Username",
+  "displayName": "Display Name",
+  "invite": {
+    "receivedAt": "Received on",
+    "reject": {
+      "title": "Reject",
+      "message": "Rejecting the invitation..."
+    },
+    "rejected": {
+      "title": "Rejected",
+      "message": "The invitation has been rejected."
+    },
+    "accept": {
+      "title": "Accept",
+      "message": "Accepting the invitation..."
+    },
+    "accepted": {
+      "title": "Accepted",
+      "message": "The invitation has been accepted."
+    }
+  },
+  "update": {
+    "role": {
+      "loading": {
+        "title": "Updating",
+        "message": "The user's role is being updated..."
+      },
+      "success": {
+        "title": "Updated",
+        "message": "The user's role has been updated."
+      }
+    }
+  }
+}

@@ -8,6 +8,7 @@ import {
 } from "~/components/ui/dialog";
 import { Label } from "~/components/ui/label";
 import { Button } from "~/components/ui/button";
+import type { FormEvent } from "react";
 import * as React from "react";
 import { type AuthMethod, Role, type User } from "@prisma/client";
 import {
@@ -20,6 +21,7 @@ import {
 import { api } from "~/trpc/react";
 import { beautifyRole, showErrorToast, showToast } from "~/lib/utils";
 import DialogInput from "~/components/dialogs/dialog-input";
+import { useTranslations } from "next-intl";
 
 export default function CreateUserDialog({
   open,
@@ -30,9 +32,13 @@ export default function CreateUserDialog({
   setOpen: (open: boolean) => void;
   onCreate?: (user: User) => void | null;
 }) {
-  const handleConfirm = () => {
+  const t = useTranslations();
+
+  const handleConfirm = (e: FormEvent) => {
+    e.preventDefault();
+
     if (authMethod == null) {
-      showErrorToast();
+      showErrorToast(t);
       return;
     }
 
@@ -58,6 +64,11 @@ export default function CreateUserDialog({
             },
             {
               onSuccess: (data) => {
+                if (!data) {
+                  showErrorToast(t);
+                  return;
+                }
+
                 if (!onCreate) {
                   window.location.reload();
                   return;
@@ -67,7 +78,7 @@ export default function CreateUserDialog({
                 setOpen(false);
               },
               onError: () => {
-                showErrorToast();
+                showErrorToast(t);
               },
             },
           );
@@ -96,90 +107,96 @@ export default function CreateUserDialog({
           <DialogDescription>Erstelle einen neuen Benutzer.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleConfirm}>
-        <div className="grid w-full gap-4 py-4">
-          <DialogInput
-            id={"userName"}
-            label={"Benutzername"}
-            required={true}
-            setValue={setUserName}
-          />
-
-          <DialogInput
-            id={"displayName"}
-            label={"Anzeigename"}
-            required={true}
-            setValue={setDisplayName}
-          />
-
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="role" className="text-right">
-              Rolle
-            </Label>
-            <div className={"col-span-3"}>
-              <Select
-                required={true}
-                onValueChange={(value) => setRole(value as Role)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Wähle eine Rolle" />
-                </SelectTrigger>
-                <SelectContent id={"role"}>
-                  {Object.values(Role).map((role) => (
-                    <SelectItem key={role} value={role}>
-                      {beautifyRole(role)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="method" className="text-right">
-              Methode
-            </Label>
-            <div className={"col-span-3"}>
-              <Select
-                required={true}
-                onValueChange={(value) => {
-                  const method = data.find((e) => e.id === Number(value));
-                  if (!method) {
-                    setAuthMethod(null);
-                    return;
-                  }
-                  setAuthMethod(method);
-                }}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Wähle eine Methode" />
-                </SelectTrigger>
-                <SelectContent id={"method"}>
-                  {data.map((method) => (
-                    <SelectItem key={method.id} value={method.id.toString()}>
-                      {method.description}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {authMethod && authMethod.type == "LOCAL" && (
+          <div className="grid w-full gap-4 py-4">
             <DialogInput
-              id={"password"}
-              label={"Passwort"}
+              id={"userName"}
+              label={"Benutzername"}
               required={true}
-              setValue={setPassword}
-              type={"password"}
+              setValue={setUserName}
+              min={4}
             />
-          )}
-        </div>
 
-        <DialogFooter>
-          <Button type="submit" disabled={existsMutation.isPending || createMutation.isPending}>
-            Erstellen
-          </Button>
-        </DialogFooter>
+            <DialogInput
+              id={"displayName"}
+              label={"Anzeigename"}
+              required={true}
+              setValue={setDisplayName}
+              min={4}
+            />
+
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="role" className="text-right">
+                Rolle
+              </Label>
+              <div className={"col-span-3"}>
+                <Select
+                  required={true}
+                  onValueChange={(value) => setRole(value as Role)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Wähle eine Rolle" />
+                  </SelectTrigger>
+                  <SelectContent id={"role"}>
+                    {Object.values(Role).map((role) => (
+                      <SelectItem key={role} value={role}>
+                        {beautifyRole(t, role)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="method" className="text-right">
+                Methode
+              </Label>
+              <div className={"col-span-3"}>
+                <Select
+                  required={true}
+                  onValueChange={(value) => {
+                    const method = data.find((e) => e.id === Number(value));
+                    if (!method) {
+                      setAuthMethod(null);
+                      return;
+                    }
+                    setAuthMethod(method);
+                  }}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Wähle eine Methode" />
+                  </SelectTrigger>
+                  <SelectContent id={"method"}>
+                    {data.map((method) => (
+                      <SelectItem key={method.id} value={method.id.toString()}>
+                        {method.description}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {authMethod && authMethod.type == "LOCAL" && (
+              <DialogInput
+                id={"password"}
+                label={"Passwort"}
+                required={true}
+                setValue={setPassword}
+                type={"password"}
+                min={8}
+              />
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button
+              type="submit"
+              disabled={existsMutation.isPending || createMutation.isPending}
+            >
+              Erstellen
+            </Button>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>

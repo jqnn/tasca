@@ -1,4 +1,4 @@
-name: "Docker Build"
+name: "Docker Build Matrix"
 
 on:
   workflow_call:
@@ -9,67 +9,12 @@ on:
         description: "The Docker Image tag."
 
 jobs:
-  build-docker-image-arm:
-    permissions:
-      contents: read
-      packages: write
-    runs-on: [self-hosted, arm64]
-    steps:
-      - name: Check out source code
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Generate Docker Metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=raw,${{ inputs.tag }}
-            type=sha,format=short
-            type=ref,event=branch
-          labels: |
-            org.opencontainers.image.source=${{ github.repositoryUrl }}
-            org.opencontainers.image.version=${{ inputs.tag }}
-
-      - name: Build and push Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          platforms: linux/arm64
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
-  build-docker-image-amd:
-    permissions:
-      contents: read
-      packages: write
+  generate-metadata:
     runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+      labels: ${{ steps.meta.outputs.labels }}
     steps:
-      - name: Check out source code
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Generate Docker Metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -83,13 +28,99 @@ jobs:
             org.opencontainers.image.source=${{ github.repositoryUrl }}
             org.opencontainers.image.version=${{ inputs.tag }}
 
-      - name: Build and push Docker Image
+  build-docker-image-per-platform:
+    needs: generate-metadata
+    runs-on: ${{ matrix.platform == 'linux/amd64' && 'ubuntu-latest' || 'self-hosted' }}
+    strategy:
+      matrix:
+        platform: [ linux/amd64, linux/arm64 ]
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Build Docker Image for ${{ matrix.platform }}
         uses: docker/build-push-action@v5
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          platforms: linux/amd64
+          tags: ghcr.io/${{ github.repository }}:${{ inputs.tag }}-${{ matrix.platform == 'linux/amd64' && 'amd64' || 'arm64' }}
+          labels: ${{ needs.generate-metadata.outputs.labels }}
+          platforms: ${{ matrix.platform }}
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
           cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
+
+  create-and-push-manifest:
+    needs: [ build-docker-image-per-platform, generate-metadata ]
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create and Push Manifest
+        run: |
+          GENERATED_TAGS="${{ needs.generate-metadata.outputs.tags }}"
+          REPO="${{ github.repository }}"
+          INPUT_TAG="${{ inputs.tag }}"
+
+          # Erstellt das imagetools create Kommando
+          IMAGETOOLS_COMMAND="docker buildx imagetools create"
+
+          # Fügt die Source Images hinzu
+          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND ghcr.io/$REPO:$INPUT_TAG-amd64"
+          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND ghcr.io/$REPO:$INPUT_TAG-arm64"
+
+          # Fügt die Ziel-Tags hinzu, jedes als separates -t Argument
+          # Die Tags aus den Metadaten sind oft durch Kommas oder Zeilenumbrüche getrennt.
+          # Wir müssen sie so verarbeiten, dass jedes Tag ein eigenes -t bekommt.
+
+          # Annahme: Tags sind durch Zeilenumbrüche getrennt (basierend auf Debug-Output)
+          IFS=$'\n' read -r -a tags_array <<< "$GENERATED_TAGS"
+          for tag in "${tags_array[@]}"; do
+            # Entferne führende/nachfolgende Leerzeichen
+            tag=$(echo "$tag" | xargs)
+            if [ -n "$tag" ]; then # Stelle sicher, dass der Tag nicht leer ist
+              IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND -t $tag"
+            fi
+          done
+
+          echo "Executing command: $IMAGETOOLS_COMMAND"
+
+          # Führt den Befehl aus
+          eval "$IMAGETOOLS_COMMAND" # Anführungszeichen um eval, um Leerzeichen in Tags zu handhaben (weniger wahrscheinlich hier)
