@@ -8,6 +8,9 @@ on:
         type: string
         description: "The Docker Image tag."
 
+env:
+  REPO_LOWERCASE: alyticdevelopment/backend
+
 jobs:
   generate-metadata:
     runs-on: ubuntu-latest
@@ -19,7 +22,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ghcr.io/${{ env.REPO_LOWERCASE }}
           tags: |
             type=raw,${{ inputs.tag }}
             type=sha,format=short
@@ -28,7 +31,7 @@ jobs:
             org.opencontainers.image.source=${{ github.repositoryUrl }}
             org.opencontainers.image.version=${{ inputs.tag }}
 
-  build-docker-image-per-platform:
+  build-docker-image:
     needs: generate-metadata
     runs-on: ${{ matrix.platform == 'linux/amd64' && 'ubuntu-latest' || 'self-hosted' }}
     strategy:
@@ -45,7 +48,6 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -67,14 +69,14 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/${{ github.repository }}:${{ inputs.tag }}-${{ matrix.platform == 'linux/amd64' && 'amd64' || 'arm64' }}
+          tags: ghcr.io/${{ env.REPO_LOWERCASE }}:${{ inputs.tag }}-${{ matrix.platform == 'linux/amd64' && 'amd64' || 'arm64' }}
           labels: ${{ needs.generate-metadata.outputs.labels }}
           platforms: ${{ matrix.platform }}
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/${{ env.REPO_LOWERCASE }}:buildcache
+          cache-to: type=registry,ref=ghcr.io/${{ env.REPO_LOWERCASE }}:buildcache,mode=max
 
-  create-and-push-manifest:
-    needs: [ build-docker-image-per-platform, generate-metadata ]
+  push-docker-image:
+    needs: [ build-docker-image, generate-metadata ]
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request'
 
@@ -96,31 +98,19 @@ jobs:
       - name: Create and Push Manifest
         run: |
           GENERATED_TAGS="${{ needs.generate-metadata.outputs.tags }}"
-          REPO="${{ github.repository }}"
           INPUT_TAG="${{ inputs.tag }}"
 
-          # Erstellt das imagetools create Kommando
           IMAGETOOLS_COMMAND="docker buildx imagetools create"
+          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND ghcr.io/${{ env.REPO_LOWERCASE }}:$INPUT_TAG-amd64"
+          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND ghcr.io/${{ env.REPO_LOWERCASE }}:$INPUT_TAG-arm64"
 
-          # Fügt die Source Images hinzu
-          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND ghcr.io/$REPO:$INPUT_TAG-amd64"
-          IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND ghcr.io/$REPO:$INPUT_TAG-arm64"
-
-          # Fügt die Ziel-Tags hinzu, jedes als separates -t Argument
-          # Die Tags aus den Metadaten sind oft durch Kommas oder Zeilenumbrüche getrennt.
-          # Wir müssen sie so verarbeiten, dass jedes Tag ein eigenes -t bekommt.
-
-          # Annahme: Tags sind durch Zeilenumbrüche getrennt (basierend auf Debug-Output)
           IFS=$'\n' read -r -a tags_array <<< "$GENERATED_TAGS"
           for tag in "${tags_array[@]}"; do
-            # Entferne führende/nachfolgende Leerzeichen
             tag=$(echo "$tag" | xargs)
-            if [ -n "$tag" ]; then # Stelle sicher, dass der Tag nicht leer ist
+            if [ -n "$tag" ]; then 
               IMAGETOOLS_COMMAND="$IMAGETOOLS_COMMAND -t $tag"
             fi
           done
 
           echo "Executing command: $IMAGETOOLS_COMMAND"
-
-          # Führt den Befehl aus
-          eval "$IMAGETOOLS_COMMAND" # Anführungszeichen um eval, um Leerzeichen in Tags zu handhaben (weniger wahrscheinlich hier)
+          eval "$IMAGETOOLS_COMMAND"
