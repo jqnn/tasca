@@ -9,7 +9,7 @@ on:
         description: "The Docker Image tag."
 
 env:
-  REPO_LOWERCASE: alyticdevelopment/backend
+  REPO_LOWERCASE: jqnn/tasca
 
 jobs:
   generate-metadata:
