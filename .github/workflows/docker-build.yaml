@@ -26,7 +26,6 @@ jobs:
           tags: |
             type=raw,${{ inputs.tag }}
             type=sha,format=short
-            type=ref,event=branch
           labels: |
             org.opencontainers.image.source=${{ github.repositoryUrl }}
             org.opencontainers.image.version=${{ inputs.tag }}
