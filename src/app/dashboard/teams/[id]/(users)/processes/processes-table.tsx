@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
@@ -22,20 +23,45 @@ export function TeamProcessesTable() {
   const [filter, setFilter] = React.useState("");
 
   const router = useRouter();
+
+  const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    api.instance.findAll.useInfiniteQuery(
+      {
+        limit: 50,
+        teamId: team.team.id,
+        completed: showComplete,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+      },
+    );
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+          document.body.offsetHeight - 300 &&
+        hasNextPage &&
+        !isFetchingNextPage
+      ) {
+        fetchNextPage().catch(console.error);
+      }
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   const { data: session } = useSession();
   if (!session) {
     router.push("/");
     return;
   }
 
-  const { data: tasks, status } = api.instance.findAll.useQuery({
-    teamId: team.team.id,
-    completed: showComplete,
-  });
-
   if (status !== "success") {
     return <Spinner />;
   }
+
+  const tasks = data?.pages.flatMap((page) => page.instances) ?? [];
 
   return (
     <div className={"w-full"}>
