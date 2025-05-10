@@ -8,9 +8,15 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import type { FieldType, InstanceStatus, Role } from "@prisma/client";
+import {
+  type FieldType,
+  InstanceStatus,
+  type InstanceTask,
+  type Role,
+} from "@prisma/client";
 import { beautifyInstanceStatus } from "~/lib/utils";
 import { useTranslations } from "next-intl";
+import { Progress } from "~/components/ui/progress";
 
 interface PageProps {
   task: {
@@ -30,6 +36,7 @@ interface PageProps {
       updatedAt: Date;
       value: string;
     })[];
+    InstanceTask: InstanceTask[];
     createdBy: {
       authMethodId: number;
       createdAt: Date;
@@ -69,9 +76,17 @@ export function TaskCardComponent({ task, filter }: PageProps) {
       ? firstField.field.label + " - " + firstField.value
       : task.template.name;
 
-  if(!(title.toLowerCase().includes(filter.toLowerCase()))) {
+  if (!title.toLowerCase().includes(filter.toLowerCase())) {
     return;
   }
+
+  let progress =
+    (task.InstanceTask.filter((task) => task.status == InstanceStatus.COMPLETED)
+      .length /
+      task.InstanceTask.length) *
+    100;
+
+  if(!(progress)) progress = 0;
 
   return (
     <Link
@@ -80,9 +95,7 @@ export function TaskCardComponent({ task, filter }: PageProps) {
     >
       <Card key={task.id}>
         <CardHeader>
-          <CardTitle>
-            {title}
-          </CardTitle>
+          <CardTitle>{title}</CardTitle>
           <CardDescription>
             <p>
               Ersteller -{" "}
@@ -91,6 +104,11 @@ export function TaskCardComponent({ task, filter }: PageProps) {
                 : "Unbekannt"}
             </p>
             <p>Status - {beautifyInstanceStatus(t, task.status)}</p>
+            <p>Fortschritt ({progress}/100)</p>
+            <Progress
+              className={"bg-secondary w-full"}
+              value={progress}
+            />
           </CardDescription>
         </CardHeader>
       </Card>

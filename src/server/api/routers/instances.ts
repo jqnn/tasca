@@ -22,6 +22,7 @@ export const instanceRouter = createTRPCRouter({
               field: true,
             },
           },
+          InstanceTask: true
         },
       });
     }),
