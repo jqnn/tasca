@@ -8,9 +8,15 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import type { FieldType, InstanceStatus, Role } from "@prisma/client";
+import {
+  type FieldType,
+  InstanceStatus,
+  type InstanceTask,
+  type Role,
+} from "@prisma/client";
 import { beautifyInstanceStatus } from "~/lib/utils";
 import { useTranslations } from "next-intl";
+import { Progress } from "~/components/ui/progress";
 
 interface PageProps {
   task: {
@@ -30,6 +36,7 @@ interface PageProps {
       updatedAt: Date;
       value: string;
     })[];
+    InstanceTask: InstanceTask[];
     createdBy: {
       authMethodId: number;
       createdAt: Date;
@@ -54,15 +61,32 @@ interface PageProps {
     templateId: number;
     teamId: number;
   };
+  filter: string;
 }
 
-export function TaskCardComponent({ task }: PageProps) {
+export function TaskCardComponent({ task, filter }: PageProps) {
   const t = useTranslations();
   const field = task.InstanceField.sort(
     (a, b) => a.field.order - b.field.order,
   );
 
   const firstField = field[0];
+  const title =
+    firstField && firstField.value != ""
+      ? firstField.field.label + " - " + firstField.value
+      : task.template.name;
+
+  if (!title.toLowerCase().includes(filter.toLowerCase())) {
+    return;
+  }
+
+  let progress =
+    (task.InstanceTask.filter((task) => task.status == InstanceStatus.COMPLETED)
+      .length /
+      task.InstanceTask.length) *
+    100;
+
+  if(!(progress)) progress = 0;
 
   return (
     <Link
@@ -71,19 +95,20 @@ export function TaskCardComponent({ task }: PageProps) {
     >
       <Card key={task.id}>
         <CardHeader>
-          <CardTitle>
-            {firstField
-              ? firstField.field.label + " - " + firstField.value
-              : task.template.name}
-          </CardTitle>
+          <CardTitle>{title}</CardTitle>
           <CardDescription>
             <p>
-              Ersteller -{" "}
+              {t("common.creator")} -{" "}
               {task.createdBy
                 ? (task.createdBy.displayName ?? task.createdBy.userName)
-                : "Unbekannt"}
+                : t("common.unknown")}
             </p>
-            <p>Status - {beautifyInstanceStatus(t, task.status)}</p>
+            <p>{t("common.state")} - {beautifyInstanceStatus(t, task.status)}</p>
+            <p>{t("common.progress")} ({progress}/100)</p>
+            <Progress
+              className={"bg-secondary w-full"}
+              value={progress}
+            />
           </CardDescription>
         </CardHeader>
       </Card>

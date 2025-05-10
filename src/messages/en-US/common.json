@@ -16,6 +16,8 @@
   "unknown": "Unknown",
   "show-finished": "Show finished",
   "error": "Error",
+  "save": "Save",
+  "progress": "Progress",
   "roles": {
     "owner": "Owner",
     "administrator": "Administrator",

@@ -12,12 +12,14 @@ import CreateProjectDialog from "~/app/dashboard/teams/[id]/(users)/projects/(di
 import { Switch } from "~/components/ui/switch";
 import { Label } from "~/components/ui/label";
 import { useTranslations } from "next-intl";
+import { Input } from "~/components/ui/input";
 
 export function TeamProjectsTable() {
   const t = useTranslations();
   const team = useTeam();
   const [showModal, setShowModal] = React.useState(false);
   const [showComplete, setShowComplete] = React.useState(false);
+  const [filter, setFilter] = React.useState("");
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -46,6 +48,14 @@ export function TeamProjectsTable() {
           {t("common.create")}
         </Button>
 
+        <div className="flex items-center p-4">
+          <Input
+            className="max-w-md"
+            placeholder={t("team.filter.project")}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+        </div>
+
         <div className="flex items-center space-x-2">
           <Switch
             checked={showComplete}
@@ -58,9 +68,13 @@ export function TeamProjectsTable() {
 
       {projects && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
-            <ProjectCardComponent key={project.id} project={project} />
-          ))}
+          {projects
+            .filter((project) =>
+              project.name.toLowerCase().includes(filter.toLowerCase()),
+            )
+            .map((project) => (
+              <ProjectCardComponent key={project.id} project={project} />
+            ))}
         </div>
       )}
 

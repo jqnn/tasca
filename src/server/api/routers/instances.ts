@@ -4,7 +4,14 @@ import { InstanceStatus } from "@prisma/client";
 
 export const instanceRouter = createTRPCRouter({
   findAll: publicProcedure
-    .input(z.object({ teamId: z.number(), completed: z.boolean() }))
+    .input(
+      z.object({
+        teamId: z.number(),
+        completed: z.boolean(),
+        limit: z.number().min(1).max(100).default(50),
+        cursor: z.number().nullish(),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       const { teamId } = input;
 
@@ -12,8 +19,12 @@ export const instanceRouter = createTRPCRouter({
         ? { teamId }
         : { AND: [{ teamId }, { status: "OPEN" as const }] };
 
-      return ctx.db.instanceTemplate.findMany({
+      const instances = await ctx.db.instanceTemplate.findMany({
         where,
+        take: input.limit + 1,
+        cursor: input.cursor ? { id: input.cursor } : undefined,
+        skip: input.cursor ? 1 : 0,
+        orderBy: { id: "asc" },
         include: {
           template: true,
           createdBy: true,
@@ -22,8 +33,19 @@ export const instanceRouter = createTRPCRouter({
               field: true,
             },
           },
+          InstanceTask: true,
         },
       });
+
+      let nextCursor: typeof input.cursor | null = null;
+      if (instances.length > input.limit) {
+        nextCursor = instances.pop()!.id;
+      }
+
+      return {
+        instances,
+        nextCursor,
+      };
     }),
 
   find: publicProcedure
