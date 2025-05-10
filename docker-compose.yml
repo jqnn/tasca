@@ -8,8 +8,8 @@ services:
       MARIADB_DATABASE: tasca
       MARIADB_USER: tasca
       MARIADB_PASSWORD: passwort
-    ports:
-      - "3306:3306"
+#    ports:
+#      - "3306:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
 
