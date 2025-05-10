@@ -54,15 +54,24 @@ interface PageProps {
     templateId: number;
     teamId: number;
   };
+  filter: string;
 }
 
-export function TaskCardComponent({ task }: PageProps) {
+export function TaskCardComponent({ task, filter }: PageProps) {
   const t = useTranslations();
   const field = task.InstanceField.sort(
     (a, b) => a.field.order - b.field.order,
   );
 
   const firstField = field[0];
+  const title =
+    firstField && firstField.value != ""
+      ? firstField.field.label + " - " + firstField.value
+      : task.template.name;
+
+  if(!(title.toLowerCase().includes(filter.toLowerCase()))) {
+    return;
+  }
 
   return (
     <Link
@@ -72,9 +81,7 @@ export function TaskCardComponent({ task }: PageProps) {
       <Card key={task.id}>
         <CardHeader>
           <CardTitle>
-            {firstField
-              ? firstField.field.label + " - " + firstField.value
-              : task.template.name}
+            {title}
           </CardTitle>
           <CardDescription>
             <p>

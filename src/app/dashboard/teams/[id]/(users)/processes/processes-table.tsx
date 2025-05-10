@@ -12,12 +12,14 @@ import Spinner from "~/components/ui/spinner";
 import { TaskCardComponent } from "~/components/cards/task-card";
 import { useTeam } from "~/context/TeamProvider";
 import { useTranslations } from "next-intl";
+import { Input } from "~/components/ui/input";
 
 export function TeamProcessesTable() {
   const t = useTranslations();
   const team = useTeam();
   const [showModal, setShowModal] = React.useState(false);
   const [showComplete, setShowComplete] = React.useState(false);
+  const [filter, setFilter] = React.useState("");
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -46,6 +48,14 @@ export function TeamProcessesTable() {
           {t("common.create")}
         </Button>
 
+        <div className="flex items-center p-4">
+          <Input
+            className="max-w-md"
+            placeholder={"Filter processes..."}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+        </div>
+
         <div className="flex items-center space-x-2">
           <Switch
             checked={showComplete}
@@ -59,7 +69,7 @@ export function TeamProcessesTable() {
       {tasks && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {tasks.map((task) => (
-            <TaskCardComponent key={task.id} task={task} />
+            <TaskCardComponent key={task.id} task={task} filter={filter} />
           ))}
         </div>
       )}
