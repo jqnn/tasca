@@ -35,8 +35,14 @@ export function ProjectCardComponent({ project }: PageProps) {
         <CardHeader>
           <CardTitle>{project.name}</CardTitle>
           <CardDescription>
-            {project.description && <p>Beschreibung - {project.description}</p>}
-            <p>Status - {beautifyInstanceStatus(t, project.status)}</p>
+            {project.description && (
+              <p>
+                {t("common.description")} - {project.description}
+              </p>
+            )}
+            <p>
+              {t("common.state")} - {beautifyInstanceStatus(t, project.status)}
+            </p>
           </CardDescription>
         </CardHeader>
       </Card>
