@@ -39,7 +39,8 @@
     }
   },
   "filter": {
-    "process": "Find processes"
+    "process": "Find processes",
+    "project": "Find projects"
   },
   "mark-as-done": {
     "process": {
