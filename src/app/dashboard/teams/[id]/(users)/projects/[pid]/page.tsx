@@ -81,7 +81,7 @@ export default function TaskPage({ params }: PageProps) {
   return (
     <div className={"w-full"}>
       <ChildrenHeader>
-        <SiteTitle title={`${t("team.")} - ${project.name}`} />
+        <SiteTitle title={`${t("team.common.project")} - ${project.name}`} />
         {project.description && (
           <SiteDescription description={project.description} />
         )}
