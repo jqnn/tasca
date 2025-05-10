@@ -98,13 +98,13 @@ export function TaskCardComponent({ task, filter }: PageProps) {
           <CardTitle>{title}</CardTitle>
           <CardDescription>
             <p>
-              Ersteller -{" "}
+              {t("common.creator")} -{" "}
               {task.createdBy
                 ? (task.createdBy.displayName ?? task.createdBy.userName)
-                : "Unbekannt"}
+                : t("common.unknown")}
             </p>
-            <p>Status - {beautifyInstanceStatus(t, task.status)}</p>
-            <p>Fortschritt ({progress}/100)</p>
+            <p>{t("common.state")} - {beautifyInstanceStatus(t, task.status)}</p>
+            <p>{t("common.progress")} ({progress}/100)</p>
             <Progress
               className={"bg-secondary w-full"}
               value={progress}

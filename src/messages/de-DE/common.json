@@ -17,6 +17,7 @@
   "show-finished": "Fertige anzeigen",
   "error": "Fehler",
   "save": "Speichern",
+  "progress": "Fortschritt",
   "roles": {
     "owner": "Besitzer",
     "administrator": "Administrator",
