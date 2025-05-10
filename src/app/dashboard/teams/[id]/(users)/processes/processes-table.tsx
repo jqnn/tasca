@@ -51,7 +51,7 @@ export function TeamProcessesTable() {
         <div className="flex items-center p-4">
           <Input
             className="max-w-md"
-            placeholder={"Filter processes..."}
+            placeholder={t("team.filter.process")}
             onChange={(e) => setFilter(e.target.value)}
           />
         </div>

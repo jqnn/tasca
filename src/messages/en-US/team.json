@@ -38,6 +38,9 @@
       "message": "The invitation has been sent."
     }
   },
+  "filter": {
+    "process": "Find processes"
+  },
   "mark-as-done": {
     "process": {
       "loading": {

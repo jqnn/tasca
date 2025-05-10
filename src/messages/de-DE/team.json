@@ -38,6 +38,9 @@
       "message": "Die Einladung wurde versendet."
     }
   },
+  "filter": {
+    "process": "Prozesse finden"
+  },
   "mark-as-done": {
     "process": {
       "loading": {
