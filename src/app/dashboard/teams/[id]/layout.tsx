@@ -65,7 +65,7 @@ export default async function RootLayout({
   return (
     <TeamProvider team={team} userRole={role}>
       <SiteHeader>
-        <SiteTitle title={`${t("common.team")} - ${title}`} />
+        <SiteTitle title={title} />
         {description && <SiteDescription description={description} />}
         <TeamNavigationComponent teamId={team.id} />
       </SiteHeader>
