@@ -34,7 +34,7 @@ export default function TeamInvitesTable() {
         t("user.invite.accepted.title"),
         t("user.invite.accepted.message"),
       );
-      router.push(`/dashboard/teams/${data.teamId}`);
+      router.push(`/dashboard/teams/${data.teamId}/processes`);
     },
     onError: () => {
       showErrorToast(t);
