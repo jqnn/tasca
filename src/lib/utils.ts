@@ -37,8 +37,8 @@ export function showToast(title: string, description: string | null = null) {
 
 export function showErrorToast(t: TranslationFunction, message?: string) {
   showToast(
-    t("error.unexpected.title"),
-    message ? t("error.unexpected.message") : t("error.unexpected.message"),
+    t("errors.unexpected.title"),
+    message ? t("errors.unexpected.message") : t("errors.unexpected.message"),
   );
 }
 
