@@ -45,11 +45,8 @@ export default function TemplatePage({ params }: PageProps) {
 
   return (
     <>
-      <h1 className={"mr-auto mb-4 font-bold"}>Vorlage - {template.name}</h1>
+      <h1 className={"mr-auto mb-4 font-bold"}>{template.name}</h1>
       <div className="flex w-full pb-4">
-        <Button variant="outline" className={"mr-2"}>
-          Bearbeiten
-        </Button>
         <Button variant="destructive" onClick={() => setDeleteId(template.id)}>
           Löschen
         </Button>
