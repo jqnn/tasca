@@ -1,66 +1,115 @@
 # tasca
 
+## 🇬🇧 | English
+
+### 🛠️ Introduction
+
+**tasca** is a tool for creating and completing templates. Users can create custom templates with defined steps that must be completed one by one.  
+This is perfect for:
+
+- setting up PCs
+- performing maintenance processes
+- managing recurring tasks
+
+---
+
+### ⚙️ Installation
+
+#### 📥 Clone the project
+
+```bash
+git clone https://github.com/jqnn/tasca
+cd tasca
+```
+
+#### 📦 Install dependencies
+
+```bash
+npm install
+```
+
+#### 🧾 Configure environment variables
+
+Create a `.env` file in the project root and add the following variables:
+
+| **Variable**      | **Required** | Description                                            | Example                                      |
+|-------------------|:------------:|--------------------------------------------------------|----------------------------------------------|
+| `AUTH_SECRET`     |      ✅      | Key for encrypting session tokens                      | `super_secure_token`                         |
+| `DATABASE_URL`    |      ✅      | URL to connect to the database                         | `mysql://user:password@host:port/database`   |
+| `ADMIN_PASSWORD`  |      ❌      | Password for the admin account. Set on every restart.  | `super_secure_admin_password`                |
+
+---
+
+### 🌐 Online Demo
+
+Try out **tasca** in your browser:
+
+🔗 **[Open tasca demo](https://tasca.alytic.de)**
+
+**Login credentials for the demo environment:**
+
+- 🛡️ **Admin user:**  
+  Username: `admin`  
+  Password: `admin1234`
+
+- 👤 **Demo user:**  
+  Username: `demo`  
+  Password: `demo1234`
+
+---
+
 ## 🇩🇪 | Deutsch
 
-### Einführung
+### 🛠️ Einführung
 
-tasca ist ein Tool zur Erstellung und Abarbeitung von Vorlagen (Templates). Nutzer können eigene Templates mit
-definierten Schritten erstellen, die dann nacheinander abgearbeitet werden müssen. Dies eignet sich hervorragend für
-Aufgaben wie das Einrichten von PCs, das Durchführen von Wartungsprozessen oder das Verwalten von wiederkehrenden
-Aufgaben.
+**tasca** ist ein Tool zur Erstellung und Abarbeitung von Vorlagen (_Templates_). Nutzer können eigene Templates mit definierten Schritten erstellen, die dann nacheinander abgearbeitet werden.  
+Dies eignet sich hervorragend für:
 
-### Installation
+- das Einrichten von PCs
+- das Durchführen von Wartungsprozessen
+- das Verwalten wiederkehrender Aufgaben
 
-**Projekt klonen**
+---
 
-```bash
-   git clone https://github.com/jqnn/tasca
-   cd tasca
-```
+### ⚙️ Installation
 
-**Abhängigkeiten installieren**
+#### 📥 Projekt klonen
 
 ```bash
-   npm install
+git clone https://github.com/jqnn/tasca
+cd tasca
 ```
 
-**Umgebungsvariablen konfigurieren**
-
-Erstelle eine ```.env``` Datei im Projektverzeichnis und füge die folgenden Variablen hinzu:
-
-| **Variable**   | **Benötigt** |                                                    **Beschreibung** |                                  **Beispiel** |
-|:---------------|:------------:|--------------------------------------------------------------------:|----------------------------------------------:|
-| AUTH_SECRET    |      Ja      |                   Schlüssel zur Verschlüsselung von Sitzungstokens. |                          super_sicherer_token |
-| DATABASE_URL   |      Ja      |                           Die URL zur Verbindung mit der Datenbank. | mysql://benutzer:passwort@host:port/datenbank |
-| ADMIN_PASSWORD |     Nein     | Passwort des Administrator-Kontos. Wird bei jedem Neustart gesetzt. |                  super_sichers_admin_passwort |
-
-## 🇬🇧 | Englisch
-
-tasca is a tool for creating and completing templates. Users can create their own templates with defined steps, which
-must then be completed one by one. This is perfect for tasks like setting up PCs, performing maintenance processes, or
-managing recurring tasks.
-
-### Installation
-
-**Clone the project**
+#### 📦 Abhängigkeiten installieren
 
 ```bash
-   git clone https://github.com/jqnn/tasca
-   cd tasca
+npm install
 ```
 
-**Install dependencies**
+#### 🧾 Umgebungsvariablen konfigurieren
 
-```bash
-   npm install
-```
+Erstelle eine `.env`-Datei im Projektverzeichnis und füge folgende Variablen hinzu:
 
-**Configure environment variables**
+| **Variable**      | **Erforderlich** | Beschreibung                                                        | Beispiel                                      |
+|-------------------|:----------------:|----------------------------------------------------------------------|----------------------------------------------|
+| `AUTH_SECRET`     |        ✅        | Schlüssel zur Verschlüsselung von Sitzungstokens                     | `super_sicherer_token`                        |
+| `DATABASE_URL`    |        ✅        | URL zur Verbindung mit der Datenbank                                 | `mysql://benutzer:passwort@host:port/dbname` |
+| `ADMIN_PASSWORD`  |        ❌        | Passwort für das Admin-Konto. Wird bei jedem Neustart gesetzt.       | `super_sicheres_admin_passwort`              |
 
-Create a .env file in the project directory and add the following variables:
+---
 
-| Variable       | Required |                                                  Description |                                  Example |
-|:---------------|:--------:|-------------------------------------------------------------:|-----------------------------------------:|
-| AUTH_SECRET    |   Yes    |                           Key for encrypting session tokens. |                       super_secure_token |
-| DATABASE_URL   |   Yes    |                          The URL to connect to the database. | mysql://user:password@host:port/database |
-| ADMIN_PASSWORD |    No    | Password of the administrator account. Set on every restart. |              super_secure_admin_password |
+### 🌐 Online-Demo
+
+Teste **tasca** direkt im Browser:
+
+🔗 **[tasca Demo öffnen](https://tasca.alytic.de)**
+
+**Zugangsdaten für die Demo-Umgebung:**
+
+- 🛡️ **Admin-Benutzer:**  
+  Benutzername: `admin`  
+  Passwort: `admin1234`
+
+- 👤 **Demo-Benutzer:**  
+  Benutzername: `demo`  
+  Passwort: `demo1234`
