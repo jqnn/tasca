@@ -58,7 +58,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
-    "js-sha256": "^0.11.0",
+    "js-sha256": "^0.11.1",
     "ldapts": "^8.0.9",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.544.0",
