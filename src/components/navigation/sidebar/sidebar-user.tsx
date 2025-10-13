@@ -21,7 +21,7 @@ import { useTranslations } from "next-intl";
 export function SidebarUser({ session }: { session: Session | null }) {
   const { isMobile } = useSidebar();
   const t = useTranslations();
-  if (!(session && session.user)) return;
+  if (!(session?.user)) return;
 
   return (
     <SidebarMenu>
