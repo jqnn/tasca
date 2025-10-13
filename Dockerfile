@@ -1,4 +1,4 @@
-FROM node:18-slim AS builder
+FROM node:22-slim AS builder
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y openssl python3 make g++ && rm -rf /var/lib/apt/lists/*
@@ -14,7 +14,7 @@ COPY . .
 ENV SKIP_ENV_VALIDATION=1
 RUN npm run build
 
-FROM node:18-slim AS runner
+FROM node:22-slim AS runner
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
