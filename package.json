@@ -61,7 +61,7 @@
     "js-sha256": "^0.11.1",
     "ldapts": "^8.0.9",
     "lodash.debounce": "^4.0.8",
-    "lucide-react": "^0.545.0",
+    "lucide-react": "^0.546.0",
     "next": "^15.5.3",
     "next-auth": "5.0.0-beta.29",
     "next-intl": "^4.3.9",
