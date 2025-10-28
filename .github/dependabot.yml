@@ -7,7 +7,6 @@ updates:
     commit-message:
       prefix: "deps"
       include: "scope"
-    open-pull-requests-limit: 10
     target-branch: "development"
     allow:
       - dependency-type: "all"
