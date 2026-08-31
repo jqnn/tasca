@@ -18,14 +18,17 @@ datasource db {
 
 model User {
   id            String    @id
-  name          String //@db.Text
+  name          String @db.Text
   email         String
   emailVerified Boolean   @default(false)
-  image         String? //@db.Text
+  image         String? @db.Text
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+
+  authMethodId  String?
+  authMethod    AuthMethod? @relation(fields: [authMethodId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@unique([email])
   @@map("user")
@@ -37,8 +40,8 @@ model Session {
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  ipAddress String? //@db.Text
-  userAgent String? //@db.Text
+  ipAddress String? @db.Text
+  userAgent String? @db.Text
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -48,17 +51,17 @@ model Session {
 
 model Account {
   id                    String    @id
-  accountId             String //@db.Text
-  providerId            String //@db.Text
+  accountId             String @db.Text
+  providerId            String @db.Text
   userId                String
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String? //@db.Text
-  refreshToken          String? //@db.Text
-  idToken               String? //@db.Text
+  accessToken           String? @db.Text
+  refreshToken          String? @db.Text
+  idToken               String? @db.Text
   accessTokenExpiresAt  DateTime?
   refreshTokenExpiresAt DateTime?
-  scope                 String? //@db.Text
-  password              String? //@db.Text
+  scope                 String? @db.Text
+  password              String? @db.Text
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
@@ -67,11 +70,42 @@ model Account {
 
 model Verification {
   id         String   @id
-  identifier String //@db.Text
-  value      String //@db.Text
+  identifier String @db.Text
+  value      String @db.Text
   expiresAt  DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
 
   @@map("verification")
+}
+
+model AuthMethod {
+  id            String            @id @default(cuid())
+  type          AuthMethodType @default(LOCAL)
+  description   String       
+  controllers   String?
+  baseDN        String?
+  securityType  SecurityType?  @default(NONE)
+  port          Int?           @default(389)
+  userName      String?
+  password      String?
+  usersDN       String?
+  uidAttribute  String?
+  accountSuffix String?
+  users         User[]
+
+  @@map("auth_method")
+  @@unique([description])
+}
+
+enum AuthMethodType {
+  LOCAL
+  AD
+  LDAP
+}
+
+enum SecurityType {
+  NONE
+  TLS
+  SSL
 }
