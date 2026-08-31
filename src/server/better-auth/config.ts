@@ -10,8 +10,25 @@ export const auth = betterAuth({
   }),
 
   plugins: [hybridAuthPlugin()],
+
+  user: {
+    additionalFields: {
+      username: {
+        type: "string",
+        required: true,
+        input: true,
+      },
+      authMethodId: {
+        type: "string",
+        required: true,
+        input: true,
+      },
+    },
+  },
+
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: false,
   },
 });
 
