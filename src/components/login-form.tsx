@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 import {
@@ -13,6 +15,8 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { authClient } from "~/server/better-auth/client";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const userSchema = z.object({
   username: z.string(),
@@ -25,6 +29,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const router = useRouter();
   const form = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
     defaultValues: {
@@ -33,13 +38,34 @@ export function LoginForm({
     },
   });
 
-  async function onSubmit(formData: UserFormData) {
-    const { data, error } = await authClient.signInHybrid({
-      username: formData.username,
-      password: formData.password,
-    });
+  function onSubmit(formData: UserFormData) {
+    toast.promise(
+      async () => {
+        const { data, error } = await authClient.$fetch("/sign-in/hybrid", {
+          method: "POST",
+          body: {
+            username: formData.username,
+            password: formData.password,
+          },
+        });
 
-    console.log(data, error);
+        if (error) {
+          throw new Error(error.message || "Anmeldung fehlgeschlagen");
+        }
+
+        return data;
+      },
+      {
+        loading: "Anmeldung läuft...",
+        success: () => {
+          router.push("/dashboard");
+          return "Erfolgreich angemeldet!";
+        },
+        error: (err) => {
+          return err.message || "Ein unerwarteter Fehler ist aufgetreten.";
+        },
+      },
+    );
   }
 
   return (
