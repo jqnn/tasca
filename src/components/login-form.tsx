@@ -7,13 +7,41 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Field, FieldGroup, FieldLabel } from "~/components/ui/field";
-import { Input } from "~/components/ui/input";
+import { Field, FieldGroup } from "~/components/ui/field";
+import { ControlledInput } from "~/components/ui/controlled-input";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, useForm } from "react-hook-form";
+import { authClient } from "~/server/better-auth/client";
+
+const userSchema = z.object({
+  username: z.string(),
+  password: z.string(),
+});
+
+type UserFormData = z.infer<typeof userSchema>;
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const form = useForm<UserFormData>({
+    resolver: zodResolver(userSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  async function onSubmit(formData: UserFormData) {
+    const { data, error } = await authClient.signInHybrid({
+      username: formData.username,
+      password: formData.password,
+    });
+
+    console.log(data, error);
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -24,21 +52,27 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
-            <FieldGroup>
-              <Field>
-                <FieldLabel htmlFor="email">Benutzername</FieldLabel>
-                <Input id="username" placeholder="joe" required />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="password">Passwort</FieldLabel>
-                <Input id="password" type="password" required />
-              </Field>
-              <Field>
-                <Button type="submit">Anmelden</Button>
-              </Field>
-            </FieldGroup>
-          </form>
+          <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <FieldGroup>
+                <ControlledInput
+                  id="form-login-username"
+                  name="username"
+                  label="Benutzername"
+                />
+
+                <ControlledInput
+                  id="form-login-password"
+                  name="password"
+                  label="Passwort"
+                  type="password"
+                />
+                <Field>
+                  <Button type="submit">Anmelden</Button>
+                </Field>
+              </FieldGroup>
+            </form>
+          </FormProvider>
         </CardContent>
       </Card>
     </div>
