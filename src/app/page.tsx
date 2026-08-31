@@ -1,7 +1,6 @@
 "use client";
 
 import { LoginForm } from "~/components/login-form";
-import { IconLayoutRows } from "@tabler/icons-react";
 
 export default function LoginPage() {
   return (
