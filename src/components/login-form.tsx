@@ -17,6 +17,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { authClient } from "~/server/better-auth/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const userSchema = z.object({
   username: z.string(),
@@ -30,6 +31,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const form = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
     defaultValues: {
@@ -39,6 +41,7 @@ export function LoginForm({
   });
 
   function onSubmit(formData: UserFormData) {
+    setLoading(true);
     toast.promise(
       async () => {
         const { data, error } = await authClient.$fetch("/sign-in/hybrid", {
@@ -63,6 +66,9 @@ export function LoginForm({
         },
         error: (err) => {
           return err.message || "Ein unerwarteter Fehler ist aufgetreten.";
+        },
+        finally: () => {
+          setLoading(false);
         },
       },
     );
@@ -94,7 +100,9 @@ export function LoginForm({
                   type="password"
                 />
                 <Field>
-                  <Button type="submit">Anmelden</Button>
+                  <Button disabled={loading} type="submit">
+                    Anmelden
+                  </Button>
                 </Field>
               </FieldGroup>
             </form>
