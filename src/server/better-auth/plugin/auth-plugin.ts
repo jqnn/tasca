@@ -87,7 +87,7 @@ export const hybridAuthPlugin = () => {
           });
 
           if (!user) {
-            throw ctx.error("BAD_REQUEST", {
+            throw ctx.error("UNAUTHORIZED", {
               message: "Ungültige Anmeldedaten",
             });
           }
@@ -133,7 +133,7 @@ export const hybridAuthPlugin = () => {
           });
 
           if (!account || !account.password) {
-            throw ctx.error("BAD_REQUEST", {
+            throw ctx.error("UNAUTHORIZED", {
               message: "Kein lokales Passwort für diesen Benutzer vorhanden",
             });
           }
